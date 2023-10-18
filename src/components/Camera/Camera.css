@@ -1,0 +1,6 @@
+#cameraOn video{
+    max-width: 450px !important;
+    height: 450px !important;
+    object-fit: cover !important;
+    border-radius: 10px;
+}

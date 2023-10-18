@@ -1,0 +1,10 @@
+.settingTitle{
+    position: absolute;
+    top: 15px;
+    left: 20px;
+    max-width: calc(100% - 70px);
+}
+
+.form-control:focus{
+    box-shadow: none;
+}

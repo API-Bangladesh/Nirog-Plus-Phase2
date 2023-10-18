@@ -1,0 +1,84 @@
+#deshboard{
+    /* background-image: url(../../assets/img/deshboardBG.jpg); */
+    background: linear-gradient(rgba(170,170,170,0.75), rgba(170,170,170,0.75)), url('../../assets/img/deshboardBG.jpg');
+    width: 100%;
+    height: 100vh !important;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bg1{
+    /* background-color: #0000FF; */
+    background-color: #1e1e85;
+}
+.bg2{
+    background-color: #008000;
+}
+.bg3{
+    /* background-color: #E700E7; */
+    background-color: #3d79c3;
+}
+.bg4{
+    background-color: #f19d00;
+}
+.bg5{
+    /* background-color: #FF0000; */
+    background-color: #600963;
+}
+.bg6{
+    background-color: #808000;
+}
+.bg7{
+    background-color: #00A9A9;
+}
+.bg8{
+    background-color: #333333;
+}
+
+.card{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+}
+
+.d_icon{
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+    margin-bottom: 5px;
+}
+
+.itemGo .card{
+    transition: all 0.3s ease-in-out;
+}
+.itemGo:hover .card{
+    background-color: #ad7c7c;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

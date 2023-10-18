@@ -1,0 +1,13 @@
+.blood-pressure-btn{
+  margin-left: 50%;
+  /* transform: translate(-50%); */
+}
+
+/*  */
+select#Select{
+  padding-left: 34px;
+  padding-right: 34px;
+  box-shadow: none;
+  border: none;
+}
+/*  */

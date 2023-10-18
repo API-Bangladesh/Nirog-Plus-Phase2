@@ -1,0 +1,86 @@
+
+.barCode{
+  width: 120px;
+  max-height: 80px;
+  object-fit: contain;
+}
+
+.userImg {
+  width: 110px;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 3px solid rgba(122,122,122,.15);
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.profile{
+  max-width: 190px;
+}
+.profile p{
+  font-size: 12px;
+}
+
+.profileBox{
+  width: 328px;
+  height: 205px;
+  margin: auto;
+}
+
+.barCodeBox{
+  position: absolute;
+  top: 130px;
+  right: 5px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: start;
+}
+.barCodeBox p{
+  font-size: 10px;
+  word-break: keep-all;
+  line-height: 10px;
+  padding-bottom: 4px;
+}
+.barCodeBox > .barCode{
+  max-height: 20px;
+  max-width: 110px;
+  object-fit: contain;
+  padding: 0 3px;
+}
+
+
+
+
+
+
+.button-bg{
+  background-color: #666;
+}
+
+
+
+.exportBtn{
+	font-size: 15px;
+	color: #fff;
+	display: inline-block;
+	width: 33px;
+	height: 33px;
+	text-align: center;
+	line-height: 31px;
+	margin-bottom: 0;
+	border-radius: 7px;
+	background-color: #444;
+	transition: all 0.4s;
+}
+
+.exportBtn:hover{
+	color: #fff;
+	opacity: 0.7;
+}
+.printBox{
+  width: 350px;
+  margin: auto;
+}

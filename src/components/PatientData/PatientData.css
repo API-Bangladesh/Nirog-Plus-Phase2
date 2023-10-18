@@ -1,0 +1,15 @@
+.modal-body #globalButton{
+    display: none;
+}
+.modal-body button{
+    display: none;
+}
+.modal-body .banner-img{
+    display: none !important;
+}
+
+.modal-body {
+    background-color: #eee;
+}
+
+

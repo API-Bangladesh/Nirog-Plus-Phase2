@@ -1,0 +1,31 @@
+.countBg1 {
+  background-color: RGBA(0, 128, 0, 0.5);
+  /* background-color: #008000; */
+}
+.countBg2 {
+  /* background-color: #0000FF; */
+  background-color: RGBA(0, 0, 255, 0.5);
+}
+.countBg3 {
+  /* background-color: #FF0000; */
+  background-color: RGBA(255, 0, 0, 0.5);
+}
+.spinner-grow {
+  --bs-spinner-width: 1rem;
+  --bs-spinner-height: 1rem;
+  --bs-spinner-animation-speed: 0.95s;
+}
+.healthBox {
+  padding: 50px;
+  margin-top: 30px;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.counterItem .countNum {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 10px;
+  padding: 8px 18px;
+  color: #fff;
+}

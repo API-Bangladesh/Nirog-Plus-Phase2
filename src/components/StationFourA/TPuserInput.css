@@ -1,0 +1,98 @@
+.ratingItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.form-check.form-switch {
+  position: absolute;
+  right: 15px !important;
+  top: -40px !important;
+  display: flex;
+  justify-content: end;
+  width: 35px;
+  padding: 0px;
+}
+.onBtn .form-check.form-switch {
+  top: -25px !important;
+}
+.btn-check:checked+.btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check)+.btn:active{
+  border-color: transparent !important;
+}
+.form-check.form-switch input:hover{
+  cursor: pointer;
+}
+
+.nirog-team-font {
+  font-size: 10px;
+}
+
+.next-btn {
+  margin-left: 50%;
+}
+.show-data span {
+  text-decoration: underline;
+  margin-right: 15px;
+  font-size: 16px;
+  color: #333;
+  text-underline-offset: 7px;
+}
+.comment {
+  width: 100%;
+  box-shadow: none !important;
+}
+
+textarea::placeholder {
+  font-size: 14px !important;
+}
+
+
+/*  Add remove data table start here  */
+.table-bordered thead tr {
+  display: flex;
+  justify-content: space-between;
+}
+.table-bordered thead tr th{
+  flex-grow: 1;
+  padding: 10px 2px;
+  width: 20%;
+  background-color: var(--main-color-rgba-2);
+  border-radius: 0px !important;
+  font-size: 13px;
+}
+.table-bordered thead tr th:nth-child(1){
+  width: 110px;
+}
+.table-bordered thead tr th:nth-last-child(1){
+  width: 50px;
+}
+
+.table-bordered tbody tr {
+  display: flex;
+  justify-content: space-between;
+}
+.table-bordered tbody tr td{
+  flex-grow: 1;
+  padding: 5px 2px;
+  width: 20%;
+  font-size: 13px;
+}
+.table-bordered tbody tr td:nth-child(1){
+  width: 110px;
+}
+.table-bordered tbody tr td:nth-last-child(1){
+  width: 50px;
+}
+
+.btn.btn-danger{
+  padding: 2px 3px;
+}
+/* Add remove data table end here */
+.error-input {
+  border-color: red !important;
+}
+.error-message {
+  color: red;
+}
+
+
+

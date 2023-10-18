@@ -1,0 +1,50 @@
+.ratingItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.form-check.form-switch {
+  position: absolute;
+  right: 0px;
+  top: -42px;
+}
+
+.toggle-btn:hover{
+  cursor: pointer;
+}
+
+.nirog-team-font {
+  font-size: 10px;
+}
+
+.next-btn {
+  margin-left: 50%;
+}
+
+.autocompleteDataList {
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding-left: 0 !important;
+  width: 90%;
+  max-height: 300px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  overflow-y: scroll;
+}
+.autocompleteDataList li {
+  list-style: none;
+  background-color: #fff;
+  padding: 5px 20px !important;
+}
+
+.autocompleteDataList li:nth-last-child(1) {
+  padding-bottom: 15px !important;
+}
+.autocompleteDataList li:nth-child(1) {
+  padding-top: 15px !important;
+}
+
+.autocompleteDataList li:hover {
+  cursor: pointer;
+}

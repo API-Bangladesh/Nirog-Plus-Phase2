@@ -1,0 +1,37 @@
+#prescription h3{
+	background-color: #bbb;
+	padding: 10px 20px;
+	font-size: 18px;
+	border-radius: 4px;
+}
+#prescription span{
+	text-decoration: underline;
+	margin-right: 15px;
+	font-size: 16px;
+	color: #333;
+	text-underline-offset: 7px;
+}
+.label:nth-child(1){
+	color: #fcb040;
+}
+.label:nth-child(2){
+	color: #f47852;
+}
+.label:nth-child(3){
+	color: #e12025;
+}
+
+.PrescriptionImg{
+	max-width: 40%;
+	margin-bottom: 15px;
+}
+
+
+
+
+
+
+
+
+
+

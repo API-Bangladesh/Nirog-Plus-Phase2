@@ -1,0 +1,121 @@
+.checkbox {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+
+.search{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 20px;
+}
+.form-check:not(.form-switch) .form-check-input[type="checkbox"], .form-check:not(.form-switch) .form-check-input[type="radio"]{
+  border-color: var(--main-color) ;
+}
+.searchBox input{
+  width: 350px;
+  padding: 10px 30px;
+  border-radius: 100px;
+  border: 0;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+}
+.searchBox input:focus-visible{
+  outline: 0px !important;
+}
+.barCodeBox{
+  background-color: #fff;
+  margin-left: 20px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.barCodeBox img{
+    max-height: 20px;
+    object-fit: contain;
+}
+.camera{
+  margin-left: 10px;
+  color: var(--main-color);
+  font-size: 17px;
+  background-color: rgba(161, 161, 161, 0.35);
+  padding: 0px 8px;
+  padding-bottom: 1px;
+  border-radius: 5px;
+}
+
+.patientTable{
+  margin-top: 25px;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.patientTable thead{
+  background-color: var(--main-color-rgba);
+  color: #000;
+}
+
+.table {
+  border-collapse: collapse !important;
+}
+.table thead th{
+  border-bottom: 0;
+  text-align: center;
+  padding: 15px 10px;
+  width: 14.222%;
+}
+.table thead th:first-child{
+  border-bottom-left-radius: 8px;
+  width: 7%;
+}
+.table thead th:last-child{
+  border-bottom-right-radius: 8px;
+}
+
+.table> :not(:first-child){
+  border-top: 0;
+}
+
+tbody tr{
+  text-align: center;
+  vertical-align: middle;
+  color: #444;
+}
+.status.form-check{
+  display: inline-block;
+  margin-top: 7px;
+}
+.action{
+  color: var(--main-color);
+  font-size: 20px;
+}
+
+.action:hover{
+  color: var(--main-highlight);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

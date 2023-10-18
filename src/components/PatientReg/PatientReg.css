@@ -1,0 +1,147 @@
+/* ============================
+patient registration part start
+=============================== */
+.patient-registration {
+  overflow-x: hidden;
+}
+.section-banner-height {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  background-size: cover;
+}
+
+.reg-information::after {
+  position: absolute;
+  content: "";
+  top: 65%;
+  left: 20%;
+  height: 2px;
+  width: 870px;
+  background-color: #999;
+}
+.form-radious {
+  border: 0 !important;
+  box-shadow: none !important;
+  border-radius: 5px;
+  border-top-left-radius: 5px !important;
+  border-bottom-left-radius: 5px !important;
+}
+.patient-registration .react-date-picker__wrapper {
+  border: none !important;
+}
+button.react-date-picker__clear-button.react-date-picker__button {
+  display: none;
+}
+.react-date-picker.react-date-picker--open.react-date-picker--enabled.form-control.form-radious {
+  height: 40.39px;
+}
+.react-date-picker.react-date-picker--closed.react-date-picker--enabled.form-control.form-radious {
+  height: 40.39px;
+}
+svg.react-date-picker__calendar-button__icon.react-date-picker__button__icon {
+  stroke: #999;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+input.react-date-picker__inputGroup__input.react-date-picker__inputGroup__year:focus {
+  outline: 0;
+}
+input.react-date-picker__inputGroup__input.react-date-picker__inputGroup__year {
+  color: #999 !important;
+}
+input.react-date-picker__inputGroup__input.react-date-picker__inputGroup__month:focus {
+  outline: 0;
+}
+input.react-date-picker__inputGroup__input.react-date-picker__inputGroup__month {
+  color: #999 !important;
+}
+input.react-date-picker__inputGroup__input.react-date-picker__inputGroup__day:focus {
+  outline: 0;
+}
+input.react-date-picker__inputGroup__input.react-date-picker__inputGroup__day {
+  color: #999 !important;
+}
+span.react-date-picker__inputGroup__divider {
+  color: #999;
+}
+.patient-registration .select-form-padding {
+  padding-left: 30px;
+  box-shadow: none;
+  border: none;
+}
+
+/* ------------------------------------------- */
+
+.select-selected {
+  background-color: DodgerBlue;
+}
+
+/*style the arrow inside the select element:*/
+.select-selected:after {
+  position: absolute;
+  content: "";
+  top: 14px;
+  right: 10px;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  border-color: #fff transparent transparent transparent;
+}
+
+/*point the arrow upwards when the select box is open (active):*/
+.select-selected.select-arrow-active:after {
+  border-color: transparent transparent #fff transparent;
+  top: 7px;
+}
+
+/*style the items (options), including the selected item:*/
+.select-items div,
+.select-selected {
+  color: #ffffff;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+  cursor: pointer;
+  user-select: none;
+}
+
+/*style items (options):*/
+.select-items {
+  position: absolute;
+  background-color: DodgerBlue;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 99;
+}
+
+/*hide the items when the select box is closed:*/
+.select-hide {
+  display: none;
+}
+
+.select-items div:hover,
+.same-as-selected {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+/* ============================
+patient registration part start
+=============================== */
+.error-icon {
+  margin-top: -2px;
+}
+
+.invalid-field {
+  border: 2px solid red !important;
+}
+
