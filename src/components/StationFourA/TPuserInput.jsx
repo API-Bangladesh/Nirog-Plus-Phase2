@@ -316,6 +316,257 @@ const TPuserData = () => {
                     </Accordion.Body>
                   </Accordion.Item>
 
+
+                  {/* General examintion  */}
+                  <Accordion.Item
+                    eventKey="6"
+                    className="input-shadow mb-3 rounded"
+                  >
+                    <Accordion.Header>General Examination</Accordion.Header>
+                    <Accordion.Body>
+                      <div className="mb-0 ratingItem">
+                        <p className="mb-0 font-15">Anemia</p>
+                        <p className="mb-0">
+                          <Anemia
+                            formData={formData}
+                            setFormData={setFormData}
+                          />
+                        </p>
+                      </div>
+                      <div className="mb-0 ratingItem">
+                        <p className="mb-0 font-15">Jaundice</p>
+                        <p className="mb-0">
+                          <Jaundice
+                            formData={formData}
+                            setFormData={setFormData}
+                          />
+                        </p>
+                      </div>
+                      <div className="mb-0 ratingItem">
+                        <p className="mb-0 font-15">Cyanosis</p>
+                        <p className="mb-0">
+                          <Cyanosis
+                            formData={formData}
+                            setFormData={setFormData}
+                          />
+                        </p>
+                      </div>
+                      <div className="mb-0 ratingItem">
+                        <p className="mb-0 font-15">Edema</p>
+                        <p className="mb-0">
+                          <Edema
+                            formData={formData}
+                            setFormData={setFormData}
+                          />
+                        </p>
+                      </div>
+
+                      {/* Lymph Nodes with Palpable */}
+                      <div className="mb-1 mt-3">
+                        <p className="font-15 mb-1">
+                          Lymph Nodes with Palpable
+                        </p>
+                        <div className="position-relative onBtn">
+                          <LymphNodesWithPalpable
+                            formData={formData}
+                            setFormData={setFormData}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Heart with NAD */}
+                      <p className="font-15 mb-1">Heart with NAD</p>
+                      <div className="position-relative onBtn">
+                        <HeartWithNAD
+                          formData={formData}
+                          setFormData={setFormData}
+                        />
+                      </div>
+
+                      {/* Lungs with NAD */}
+                      <p className="font-15 mb-1">Lungs with NAD</p>
+                      <div className="position-relative onBtn">
+                        <LungsWithNAD
+                          formData={formData}
+                          setFormData={setFormData}
+                        />
+                      </div>
+                    </Accordion.Body>
+                  </Accordion.Item>
+
+                  {/* systemic examintion */}
+                  <Accordion.Item
+                    eventKey="7"
+                    className="input-shadow mb-3 rounded"
+                  >
+                    <Accordion.Header>Systemic Examination </Accordion.Header>
+                    <Accordion.Body>
+                      <div className="d-flex flex-column align-items-center">
+                        <table className="table table-bordered">
+                          <thead>
+                            <tr>
+                              <th>Physical Findings</th>
+                              <th>Status</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {formData.SystemicExamination &&
+                              formData.SystemicExamination.map((item, key) => {
+                                return (
+                                  <tr key={key}>
+                                    <td>{item.physicalFinding}</td>
+                                    <td>{item.Status}</td>
+                                    <td>
+                                      <button
+                                      className="btn btn-danger btn-sm"
+                                        onClick={(e) =>
+                                          handleRemoveByKey(
+                                            e,
+                                            "SystemicExamination",
+                                            key
+                                          )
+                                        }
+                                      >
+                                        <AiOutlineClose className="fs-5"/>
+                                      </button>
+                                    </td>
+                                  </tr>
+                                );
+                              })}
+                          </tbody>
+                        </table>
+
+                        <PESModal
+                          formData={formData}
+                          setFormData={setFormData}
+                        />
+                      </div>
+                    </Accordion.Body>
+                  </Accordion.Item>
+
+                  {/* Current Rx taken */}
+                  <Accordion.Item
+                    eventKey="8"
+                    className="input-shadow mb-3 rounded"
+                  >
+                    <Accordion.Header>
+                      Current Medication Taken
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      <div className="d-flex flex-column align-items-center">
+                        <table className="table table-bordered table-condensed">
+                          <thead>
+                            <tr>
+                              <th>Medicine Name</th>
+                              <th>Other Drug</th>
+                              <th>Duration</th>
+                              <th>Dose</th>
+                              <th>Frequency</th>
+                              <th>Action</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {formData.CurrentMedicationTaken &&
+                              formData.CurrentMedicationTaken.map(
+                                (item, key) => {
+                                  return (
+                                    <tr key={key}>
+                                      <td>{item.medicineName}</td>
+                                      <td>{item.Status}</td>
+                                      <td>{item.doseValue}</td>
+                                      <td>{item.dose}</td>
+                                      <td>{item.frequencyHour}</td>
+                                      <td>
+                                        <button
+                                          className="btn btn-danger btn-sm"
+                                          onClick={(e) =>
+                                            handleRemoveByKey(
+                                              e,
+                                              "CurrentMedicationTaken",
+                                              key
+                                            )
+                                          }
+                                        >
+                                          <AiOutlineClose className="fs-5" />
+                                        </button>
+                                      </td>
+                                    </tr>
+                                  );
+                                }
+                              )}
+                          </tbody>
+                        </table>
+
+                        <RXModal
+                          formData={formData}
+                          setFormData={setFormData}
+                        />
+                      </div>
+                    </Accordion.Body>
+                  </Accordion.Item>
+
+                  {/* Patient Mental Health */}
+                  <Accordion.Item
+                    eventKey="9"
+                    className="input-shadow mb-3 rounded"
+                  >
+                    <Accordion.Header>Patient Mental Health</Accordion.Header>
+                    <Accordion.Body>
+                      <div className="">
+                        <div className="">
+                          <p className="font-16 fw-semibold">
+                            Any sign of mental illness, stress or depression?
+                          </p>
+                        </div>
+                        <div className="position-relative">
+                          <PatientWellbeing className="toggle-btn" formData={formData} setFormData={setFormData}/>
+                        </div>
+                      </div>
+                    </Accordion.Body>
+                  </Accordion.Item>
+
+                  {/* Child Vaccination */}
+                  <Accordion.Item
+                    eventKey="10"
+                    className="input-shadow mb-3 rounded"
+                  >
+                    <Accordion.Header>Child Vaccination</Accordion.Header>
+                    <Accordion.Body>
+                      <div className="">
+                        <div className="">
+                          <p className="font-16 fw-semibold">
+                            Do you have any of the following diseases?
+                          </p>
+                        </div>
+                        <div className="position-relative">
+                          <ChildVaccination className="toggle-btn" formData={formData} setFormData={setFormData}/>
+                        </div>
+                      </div>
+                    </Accordion.Body>
+                  </Accordion.Item>
+
+                  {/* Abult Vaccination */}
+
+                  <Accordion.Item
+                    eventKey="11" 
+                    className="input-shadow mb-3 rounded"
+                  >
+                    <Accordion.Header>Adult Vaccination</Accordion.Header>
+                    <Accordion.Body>
+                      <div className="">
+                        <div className="">
+                          <p className="font-16 fw-semibold">
+                            Do you have any of the following diseases?
+                          </p>
+                        </div>
+                        <div className="position-relative">
+                          <AdultVaccination className="toggle-btn" formData={formData} setFormData={setFormData}/>
+                        </div>
+                      </div>
+                    </Accordion.Body>
+                  </Accordion.Item>
+
                   {/* TB screening */}
                   <Accordion.Item
                     eventKey="5"
@@ -546,255 +797,7 @@ const TPuserData = () => {
                       </div>
                     </Accordion.Body>
                   </Accordion.Item>
-
-                  {/* General examintion  */}
-                  <Accordion.Item
-                    eventKey="6"
-                    className="input-shadow mb-3 rounded"
-                  >
-                    <Accordion.Header>General Examination</Accordion.Header>
-                    <Accordion.Body>
-                      <div className="mb-0 ratingItem">
-                        <p className="mb-0 font-15">Anemia</p>
-                        <p className="mb-0">
-                          <Anemia
-                            formData={formData}
-                            setFormData={setFormData}
-                          />
-                        </p>
-                      </div>
-                      <div className="mb-0 ratingItem">
-                        <p className="mb-0 font-15">Jaundice</p>
-                        <p className="mb-0">
-                          <Jaundice
-                            formData={formData}
-                            setFormData={setFormData}
-                          />
-                        </p>
-                      </div>
-                      <div className="mb-0 ratingItem">
-                        <p className="mb-0 font-15">Cyanosis</p>
-                        <p className="mb-0">
-                          <Cyanosis
-                            formData={formData}
-                            setFormData={setFormData}
-                          />
-                        </p>
-                      </div>
-                      <div className="mb-0 ratingItem">
-                        <p className="mb-0 font-15">Edema</p>
-                        <p className="mb-0">
-                          <Edema
-                            formData={formData}
-                            setFormData={setFormData}
-                          />
-                        </p>
-                      </div>
-
-                      {/* Lymph Nodes with Palpable */}
-                      <div className="mb-1 mt-3">
-                        <p className="font-15 mb-1">
-                          Lymph Nodes with Palpable
-                        </p>
-                        <div className="position-relative onBtn">
-                          <LymphNodesWithPalpable
-                            formData={formData}
-                            setFormData={setFormData}
-                          />
-                        </div>
-                      </div>
-
-                      {/* Heart with NAD */}
-                      <p className="font-15 mb-1">Heart with NAD</p>
-                      <div className="position-relative onBtn">
-                        <HeartWithNAD
-                          formData={formData}
-                          setFormData={setFormData}
-                        />
-                      </div>
-
-                      {/* Lungs with NAD */}
-                      <p className="font-15 mb-1">Lungs with NAD</p>
-                      <div className="position-relative onBtn">
-                        <LungsWithNAD
-                          formData={formData}
-                          setFormData={setFormData}
-                        />
-                      </div>
-                    </Accordion.Body>
-                  </Accordion.Item>
-
-                  {/* systemic examintion */}
-                  <Accordion.Item
-                    eventKey="7"
-                    className="input-shadow mb-3 rounded"
-                  >
-                    <Accordion.Header>Systemic Examination </Accordion.Header>
-                    <Accordion.Body>
-                      <div className="d-flex flex-column align-items-center">
-                        <table className="table table-bordered">
-                          <thead>
-                            <tr>
-                              <th>Physical Findings</th>
-                              <th>Status</th>
-                              <th>Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {formData.SystemicExamination &&
-                              formData.SystemicExamination.map((item, key) => {
-                                return (
-                                  <tr key={key}>
-                                    <td>{item.physicalFinding}</td>
-                                    <td>{item.Status}</td>
-                                    <td>
-                                      <button
-                                      className="btn btn-danger btn-sm"
-                                        onClick={(e) =>
-                                          handleRemoveByKey(
-                                            e,
-                                            "SystemicExamination",
-                                            key
-                                          )
-                                        }
-                                      >
-                                        <AiOutlineClose className="fs-5"/>
-                                      </button>
-                                    </td>
-                                  </tr>
-                                );
-                              })}
-                          </tbody>
-                        </table>
-
-                        <PESModal
-                          formData={formData}
-                          setFormData={setFormData}
-                        />
-                      </div>
-                    </Accordion.Body>
-                  </Accordion.Item>
-
-                  {/* Current Rx taken */}
-                  <Accordion.Item
-                    eventKey="8"
-                    className="input-shadow mb-3 rounded"
-                  >
-                    <Accordion.Header>
-                      Current Medication Taken
-                    </Accordion.Header>
-                    <Accordion.Body>
-                      <div className="d-flex flex-column align-items-center">
-                        <table className="table table-bordered table-condensed">
-                          <thead>
-                            <tr>
-                              <th>Medicine Name</th>
-                              <th>Other Drug</th>
-                              <th>Duration</th>
-                              <th>Dose</th>
-                              <th>Frequency</th>
-                              <th>Action</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {formData.CurrentMedicationTaken &&
-                              formData.CurrentMedicationTaken.map(
-                                (item, key) => {
-                                  return (
-                                    <tr key={key}>
-                                      <td>{item.medicineName}</td>
-                                      <td>{item.Status}</td>
-                                      <td>{item.doseValue}</td>
-                                      <td>{item.dose}</td>
-                                      <td>{item.frequencyHour}</td>
-                                      <td>
-                                        <button
-                                          className="btn btn-danger btn-sm"
-                                          onClick={(e) =>
-                                            handleRemoveByKey(
-                                              e,
-                                              "CurrentMedicationTaken",
-                                              key
-                                            )
-                                          }
-                                        >
-                                          <AiOutlineClose className="fs-5" />
-                                        </button>
-                                      </td>
-                                    </tr>
-                                  );
-                                }
-                              )}
-                          </tbody>
-                        </table>
-
-                        <RXModal
-                          formData={formData}
-                          setFormData={setFormData}
-                        />
-                      </div>
-                    </Accordion.Body>
-                  </Accordion.Item>
-
-                  {/* Patient Mental Health */}
-                  <Accordion.Item
-                    eventKey="9"
-                    className="input-shadow mb-3 rounded"
-                  >
-                    <Accordion.Header>Patient Mental Health</Accordion.Header>
-                    <Accordion.Body>
-                      <div className="">
-                        <div className="">
-                          <p className="font-16 fw-semibold">
-                            Any sign of mental illness, stress or depression?
-                          </p>
-                        </div>
-                        <div className="position-relative">
-                          <PatientWellbeing className="toggle-btn" formData={formData} setFormData={setFormData}/>
-                        </div>
-                      </div>
-                    </Accordion.Body>
-                  </Accordion.Item>
-
-                  {/* Child Vaccination */}
-                  <Accordion.Item
-                    eventKey="10"
-                    className="input-shadow mb-3 rounded"
-                  >
-                    <Accordion.Header>Child Vaccination</Accordion.Header>
-                    <Accordion.Body>
-                      <div className="">
-                        <div className="">
-                          <p className="font-16 fw-semibold">
-                            Do you have any of the following diseases?
-                          </p>
-                        </div>
-                        <div className="position-relative">
-                          <ChildVaccination className="toggle-btn" formData={formData} setFormData={setFormData}/>
-                        </div>
-                      </div>
-                    </Accordion.Body>
-                  </Accordion.Item>
-                  {/* Abult Vaccination */}
-
-                  <Accordion.Item
-                    eventKey="11" 
-                    className="input-shadow mb-3 rounded"
-                  >
-                    <Accordion.Header>Adult Vaccination</Accordion.Header>
-                    <Accordion.Body>
-                      <div className="">
-                        <div className="">
-                          <p className="font-16 fw-semibold">
-                            Do you have any of the following diseases?
-                          </p>
-                        </div>
-                        <div className="position-relative">
-                          <AdultVaccination className="toggle-btn" formData={formData} setFormData={setFormData}/>
-                        </div>
-                      </div>
-                    </Accordion.Body>
-                  </Accordion.Item>
+                  
                 </Accordion>
               </div>
             </div>

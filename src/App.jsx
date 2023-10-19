@@ -23,6 +23,7 @@ import PatientRegB from './pages/StationFourB/PatientRegB'
 import FourAddInformation from './pages/StationFourC/FourAddInformation';
 import Prescriptions from './pages/Prescriptions';
 import FinalPrescription from './pages/FinalPrescription';
+import TBstatus from './pages/TBstatus';
 // import GoPic from './components/TakePic/GoPic';
 import PatientDataList from './pages/PatientData';
 import Counter from './pages/Counter';
@@ -62,6 +63,7 @@ const App = () => {
                     <Route exact path="/patient-list"  element={<Protected Component={PatientDataList}/>}/>
                     <Route exact path="/counter" element={<Protected Component={Counter}/>}/>
                     <Route exact path="/settings" element={<Protected Component={Settings}/>}/>                
+                    <Route exact path="/tb-status" element={<Protected Component={TBstatus}/>}/>                
                     {/* Prescription */}
                     <Route exact path="/prescription"   element={<Protected Component={Prescriptions}/>}/>
                     <Route exact path="/final-prescription" element={<Protected Component={FinalPrescription}/>}/>
