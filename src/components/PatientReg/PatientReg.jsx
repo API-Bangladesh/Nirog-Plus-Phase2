@@ -54,7 +54,6 @@ const PatientReg = () => {
       }
    };
 
-   
    //maritalstatus
    const [maritalstatus, setDataMaritalstatus] = useState([]);
    const getMaritalStatusData = async () => {
@@ -854,7 +853,7 @@ const PatientReg = () => {
                               htmlFor=""
                               className="form-label text-capitalize"
                            >
-                              Marital Status{" "}
+                              Marital Status
                               <span className="text-danger font-20 ">*</span>
                            </label>
                            <select
@@ -945,93 +944,164 @@ const PatientReg = () => {
                            >
                               Head of Family
                            </label>
-                           <input
-                              type="text"
-                              name=""
-                              className="form-control form-radious inputBox"
-                              placeholder="Type here"
-                           />
+                           <select
+                              id="Select"
+                              name="patientInfo.MariatalStatus"
+                              // value={formData.patientInfo.MariatalStatus}
+                              onChange={handleInputChange}
+                              className={`form-select inputBox  ${
+                                 errors?.MariatalStatus && "invalid-field"
+                              }`}
+                           >
+                              <option selected value="" disabled>
+                                 Select
+                              </option>
+                              <option value="">
+                                 Father
+                              </option>
+                              <option value="">
+                                 Mother
+                              </option>
+                              {/* {maritalstatus.map((item) => (
+                                 <option
+                                    key={item.MaritalStatusId}
+                                    value={item.MaritalStatusId}
+                                 >
+                                    {item.MaritalStatusCode}
+                                 </option>
+                              ))} */}
+                           </select>
                         </div>
                         <div className="mb-3 shadowme">
                            <label
                               htmlFor=""
-                              className="form-label text-capitalize"
+                              className="form-label text-capitalize mb-0"
                            >
                               Childrens
                            </label>
-                           <div className="d-flex">
-                              <div class="form-check">
-                                 <input
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    value=""
-                                    id="Check1"
-                                 />
-                                 <label
-                                    class="form-check-label"
-                                    for="Check1"
-                                 >
-                                    Age 0 to 1
-                                 </label>
+                           <div className="row">
+                              <div className="col-lg-4">
+                                 <div class="">
+                                    <label
+                                       for="exampleFormControlInput1"
+                                       class="form-label mt-2"
+                                    >
+                                       Age 0 to 1
+                                    </label>
+                                    <input
+                                       type="number"
+                                       class="form-control form-radious inputBox"
+                                       id=""
+                                       placeholder="Ex: 1"
+                                    />
+                                 </div>
                               </div>
-                              <div class="form-check ms-3">
-                                 <input
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    value=""
-                                    id="Check2"
-                                 />
-                                 <label
-                                    class="form-check-label"
-                                    for="Check2"
-                                 >
-                                    Age 1 to 5
-                                 </label>
+                              <div className="col-lg-4">
+                                 <div class="">
+                                    <label
+                                       for="exampleFormControlInput1"
+                                       class="form-label mt-2"
+                                    >
+                                       Age 1 to 5
+                                    </label>
+                                    <input
+                                       type="number"
+                                       class="form-control form-radious inputBox"
+                                       id=""
+                                       placeholder="Ex: 0"
+                                    />
+                                 </div>
                               </div>
-                              <div class="form-check ms-3">
-                                 <input
-                                    class="form-check-input"
-                                    type="checkbox"
-                                    value=""
-                                    id="Check3"
-                                 />
-                                 <label
-                                    class="form-check-label"
-                                    for="Check3"
-                                 >
-                                    Age &#62; 5
-                                 </label>
+                              <div className="col-lg-4">
+                                 <div class="">
+                                    <label
+                                       for="exampleFormControlInput1"
+                                       class="form-label mt-2"
+                                    >
+                                       Age &#62; 5
+                                    </label>
+                                    <input
+                                       type="number"
+                                       class="form-control form-radious inputBox"
+                                       id=""
+                                       placeholder="Ex: 3"
+                                    />
+                                 </div>
                               </div>
                            </div>
                         </div>
-                        <div className="mb-3 shadowme">
+
+                        <div className="mb-3">
                            <label
                               htmlFor=""
                               className="form-label text-capitalize"
                            >
                               Education
                            </label>
-                           <input
-                              type="text"
-                              name=""
-                              className="form-control form-radious inputBox"
-                              placeholder="Type here"
-                           />
+                           <select
+                              id="Select"
+                              name="patientInfo.MariatalStatus"
+                              // value={formData.patientInfo.MariatalStatus}
+                              onChange={handleInputChange}
+                              className={`form-select inputBox  ${
+                                 errors?.MariatalStatus && "invalid-field"
+                              }`}
+                           >
+                              <option selected value="" disabled>
+                                 Select
+                              </option>
+                              <option value="">
+                                 SSC
+                              </option>
+                              <option value="">
+                                 HSC
+                              </option>
+                              {/* {maritalstatus.map((item) => (
+                                 <option
+                                    key={item.MaritalStatusId}
+                                    value={item.MaritalStatusId}
+                                 >
+                                    {item.MaritalStatusCode}
+                                 </option>
+                              ))} */}
+                           </select>
                         </div>
-                        <div className="mb-3 shadowme">
+                        <div className="mb-3">
                            <label
                               htmlFor=""
                               className="form-label text-capitalize"
                            >
                               Religion
                            </label>
-                           <input
-                              type="text"
-                              name=""
-                              className="form-control form-radious inputBox"
-                              placeholder="Type here"
-                           />
+                           <select
+                              id="Select"
+                              name="patientInfo.MariatalStatus"
+                              // value={formData.patientInfo.MariatalStatus}
+                              onChange={handleInputChange}
+                              className={`form-select inputBox  ${
+                                 errors?.MariatalStatus && "invalid-field"
+                              }`}
+                           >
+                              <option selected value="" disabled>
+                                 Select
+                              </option>
+                              <option value="">
+                                 Islam
+                              </option>
+                              <option value="">
+                                 Hindu
+                              </option>
+                              {/* {maritalstatus.map((item) => (
+                                 <option
+                                    key={item.MaritalStatusId}
+                                    value={item.MaritalStatusId}
+                                 >
+                                    {item.MaritalStatusCode}
+                                 </option>
+                              ))} */}
+                           </select>
                         </div>
+
                      </div>
                   </div>
 
