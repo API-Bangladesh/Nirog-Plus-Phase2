@@ -1,0 +1,15 @@
+.selectYear select {
+   background-color: #ccc;
+}
+/* .selectYear .form-select {
+   --bs-form-select-bg-img: url(../../assets/img/arrow.png) !important;
+   background-size: 15px;
+} */
+
+.selectYear .form-select {
+   background-position: right 1rem center !important;
+}
+.selectCheckBox .form-check-input {
+   border-color: var(--main-color) !important;
+   padding: 7px;
+}

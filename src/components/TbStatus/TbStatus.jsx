@@ -9,6 +9,11 @@ import PatientShortInfo from "../Common/PatientShortInfo";
 import { loggedInUserData } from "../../helper/localStorageHelper";
 import "./TbStatus.css";
 
+import AdditionalSymptoms from "../StationFourA/Illness/AdditionalSymptoms";
+import ExaminationFinding from "../StationFourA/Illness/ExaminationFinding";
+import TBPastHistory from "../StationFourA/Illness/TBPastHistory";
+
+
 const TbStatus = () => {
   const userData = loggedInUserData();
   const user = userData.name;
@@ -37,9 +42,6 @@ const TbStatus = () => {
   });
 
 
-
-
-
   return (
     <>
       <section>
@@ -59,12 +61,59 @@ const TbStatus = () => {
                 <Accordion>
                 
                   <Accordion.Item
-                    eventKey="5"
+                    eventKey="1"
                     className="input-shadow mb-3 rounded"
                   >
                     <Accordion.Header>Additional Symptoms</Accordion.Header>
                     <Accordion.Body>
-                      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Molestiae quo, et fugiat odio obcaecati nemo dolorum harum eveniet exercitationem incidunt rem sapiente libero quam beatae itaque eius illum fuga mollitia!
+                      <div className="">
+                        <div className="">
+                          <p className="font-16 fw-semibold">
+                            Do you have any of the following Symptoms?
+                          </p>
+                        </div>
+                        <div className="position-relative">
+                        <AdditionalSymptoms className="toggle-btn" formData={formData} setFormData={setFormData}/>
+                        </div>
+                      </div>
+                    </Accordion.Body>
+                  </Accordion.Item>
+
+                  <Accordion.Item
+                    eventKey="2"
+                    className="input-shadow mb-3 rounded"
+                  >
+                    <Accordion.Header>Examination Finding: Please Auscultate Lungs</Accordion.Header>
+                    <Accordion.Body>
+                      <div className="">
+                        <div className="">
+                          <p className="font-16 fw-semibold">
+                            Do you have any of the following Symptoms?
+                          </p>
+                        </div>
+                        <div className="position-relative">
+                        <ExaminationFinding className="toggle-btn" formData={formData} setFormData={setFormData}/>
+                        </div>
+                      </div>
+                    </Accordion.Body>
+                  </Accordion.Item>
+
+                  <Accordion.Item
+                    eventKey="3"
+                    className="input-shadow mb-3 rounded"
+                  >
+                    <Accordion.Header>TB Past History</Accordion.Header>
+                    <Accordion.Body>
+                      <div className="">
+                        <div className="">
+                          <p className="font-16 fw-semibold">
+                            Do you have Past TB History?
+                          </p>
+                        </div>
+                        <div className="position-relative">
+                        <TBPastHistory className="toggle-btn" formData={formData} setFormData={setFormData}/>
+                        </div>
+                      </div>
                     </Accordion.Body>
                   </Accordion.Item>
 
