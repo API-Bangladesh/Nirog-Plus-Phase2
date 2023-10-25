@@ -39,15 +39,64 @@ const PatientReg = () => {
       getMaritalStatusData();
       getDistrictData();
       // getUnionData();
+      getSelftypeData();
+      getReligionData();
+      getEducationData();
    }, []);
 
    //selftype
    const [selftype, setData] = useState([]);
-   const getHeadOfFamilyData = async () => {
+   const getSelftypeData = async () => {
       try {
          const response = await axios.get(`${API_URL}/api/self-type`);
          if (response.status === 200) {
             setData(response.data.SelfType);
+         }
+      } catch (error) {
+         console.error(error);
+      }
+   };
+
+   // headOfFamily
+   const [headOfFamily, setHeadOfFamily] = useState([]);
+   const getHeadOfFamilyData = async () => {
+      try {
+         const response = await axios.get(`${API_URL}/api/head-of-family`);
+         if (response.status === 200) {
+          setHeadOfFamily(response.data.HeadofFamily);
+         }
+      } catch (error) {
+         console.error(error);
+      }
+   };
+
+   // religion
+   const [religion, setReligion] = useState([]);
+   const getReligionData = async () => {
+      try {
+         const response = await axios.get(`${API_URL}/api/religion`);
+         if (response.status === 200) {
+          setReligion(response.data.Religion);
+         }
+      } catch (error) {
+         console.error(error);
+      }
+   };
+
+   // education
+   const [education, setEducation] = useState([]);
+   const getEducationData = async () => {
+      try {
+         const response = await axios.get(`${API_URL}/api/education`);
+         if (response.status === 200) {
+          setEducation(response.data.Education);
+          setFormData((prevFormData) => ({
+            ...prevFormData,
+                patientInfo: {
+                  ...prevFormData.patientInfo,
+                  EducationId: response.data.Education[0].EducationId,
+                },
+          }));
          }
       } catch (error) {
          console.error(error);
@@ -119,6 +168,9 @@ const PatientReg = () => {
    };
 
    const handleDistrictChange = async (e) => {
+    // if (!e?.name || !e?.value) {
+    //   return;
+    // }
       setUpazilas([]); // not necessary
       setUnions([]); // not necessary
       setFormData((prevFormData) => ({
@@ -295,31 +347,94 @@ const PatientReg = () => {
    //   }
    // };
 
+   const [isPermanentSameAsPresent, setIsPermanentSameAsPresent] =
+    useState(false);
+
+    const handlePermanentSameAsPresent = () => {
+      setIsPermanentSameAsPresent((current) => !current);
+    };
+
+    useEffect(() => {
+      if (isPermanentSameAsPresent) {
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            addressInfo: {
+              ...prevFormData.addressInfo,
+              AddressLine1Parmanent: formData.addressInfo.AddressLine1,
+              AddressLine2Parmanent: formData.addressInfo.AddressLine2,
+              VillageParmanent: formData.addressInfo.Village,
+              DistrictParmanent: formData.addressInfo.District,
+              ThanaParmanent: formData.addressInfo.Thana,
+              UpazilaParmanent: formData.addressInfo.Upazila,
+              UnionParmanent: formData.addressInfo.Union,
+              PostCodeParmanent: formData.addressInfo.PostCode,
+              CountryParmanent: formData.addressInfo.Country,
+            },
+        }));
+
+        setSelectedAddress((prev) => ({
+          ...prev,
+          DistrictParmanent: selectedAddress.District,
+          ThanaParmanent: selectedAddress.Thana,
+          UnionParmanent: selectedAddress.Union,
+        }));
+      }
+    }, [isPermanentSameAsPresent]);
+
+  //  const handleInputChange = async (e) => {
+  //     const { name, value } = e.target;
+  //     const [section, field] = name.split(".");
+  //     setFormData((prevFormData) => ({
+  //        ...prevFormData,
+  //        [section]: {
+  //           ...prevFormData[section],
+  //           [field]: value,
+  //        },
+  //     }));
+  //  };
+
    const handleInputChange = async (e) => {
-      const { name, value } = e.target;
-      const [section, field] = name.split(".");
-      setFormData((prevFormData) => ({
-         ...prevFormData,
-         [section]: {
-            ...prevFormData[section],
-            [field]: value,
-         },
-      }));
-   };
+    const { name, value } = e.target;
+    const [section, field] = name.split(".");
+    const parmanentField = field + "Parmanent"
+  
+    setFormData((prevFormData) => {
+      const updatedSection = { ...prevFormData[section] }; // Create a copy of the section
+      updatedSection[field] = value;
+      if (isPermanentSameAsPresent && section === "addressInfo") {
+        updatedSection[parmanentField] = value;
+      }
+      return {
+        ...prevFormData,
+        [section]: updatedSection,
+      };
+    });
+  };
 
    const handleSelectInputChange = async (e) => {
+    // if (!e?.name || !e?.value) {
+    //   return;
+    // }
       const { name, value } = e;
       const [section, field] = name.split(".");
+      const parmanentField = field + "Parmanent"
       setFormData((prevFormData) => ({
          ...prevFormData,
          [section]: {
             ...prevFormData[section],
             [field]: value,
+
+            ...(isPermanentSameAsPresent
+              ? { [parmanentField]: value }
+              : { [field]: value }),
          },
       }));
       setSelectedAddress((prev) => ({
          ...prev,
          [field]: e,
+         ...(isPermanentSameAsPresent
+          ? { [parmanentField]: e }
+          : { [field]: e }),
       }));
    };
 
@@ -328,7 +443,7 @@ const PatientReg = () => {
          RegistrationId: userBarcode,
          fName: "",
          lName: "",
-         patientAge: null,
+         patientAge: "",
          DOB: "",
          contactNumber: "",
          GenderId: "",
@@ -345,6 +460,16 @@ const PatientReg = () => {
          OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
          usersID: "1",
          CreateUser: userData?.name,
+         SpouseName: "",
+         ReligionId: "0644AF95-95E2-4170-B607-E68A23949E66",
+         FamilyMembers: "",
+         FatherName: "",
+         MotherName: "",
+         EducationId: "EB642FBB-9CB4-4957-84F3-1314EF36B819",
+         HeadOfFamilyId: "74F37870-EE9A-4132-ABC8-F8B71FFA88D1",
+         ChildAge0To1: "",
+         ChildAge1To5: "",
+         ChildAgeOver5: "",
       },
       addressInfo: {
          AddressLine1: "",
@@ -457,8 +582,8 @@ const PatientReg = () => {
 
    const handleSubmit = async (event) => {
       event.preventDefault();
-      // console.log(formData)
-      // return
+      console.log(formData, selectedAddress)
+      return
       try {
          // doValidation();
          const codeCheckResponse = await axios.post(
@@ -889,7 +1014,9 @@ const PatientReg = () => {
                            </label>
                            <input
                               type="text"
-                              name=""
+                              name="patientInfo.SpouseName"
+                              value={formData.patientInfo.SpouseName}
+                              onChange={handleInputChange}
                               className="form-control form-radious inputBox"
                               placeholder="Type here"
                            />
@@ -904,7 +1031,9 @@ const PatientReg = () => {
                            </label>
                            <input
                               type="text"
-                              name=""
+                              name="patientInfo.FatherName"
+                              value={formData.patientInfo.FatherName}
+                              onChange={handleInputChange}
                               className="form-control form-radious inputBox"
                               placeholder="Type here"
                            />
@@ -918,7 +1047,9 @@ const PatientReg = () => {
                            </label>
                            <input
                               type="text"
-                              name=""
+                              name="patientInfo.MotherName"
+                              value={formData.patientInfo.MotherName}
+                              onChange={handleInputChange}
                               className="form-control form-radious inputBox"
                               placeholder="Type here"
                            />
@@ -932,7 +1063,9 @@ const PatientReg = () => {
                            </label>
                            <input
                               type="number"
-                              name=""
+                              name="patientInfo.FamilyMembers"
+                              value={formData.patientInfo.FamilyMembers}
+                              onChange={handleInputChange}
                               className="form-control form-radious inputBox"
                               placeholder="Ex: 5"
                            />
@@ -944,33 +1077,22 @@ const PatientReg = () => {
                            >
                               Head of Family
                            </label>
-                           <select
-                              id="Select"
-                              name="patientInfo.MariatalStatus"
-                              // value={formData.patientInfo.MariatalStatus}
+                            <select
+                              id="HeadOfFamilySelect"
+                              name="patientInfo.HeadOfFamilyId"
+                              value={formData.patientInfo.HeadOfFamilyId}
                               onChange={handleInputChange}
-                              className={`form-select inputBox  ${
-                                 errors?.MariatalStatus && "invalid-field"
-                              }`}
-                           >
-                              <option selected value="" disabled>
-                                 Select
-                              </option>
-                              <option value="">
-                                 Father
-                              </option>
-                              <option value="">
-                                 Mother
-                              </option>
-                              {/* {maritalstatus.map((item) => (
-                                 <option
-                                    key={item.MaritalStatusId}
-                                    value={item.MaritalStatusId}
-                                 >
-                                    {item.MaritalStatusCode}
-                                 </option>
-                              ))} */}
-                           </select>
+                              className="form-select inputBox"
+                            >
+                              {headOfFamily.map((item) => (
+                                <option
+                                    key={item.HeadOfFamilyId}
+                                    value={item.HeadOfFamilyId}
+                                >
+                                  {item.HeadOfFamilyCode}
+                                </option>
+                              ))}
+                            </select>
                         </div>
                         <div className="mb-3 shadowme">
                            <label
@@ -981,50 +1103,56 @@ const PatientReg = () => {
                            </label>
                            <div className="row">
                               <div className="col-lg-4">
-                                 <div class="">
+                                 <div className="">
                                     <label
-                                       for="exampleFormControlInput1"
-                                       class="form-label mt-2"
+                                       htmlFor="exampleFormControlInput1"
+                                       className="form-label mt-2"
                                     >
                                        Age 0 to 1
                                     </label>
                                     <input
-                                       type="number"
-                                       class="form-control form-radious inputBox"
-                                       id=""
-                                       placeholder="Ex: 1"
+                                        type="number"
+                                        name="patientInfo.ChildAge0To1"
+                                        value={formData.patientInfo.ChildAge0To1}
+                                        onChange={handleInputChange}
+                                        className="form-control form-radious inputBox"
+                                        placeholder="Ex: 1"
                                     />
                                  </div>
                               </div>
                               <div className="col-lg-4">
-                                 <div class="">
+                                 <div className="">
                                     <label
-                                       for="exampleFormControlInput1"
-                                       class="form-label mt-2"
+                                       htmlFor="exampleFormControlInput1"
+                                       className="form-label mt-2"
                                     >
                                        Age 1 to 5
                                     </label>
                                     <input
-                                       type="number"
-                                       class="form-control form-radious inputBox"
-                                       id=""
-                                       placeholder="Ex: 0"
+                                        type="number"
+                                        name="patientInfo.ChildAge1To5"
+                                        value={formData.patientInfo.ChildAge1To5}
+                                        onChange={handleInputChange}
+                                        className="form-control form-radious inputBox"
+                                        placeholder="Ex: 0"
                                     />
                                  </div>
                               </div>
                               <div className="col-lg-4">
-                                 <div class="">
+                                 <div className="">
                                     <label
-                                       for="exampleFormControlInput1"
-                                       class="form-label mt-2"
+                                       htmlFor="exampleFormControlInput1"
+                                       className="form-label mt-2"
                                     >
                                        Age &#62; 5
                                     </label>
                                     <input
-                                       type="number"
-                                       class="form-control form-radious inputBox"
-                                       id=""
-                                       placeholder="Ex: 3"
+                                        type="number"
+                                        name="patientInfo.ChildAgeOver5"
+                                        value={formData.patientInfo.ChildAgeOver5}
+                                        onChange={handleInputChange}
+                                        className="form-control form-radious inputBox"
+                                        placeholder="Ex: 3"
                                     />
                                  </div>
                               </div>
@@ -1039,32 +1167,21 @@ const PatientReg = () => {
                               Education
                            </label>
                            <select
-                              id="Select"
-                              name="patientInfo.MariatalStatus"
-                              // value={formData.patientInfo.MariatalStatus}
-                              onChange={handleInputChange}
-                              className={`form-select inputBox  ${
-                                 errors?.MariatalStatus && "invalid-field"
-                              }`}
-                           >
-                              <option selected value="" disabled>
-                                 Select
-                              </option>
-                              <option value="">
-                                 SSC
-                              </option>
-                              <option value="">
-                                 HSC
-                              </option>
-                              {/* {maritalstatus.map((item) => (
-                                 <option
-                                    key={item.MaritalStatusId}
-                                    value={item.MaritalStatusId}
-                                 >
-                                    {item.MaritalStatusCode}
-                                 </option>
-                              ))} */}
-                           </select>
+                                id="EducationIdSelect"
+                                name="patientInfo.EducationId"
+                                value={formData.patientInfo.EducationId}
+                                onChange={handleInputChange}
+                                className="form-select inputBox"
+                            >
+                                {education.map((item, index) => (
+                                  <option
+                                      key={item.EducationId}
+                                      value={item.EducationId}
+                                  >
+                                      {item.EducationCode}
+                                  </option>
+                                ))}
+                            </select>
                         </div>
                         <div className="mb-3">
                            <label
@@ -1074,32 +1191,21 @@ const PatientReg = () => {
                               Religion
                            </label>
                            <select
-                              id="Select"
-                              name="patientInfo.MariatalStatus"
-                              // value={formData.patientInfo.MariatalStatus}
-                              onChange={handleInputChange}
-                              className={`form-select inputBox  ${
-                                 errors?.MariatalStatus && "invalid-field"
-                              }`}
-                           >
-                              <option selected value="" disabled>
-                                 Select
-                              </option>
-                              <option value="">
-                                 Islam
-                              </option>
-                              <option value="">
-                                 Hindu
-                              </option>
-                              {/* {maritalstatus.map((item) => (
-                                 <option
-                                    key={item.MaritalStatusId}
-                                    value={item.MaritalStatusId}
-                                 >
-                                    {item.MaritalStatusCode}
-                                 </option>
-                              ))} */}
-                           </select>
+                                id="ReligionIdSelect"
+                                name="patientInfo.ReligionId"
+                                value={formData.patientInfo.ReligionId}
+                                onChange={handleInputChange}
+                                className="form-select inputBox"
+                            >
+                                {religion.map((item) => (
+                                  <option
+                                      key={item.ReligionId}
+                                      value={item.ReligionId}
+                                  >
+                                      {item.ReligionCode}
+                                  </option>
+                                ))}
+                            </select>
                         </div>
 
                      </div>
@@ -1162,6 +1268,8 @@ const PatientReg = () => {
                                  handleDistrictChange(e);
                               }}
                               value={selectedAddress.District}
+                              // isClearable
+                              // // defaultValue={0}
                            />
                         </div>
 
@@ -1246,6 +1354,19 @@ const PatientReg = () => {
                   <div className="row justify-content-center">
                      <div className="col-lg-6">
                         <SectionTitle title="Permanent Address" />
+                        <div className="col-lg-12 d-flex justify-content-start align-items-center mb-3">
+                          <div className="form-switch">
+                            <input
+                              className="form-check-input"
+                              type="checkbox"
+                              onClick={handlePermanentSameAsPresent}
+                              checked={isPermanentSameAsPresent}
+                              role="switch"
+                              id="permanentSameAsPresent"
+                            />
+                          </div>
+                          <span>Same as present address</span>
+                        </div>
                         <div className="mb-3">
                            <label
                               htmlFor="comments"
@@ -1260,6 +1381,7 @@ const PatientReg = () => {
                               className="form-control form-radious inputBox"
                               placeholder="type here"
                               id="comments"
+                              disabled={isPermanentSameAsPresent}
                            ></textarea>
                         </div>
 
@@ -1277,6 +1399,7 @@ const PatientReg = () => {
                               onChange={handleInputChange}
                               className="form-control form-radious inputBox"
                               placeholder="Type here"
+                              disabled={isPermanentSameAsPresent}
                            />
                         </div>
 
@@ -1307,12 +1430,13 @@ const PatientReg = () => {
                                  errors?.DistrictParmanent && "invalid-field"
                               }`}
                               classNamePrefix="select"
-                              options={districtsParmanent}
+                              options={isPermanentSameAsPresent ? districts : districtsParmanent}
                               onChange={(e) => {
                                  handleSelectInputChange(e);
                                  handleDistrictParmanentChange(e);
                               }}
                               value={selectedAddress.DistrictParmanent}
+                              isDisabled={isPermanentSameAsPresent}
                            />
                         </div>
 
@@ -1329,12 +1453,13 @@ const PatientReg = () => {
                                  errors?.ThanaParmanent && "invalid-field"
                               }`}
                               classNamePrefix="select"
-                              options={upazilasParmanent}
+                              options={isPermanentSameAsPresent ? upazilas : upazilasParmanent}
                               onChange={(e) => {
                                  handleSelectInputChange(e);
                                  handleUpazilaParmanentChange(e);
                               }}
                               value={selectedAddress.ThanaParmanent}
+                              isDisabled={isPermanentSameAsPresent}
                            />
                         </div>
 
@@ -1351,9 +1476,10 @@ const PatientReg = () => {
                                  errors?.UnionParmanent && "invalid-field"
                               }`}
                               classNamePrefix="select"
-                              options={unionsParmanent}
+                              options={isPermanentSameAsPresent ? unions : unionsParmanent}
                               onChange={handleSelectInputChange}
                               value={selectedAddress.UnionParmanent}
+                              isDisabled={isPermanentSameAsPresent}
                            />
                         </div>
 
@@ -1396,6 +1522,7 @@ const PatientReg = () => {
                               onChange={handleInputChange}
                               className="form-control form-radious inputBox"
                               placeholder="Ex: 1207"
+                              disabled={isPermanentSameAsPresent}
                            />
                         </div>
 
@@ -1413,6 +1540,7 @@ const PatientReg = () => {
                               onChange={handleInputChange}
                               className="form-control form-radious inputBox"
                               placeholder="Type here"
+                              disabled={isPermanentSameAsPresent}
                            />
                         </div>
                      </div>
