@@ -1,6 +1,6 @@
 
 import React from 'react'
-import TbStatus from './../components/TbStatus/TbStatus';
+import TbStatus from './../components/TB-status/TB-status';
 
 const Tbstatus = () => {
   return (
