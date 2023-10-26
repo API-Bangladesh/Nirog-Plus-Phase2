@@ -45,3 +45,36 @@
   background-color: aqua;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+.slide-down {
+  display: none;
+  height: 0;
+  overflow: hidden;
+  transition: height 0.3s;
+}
+
+.slide-down.show {
+  display: block;
+  height: auto;
+}
+
+
+
+
+
+
+
+
+
+
+

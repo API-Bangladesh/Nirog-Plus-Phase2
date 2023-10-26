@@ -181,172 +181,72 @@ const PatientIllness = ({ formData, setFormData }) => {
                   </div>
                </div>
 
-               <div className="col-lg-12">
-               <div className="d-flex justify-content-between">
-                  <div className="">
-                     <p className="font-16">Treatment received</p>
-                  </div>
-                  <div className="">
-                     <div className="form-check form-check-inline">
-                        <input
-                           className="form-check-input"
-                           type="radio"
-                           name="option1"
-                           id="no1"
-                           value=""
-                        />
-                        <label
-                           className="form-check-label text-capitalize"
-                           for="no1"
-                        >
-                           Cat 1
-                        </label>
+               {PresentIllness.map((item, key) => (
+                  <div
+                     key={item.IllnessId}
+                     value={item.IllnessId}
+                     className="d-flex justify-content-between"
+                  >
+                     <div className="">
+                        <p className="font-16"> {item.IllnessCode}</p>
                      </div>
-                     <div className="form-check form-check-inline">
-                        <input
-                           className="form-check-input"
-                           type="radio"
-                           name="option1"
-                           id="yes1"
-                           value=""
-                        />
-                        <label
-                           className="form-check-label text-capitalize"
-                           for="yes1"
-                        >
-                           Cat 2
-                        </label>
-                     </div>
-                  </div>
-               </div>
-               
-               <div className="d-flex justify-content-between">
-                  <div className="">
-                     <p className="font-16">Duration of treatment</p>
-                  </div>
-                  <div className="">
-                     <div className="form-check form-check-inline">
-                        <input
-                           className="form-check-input"
-                           type="radio"
-                           name="option2"
-                           id="no2"
-                           value=""
-                        />
-                        <label
-                           className="form-check-label text-capitalize"
-                           for="no2"
-                        >
-                           6 months
-                        </label>
-                     </div>
-                     <div className="form-check form-check-inline">
-                        <input
-                           className="form-check-input"
-                           type="radio"
-                           name="option2"
-                           id="yes2"
-                           value=""
-                        />
-                        <label
-                           className="form-check-label text-capitalize"
-                           for="yes2"
-                        >
-                           8 months
-                        </label>
-                     </div>
-                     <div className="form-check form-check-inline">
-                        <input
-                           className="form-check-input"
-                           type="radio"
-                           name="option2"
-                           id="other"
-                           value=""
-                        />
-                        <label
-                           className="form-check-label text-capitalize"
-                           for="other"
-                        >
-                           Other
-                        </label>
+                     <div className="">
+                        <div className="form-check form-check-inline">
+                           <input
+                              className="form-check-input"
+                              type="radio"
+                              name={item.IllnessId}
+                              id="inlineRadio1"
+                              value="no"
+                              onChange={(e) =>
+                                 handleChangeRadio(
+                                    item.IllnessId,
+                                    e.target.value
+                                 )
+                              }
+                              onDoubleClick={(e) => {
+                                 e.target.checked = false;
+                                 e.target.value = null;
+                                 handleRemove(item.IllnessId);
+                              }}
+                           />
+                           <label
+                              className="form-check-label text-capitalize"
+                              htmlFor="inlineRadio1"
+                           >
+                              no nnjnjh
+                           </label>
+                        </div>
+
+                        <div className="form-check form-check-inline">
+                           <input
+                              className="form-check-input"
+                              type="radio"
+                              name={item.IllnessId}
+                              id="inlineRadio2"
+                              value="yes"
+                              onChange={(e) =>
+                                 handleChangeRadio(
+                                    item.IllnessId,
+                                    e.target.value
+                                 )
+                              }
+                              onDoubleClick={(e) => {
+                                 e.target.checked = false;
+                                 e.target.value = null;
+                                 handleRemove(item.IllnessId);
+                              }}
+                           />
+                           <label
+                              className="form-check-label text-capitalize"
+                              htmlFor="inlineRadio2"
+                           >
+                              yes
+                           </label>
+                        </div>
                      </div>
                   </div>
-               </div>
-               <div className="d-flex justify-content-between">
-                  <div className="">
-                     <p className="font-16">Result of treatment</p>
-                  </div>
-                  <div className="">
-                     <div className="form-check form-check-inline">
-                        <input
-                           className="form-check-input"
-                           type="radio"
-                           name="option3"
-                           id="no3"
-                           value=""
-                        />
-                        <label
-                           className="form-check-label text-capitalize"
-                           for="no3"
-                        >
-                           Completed
-                        </label>
-                     </div>
-                     <div className="form-check form-check-inline">
-                        <input
-                           className="form-check-input"
-                           type="radio"
-                           name="option3"
-                           id="yes3"
-                           value=""
-                        />
-                        <label
-                           className="form-check-label text-capitalize"
-                           for="yes3"
-                        >
-                           In Completed
-                        </label>
-                     </div>
-                  </div>
-               </div>
-               <div className="d-flex justify-content-between">
-                  <div className="">
-                     <p className="font-16">Recovery Status</p>
-                  </div>
-                  <div className="">
-                     <div className="form-check form-check-inline">
-                        <input
-                           className="form-check-input"
-                           type="radio"
-                           name="option4"
-                           id="no4"
-                           value=""
-                        />
-                        <label
-                           className="form-check-label text-capitalize"
-                           for="no4"
-                        >
-                           Recovered
-                        </label>
-                     </div>
-                     <div className="form-check form-check-inline">
-                        <input
-                           className="form-check-input"
-                           type="radio"
-                           name="option4"
-                           id="yes4"
-                           value=""
-                        />
-                        <label
-                           className="form-check-label text-capitalize"
-                           for="yes4"
-                        >
-                           Not Recovered
-                        </label>
-                     </div>
-                  </div>
-               </div>
-            </div>
+               ))}
 
                {/* Other */}
                <div className="mb-1">
