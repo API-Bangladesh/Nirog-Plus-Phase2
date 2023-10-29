@@ -5,6 +5,8 @@ import axios from "axios";
 import { API_URL } from "../../../helper/Constants";
 import { useSelector } from "react-redux";
 import { loggedInUserData } from "../../../helper/localStorageHelper";
+import { AiOutlineClose } from 'react-icons/ai';
+import { FiEdit } from 'react-icons/fi';
 
 const PatientIllness = ({ formData, setFormData }) => {
    const [isShown, setIsShown] = useState(false);
@@ -82,6 +84,19 @@ const PatientIllness = ({ formData, setFormData }) => {
          });
 
       setFormData(myFormData);
+   };
+
+   const [isDiv1Open, setIsDiv1Open] = useState(false);
+   const [isDiv2Open, setIsDiv2Open] = useState(false);
+
+   const handleRadio1Click = () => {
+      setIsDiv1Open(!isDiv1Open);
+      setIsDiv2Open(false); // Close the other div
+   };
+
+   const handleRadio2Click = () => {
+      setIsDiv2Open(!isDiv2Open);
+      setIsDiv1Open(false); // Close the other div
    };
 
    return (
@@ -182,171 +197,248 @@ const PatientIllness = ({ formData, setFormData }) => {
                </div>
 
                <div className="col-lg-12">
-               <div className="d-flex justify-content-between">
-                  <div className="">
+                  {/* <div>
+        <label className="me-3">
+          <input type="radio" name="demo1" id="iddemo1" onClick={handleRadio1Click} />
+          Open-1
+        </label>
+        <label>
+          <input type="radio" name="demo1" id="iddemo2" onClick={handleRadio2Click} />
+          Open-2
+        </label>
+
+        {isDiv1Open && (
+          <div className="slide-down">
+            Jiaur
+          </div>
+        )}
+
+        {isDiv2Open && (
+          <div className="slide-down">
+            Rahman
+          </div>
+        )}
+    </div> */}
+
+                  <div className="d-flex justify-content-between">
                      <p className="font-16">Treatment received</p>
-                  </div>
-                  <div className="">
-                     <div className="form-check form-check-inline">
-                        <input
-                           className="form-check-input"
-                           type="radio"
-                           name="option1"
-                           id="no1"
-                           value=""
-                        />
-                        <label
-                           className="form-check-label text-capitalize"
-                           for="no1"
-                        >
-                           Cat 1
-                        </label>
+                     <div className="">
+                        <div className="form-check form-check-inline">
+                           <input
+                              onClick={handleRadio1Click}
+                              className="form-check-input"
+                              type="radio"
+                              name="option1"
+                              id=""
+                              value=""
+                           />
+                           <label
+                              className="form-check-label text-capitalize"
+                              for=""
+                           >
+                              Cat 1
+                           </label>
+                        </div>
+                        <div className="form-check form-check-inline">
+                           <input
+                              onClick={handleRadio2Click}
+                              className="form-check-input"
+                              type="radio"
+                              name="option1"
+                              id=""
+                              value=""
+                           />
+                           <label
+                              className="form-check-label text-capitalize"
+                              for=""
+                           >
+                              Cat 2
+                           </label>
+                        </div>
+
                      </div>
-                     <div className="form-check form-check-inline">
-                        <input
-                           className="form-check-input"
-                           type="radio"
-                           name="option1"
-                           id="yes1"
-                           value=""
-                        />
-                        <label
-                           className="form-check-label text-capitalize"
-                           for="yes1"
-                        >
-                           Cat 2
-                        </label>
+                  </div>
+
+                  {/* Cat-1 AND Cat-2 data start Here  */}
+                  {/* {isDiv1Open &&
+                  <div className="slide-down bg-light mt-1 mb-4 pt-2 pb-1 ps-3 pe-5">
+                     <div className="itemCard mb-3 border-bottom">
+                        <p className="mb-0">01-01-0001: Tab. Rimstar 4 - FDC</p>
+                        <p className="mb-0">3+0+0, 1 time(s) daily, for 2 month(s)</p>
+                        <p className="mb-0">Instruction: খাওয়ার ৩০ মিনিট আগে</p>
+                     </div>
+                     <div className="itemCard mb-3">
+                        <p className="mb-0">01-01-0001: Tab. Rimstar 4 - FDC</p>
+                        <p className="mb-0">3+0+0, 1 time(s) daily, for 2 month(s)</p>
+                        <p className="mb-0">Instruction: খাওয়ার ৩০ মিনিট আগে</p>
+                     </div>
+                  </div>} */}
+                  {isDiv1Open &&
+                  <div className="slide-down">
+                     <div className="itemCard position-relative bg-light border ps-3 py-2 mb-2">
+                        <p className="mb-0 font-13">01-01-0001: Tab. Rimstar 4 - FDC</p>
+                        <p className="mb-0 font-13">3+0+0, 1 time(s) daily, for 2 month(s)</p>
+                        <p className="mb-0 font-13">Instruction: খাওয়ার ৩০ মিনিট আগে</p>
+                        
+                        <div className="actionBox">
+                           <button className="btn btn-sm btn-info py-1 px-2 font-12"><FiEdit/></button>
+                           <button className="btn btn-sm btn-danger py-1 px-2 font-12 ms-1"><AiOutlineClose/></button>
+                        </div>
+                     </div>
+                     <div className="itemCard position-relative bg-light border ps-3 py-2 mb-2">
+                        <p className="mb-0 font-13">01-01-0001: Tab. Rimstar 4 - FDC</p>
+                        <p className="mb-0 font-13">3+0+0, 1 time(s) daily, for 2 month(s)</p>
+                        <p className="mb-0 font-13">Instruction: খাওয়ার ৩০ মিনিট আগে</p>
+                        
+                        <div className="actionBox">
+                           <button className="btn btn-sm btn-info py-1 px-2 font-12"><FiEdit/></button>
+                           <button className="btn btn-sm btn-danger py-1 px-2 font-12 ms-1"><AiOutlineClose/></button>
+                        </div>
+                     </div>
+                     
+                  </div>}
+                  {isDiv2Open &&
+                  <div className="slide-down">
+                     <div className="itemCard position-relative bg-light border ps-3 py-2 mb-2">
+                        <p className="mb-0 font-13">01-01-0001: Tab. Rimstar 4 - FDC</p>
+                        <p className="mb-0 font-13">3+0+0, 1 time(s) daily, for 2 month(s)</p>
+                        <p className="mb-0 font-13">Instruction: খাওয়ার ৩০ মিনিট আগে</p>
+                        
+                        <div className="actionBox">
+                           <button className="btn btn-sm btn-info py-1 px-2 font-12"><FiEdit/></button>
+                           <button className="btn btn-sm btn-danger py-1 px-2 font-12 ms-1"><AiOutlineClose/></button>
+                        </div>
+                     </div>
+                  </div>}
+                  {/* Cat-1 AND Cat-2 data start Here  */}
+
+                  <div className="d-flex justify-content-between">
+                     <div className="">
+                        <p className="font-16">Duration of treatment</p>
+                     </div>
+                     <div className="">
+                        <div className="form-check form-check-inline">
+                           <input
+                              className="form-check-input"
+                              type="radio"
+                              name="option2"
+                              id="no2"
+                              value=""
+                           />
+                           <label
+                              className="form-check-label text-capitalize"
+                              for="no2"
+                           >
+                              6 months
+                           </label>
+                        </div>
+                        <div className="form-check form-check-inline">
+                           <input
+                              className="form-check-input"
+                              type="radio"
+                              name="option2"
+                              id="yes2"
+                              value=""
+                           />
+                           <label
+                              className="form-check-label text-capitalize"
+                              for="yes2"
+                           >
+                              8 months
+                           </label>
+                        </div>
+                        <div className="form-check form-check-inline">
+                           <input
+                              className="form-check-input"
+                              type="radio"
+                              name="option2"
+                              id="other"
+                              value=""
+                           />
+                           <label
+                              className="form-check-label text-capitalize"
+                              for="other"
+                           >
+                              Other
+                           </label>
+                        </div>
+                     </div>
+                  </div>
+                  <div className="d-flex justify-content-between">
+                     <div className="">
+                        <p className="font-16">Result of treatment</p>
+                     </div>
+                     <div className="">
+                        <div className="form-check form-check-inline">
+                           <input
+                              className="form-check-input"
+                              type="radio"
+                              name="option3"
+                              id="no3"
+                              value=""
+                           />
+                           <label
+                              className="form-check-label text-capitalize"
+                              for="no3"
+                           >
+                              Completed
+                           </label>
+                        </div>
+                        <div className="form-check form-check-inline">
+                           <input
+                              className="form-check-input"
+                              type="radio"
+                              name="option3"
+                              id="yes3"
+                              value=""
+                           />
+                           <label
+                              className="form-check-label text-capitalize"
+                              for="yes3"
+                           >
+                              In Completed
+                           </label>
+                        </div>
+                     </div>
+                  </div>
+                  <div className="d-flex justify-content-between">
+                     <div className="">
+                        <p className="font-16">Recovery Status</p>
+                     </div>
+                     <div className="">
+                        <div className="form-check form-check-inline">
+                           <input
+                              className="form-check-input"
+                              type="radio"
+                              name="option4"
+                              id="no4"
+                              value=""
+                           />
+                           <label
+                              className="form-check-label text-capitalize"
+                              for="no4"
+                           >
+                              Recovered
+                           </label>
+                        </div>
+                        <div className="form-check form-check-inline">
+                           <input
+                              className="form-check-input"
+                              type="radio"
+                              name="option4"
+                              id="yes4"
+                              value=""
+                           />
+                           <label
+                              className="form-check-label text-capitalize"
+                              for="yes4"
+                           >
+                              Not Recovered
+                           </label>
+                        </div>
                      </div>
                   </div>
                </div>
-               
-               <div className="d-flex justify-content-between">
-                  <div className="">
-                     <p className="font-16">Duration of treatment</p>
-                  </div>
-                  <div className="">
-                     <div className="form-check form-check-inline">
-                        <input
-                           className="form-check-input"
-                           type="radio"
-                           name="option2"
-                           id="no2"
-                           value=""
-                        />
-                        <label
-                           className="form-check-label text-capitalize"
-                           for="no2"
-                        >
-                           6 months
-                        </label>
-                     </div>
-                     <div className="form-check form-check-inline">
-                        <input
-                           className="form-check-input"
-                           type="radio"
-                           name="option2"
-                           id="yes2"
-                           value=""
-                        />
-                        <label
-                           className="form-check-label text-capitalize"
-                           for="yes2"
-                        >
-                           8 months
-                        </label>
-                     </div>
-                     <div className="form-check form-check-inline">
-                        <input
-                           className="form-check-input"
-                           type="radio"
-                           name="option2"
-                           id="other"
-                           value=""
-                        />
-                        <label
-                           className="form-check-label text-capitalize"
-                           for="other"
-                        >
-                           Other
-                        </label>
-                     </div>
-                  </div>
-               </div>
-               <div className="d-flex justify-content-between">
-                  <div className="">
-                     <p className="font-16">Result of treatment</p>
-                  </div>
-                  <div className="">
-                     <div className="form-check form-check-inline">
-                        <input
-                           className="form-check-input"
-                           type="radio"
-                           name="option3"
-                           id="no3"
-                           value=""
-                        />
-                        <label
-                           className="form-check-label text-capitalize"
-                           for="no3"
-                        >
-                           Completed
-                        </label>
-                     </div>
-                     <div className="form-check form-check-inline">
-                        <input
-                           className="form-check-input"
-                           type="radio"
-                           name="option3"
-                           id="yes3"
-                           value=""
-                        />
-                        <label
-                           className="form-check-label text-capitalize"
-                           for="yes3"
-                        >
-                           In Completed
-                        </label>
-                     </div>
-                  </div>
-               </div>
-               <div className="d-flex justify-content-between">
-                  <div className="">
-                     <p className="font-16">Recovery Status</p>
-                  </div>
-                  <div className="">
-                     <div className="form-check form-check-inline">
-                        <input
-                           className="form-check-input"
-                           type="radio"
-                           name="option4"
-                           id="no4"
-                           value=""
-                        />
-                        <label
-                           className="form-check-label text-capitalize"
-                           for="no4"
-                        >
-                           Recovered
-                        </label>
-                     </div>
-                     <div className="form-check form-check-inline">
-                        <input
-                           className="form-check-input"
-                           type="radio"
-                           name="option4"
-                           id="yes4"
-                           value=""
-                        />
-                        <label
-                           className="form-check-label text-capitalize"
-                           for="yes4"
-                        >
-                           Not Recovered
-                        </label>
-                     </div>
-                  </div>
-               </div>
-            </div>
 
                {/* Other */}
                <div className="mb-1">

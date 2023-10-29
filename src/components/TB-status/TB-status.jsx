@@ -39,19 +39,6 @@ const TbStatus = () => {
       ],
    });
 
-   const [isDiv1Open, setIsDiv1Open] = useState(false);
-   const [isDiv2Open, setIsDiv2Open] = useState(false);
- 
-   const handleRadio1Click = () => {
-     setIsDiv1Open(!isDiv1Open);
-     setIsDiv2Open(false); // Close the other div
-   };
- 
-   const handleRadio2Click = () => {
-     setIsDiv2Open(!isDiv2Open);
-     setIsDiv1Open(false); // Close the other div
-   };
-
    return (
       <>
          <section>
@@ -175,32 +162,6 @@ const TbStatus = () => {
                      </div>
                   </div>
                </form>
-
-
-    <div>
-        <label className="me-3">
-          <input type="radio" name="demo1" id="iddemo1" onClick={handleRadio1Click} />
-          Open-1
-        </label>
-        <label>
-          <input type="radio" name="demo1" id="iddemo2" onClick={handleRadio2Click} />
-          Open-2
-        </label>
-
-        {isDiv1Open && (
-          <div className="slide-down">
-            Jiaur
-          </div>
-        )}
-
-        {isDiv2Open && (
-          <div className="slide-down">
-            Rahman
-          </div>
-        )}
-    </div>
-
-
 
             </div>
 
