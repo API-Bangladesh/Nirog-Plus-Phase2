@@ -94,6 +94,7 @@ const PrescriptionFinal = () => {
       setAdvice(response.data.Advice);
       setReferral(response.data.PatientReferral);
       setFollowUpDate(response.data.FollowUpDate);
+      document.title = response.data.prescriptionCreation?.[0]?.PrescriptionId;
     })
     .catch((error) => {
       console.error(error);

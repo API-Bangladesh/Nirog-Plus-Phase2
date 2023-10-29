@@ -50,8 +50,9 @@ const GlobalButton = () => {
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>
+                  {/* {console.log(userData)} */}
                   <h6 className="pName">{userData?.name}</h6>
-                  <i className="pDeg d-block">{userData?.employee.FirstName}</i>
+                  <i className="pDeg d-block">{userData?.employee.Designation}</i>
                   <button  className="logoutBtn border-0 font-14 me-1 text-light" onClick={handleLogout}> <MdOutlineLogout/> Logout</button>
                 </Dropdown.Menu>
               </Dropdown>
