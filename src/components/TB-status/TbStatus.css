@@ -13,3 +13,25 @@
    border-color: var(--main-color) !important;
    padding: 7px;
 }
+
+/* TB Past History CSS start here  */
+.actionBox{
+   position: absolute;
+   top: 50%;
+   transform: translateY(-50%);
+   right: 10px;
+ }
+ .itemCard{
+   padding-right: 90px;
+ }
+ /* TB Past History CSS end here  */
+
+
+
+
+
+
+
+
+
+
