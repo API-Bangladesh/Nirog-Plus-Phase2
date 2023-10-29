@@ -90,13 +90,13 @@ const PatientReg = () => {
          const response = await axios.get(`${API_URL}/api/education`);
          if (response.status === 200) {
           setEducation(response.data.Education);
-          setFormData((prevFormData) => ({
-            ...prevFormData,
-                patientInfo: {
-                  ...prevFormData.patientInfo,
-                  EducationId: response.data.Education[0].EducationId,
-                },
-          }));
+          // setFormData((prevFormData) => ({
+          //   ...prevFormData,
+          //       patientInfo: {
+          //         ...prevFormData.patientInfo,
+          //         EducationId: response.data.Education[0].EducationId,
+          //       },
+          // }));
          }
       } catch (error) {
          console.error(error);
@@ -582,8 +582,8 @@ const PatientReg = () => {
 
    const handleSubmit = async (event) => {
       event.preventDefault();
-      console.log(formData, selectedAddress)
-      return
+      console.log(formData)
+      // return
       try {
          // doValidation();
          const codeCheckResponse = await axios.post(

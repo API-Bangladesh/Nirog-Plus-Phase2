@@ -99,9 +99,15 @@ const PatientIllness = ({formData, setFormData}) => {
           {answers?.map((answer, i) => (
             <div className="mb-2">
               <div className="">
-                <p className="font-16 mb-1">
-                  {i + 1}. {answer.QuestionTitle}?
-                </p>
+                {i === 3 ? (
+                  <p className="font-16 fw-semibold mb-2 mt-3">
+                    {answer.QuestionTitle}
+                  </p>
+                ) : (
+                  <p className="font-16 mb-1">
+                    {i > 3 ? i - 3 : i + 1}. {answer.QuestionTitle}
+                  </p>
+                )}
                 <input
                   className="form-check-input"
                   type="hidden"
