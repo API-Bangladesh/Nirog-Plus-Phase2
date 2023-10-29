@@ -282,7 +282,7 @@ const StationOneHeight = () => {
                   stations?.includes("station_2") ? (<Button
                     className="border-0 button-color text-white py-2 px-3 text-capitalize rounded	undefined"
                     block="block"
-                    onClick={(e) => handleSubmit(e)}
+                    onClick={(e) => handleSubmit(e, "/user-table")}
                   >
                     Save
                     </Button>) : (<Button
