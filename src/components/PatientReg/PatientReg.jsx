@@ -746,7 +746,7 @@ const PatientReg = () => {
          if (codeCheckResponse.data.code === 200) {
             try {
                doValidation();
-               return
+              //  return
                const registrationResponse = await axios.post(
                   `${API_URL}/api/patient-reg-create`,
                   formData
