@@ -1,11 +1,6 @@
 .selectYear select {
    background-color: #ccc;
 }
-/* .selectYear .form-select {
-   --bs-form-select-bg-img: url(../../assets/img/arrow.png) !important;
-   background-size: 15px;
-} */
-
 .selectYear .form-select {
    background-position: right 1rem center !important;
 }
@@ -13,8 +8,6 @@
    border-color: var(--main-color) !important;
    padding: 7px;
 }
-
-/* TB Past History CSS start here  */
 .actionBox{
    position: absolute;
    top: 50%;
@@ -24,7 +17,7 @@
  .itemCard{
    padding-right: 90px;
  }
- /* TB Past History CSS end here  */
+
 
 
 

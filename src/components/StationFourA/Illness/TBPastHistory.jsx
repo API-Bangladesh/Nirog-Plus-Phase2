@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { loggedInUserData } from "../../../helper/localStorageHelper";
 import { AiOutlineClose } from 'react-icons/ai';
 import { FiEdit } from 'react-icons/fi';
+import TBpastHistoryModal from "../../StationFourC/Modals/TBpastHistoryModal";
 
 const PatientIllness = ({ formData, setFormData }) => {
    const [isShown, setIsShown] = useState(false);
@@ -197,29 +198,6 @@ const PatientIllness = ({ formData, setFormData }) => {
                </div>
 
                <div className="col-lg-12">
-                  {/* <div>
-        <label className="me-3">
-          <input type="radio" name="demo1" id="iddemo1" onClick={handleRadio1Click} />
-          Open-1
-        </label>
-        <label>
-          <input type="radio" name="demo1" id="iddemo2" onClick={handleRadio2Click} />
-          Open-2
-        </label>
-
-        {isDiv1Open && (
-          <div className="slide-down">
-            Jiaur
-          </div>
-        )}
-
-        {isDiv2Open && (
-          <div className="slide-down">
-            Rahman
-          </div>
-        )}
-    </div> */}
-
                   <div className="d-flex justify-content-between">
                      <p className="font-16">Treatment received</p>
                      <div className="">
@@ -260,19 +238,6 @@ const PatientIllness = ({ formData, setFormData }) => {
                   </div>
 
                   {/* Cat-1 AND Cat-2 data start Here  */}
-                  {/* {isDiv1Open &&
-                  <div className="slide-down bg-light mt-1 mb-4 pt-2 pb-1 ps-3 pe-5">
-                     <div className="itemCard mb-3 border-bottom">
-                        <p className="mb-0">01-01-0001: Tab. Rimstar 4 - FDC</p>
-                        <p className="mb-0">3+0+0, 1 time(s) daily, for 2 month(s)</p>
-                        <p className="mb-0">Instruction: খাওয়ার ৩০ মিনিট আগে</p>
-                     </div>
-                     <div className="itemCard mb-3">
-                        <p className="mb-0">01-01-0001: Tab. Rimstar 4 - FDC</p>
-                        <p className="mb-0">3+0+0, 1 time(s) daily, for 2 month(s)</p>
-                        <p className="mb-0">Instruction: খাওয়ার ৩০ মিনিট আগে</p>
-                     </div>
-                  </div>} */}
                   {isDiv1Open &&
                   <div className="slide-down">
                      <div className="itemCard position-relative bg-light border ps-3 py-2 mb-2">
@@ -281,7 +246,7 @@ const PatientIllness = ({ formData, setFormData }) => {
                         <p className="mb-0 font-13">Instruction: খাওয়ার ৩০ মিনিট আগে</p>
                         
                         <div className="actionBox">
-                           <button className="btn btn-sm btn-info py-1 px-2 font-12"><FiEdit/></button>
+                           <TBpastHistoryModal/>
                            <button className="btn btn-sm btn-danger py-1 px-2 font-12 ms-1"><AiOutlineClose/></button>
                         </div>
                      </div>
@@ -291,7 +256,7 @@ const PatientIllness = ({ formData, setFormData }) => {
                         <p className="mb-0 font-13">Instruction: খাওয়ার ৩০ মিনিট আগে</p>
                         
                         <div className="actionBox">
-                           <button className="btn btn-sm btn-info py-1 px-2 font-12"><FiEdit/></button>
+                           <TBpastHistoryModal/>
                            <button className="btn btn-sm btn-danger py-1 px-2 font-12 ms-1"><AiOutlineClose/></button>
                         </div>
                      </div>
@@ -305,7 +270,7 @@ const PatientIllness = ({ formData, setFormData }) => {
                         <p className="mb-0 font-13">Instruction: খাওয়ার ৩০ মিনিট আগে</p>
                         
                         <div className="actionBox">
-                           <button className="btn btn-sm btn-info py-1 px-2 font-12"><FiEdit/></button>
+                           <TBpastHistoryModal/>
                            <button className="btn btn-sm btn-danger py-1 px-2 font-12 ms-1"><AiOutlineClose/></button>
                         </div>
                      </div>
