@@ -309,7 +309,7 @@ const PrescriptionFinal = () => {
                 <div className="medicine mb-0" key={index}>
                   <p className="mb-0 font-13">
                     <b>{index + 1}</b>:&nbsp; {item.DrugCode === "Others" ? <>{item.Hourly}</> : <>{item.DrugCode}</>}{item?.DrugDose && `(${item.DrugDose})`}
-
+                    <br />
                     {item.OtherDrug} &nbsp; {item.Frequency} &nbsp;{" "}
                     {item.InstructionInBangla} &nbsp; - &nbsp;
                     {item.DrugDurationValue.includes("Day") ||

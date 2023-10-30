@@ -188,6 +188,39 @@ const PatientReg = () => {
          Union: "",
       }));
 
+      if (!e || !e.value) { // when cleared
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          addressInfo: {
+            ...prevFormData.addressInfo,
+            District: 9,
+            Thana: 502,
+            Union: 4549,
+            ...(isPermanentSameAsPresent ? 
+              {
+                DistrictParmanent: 9,
+                ThanaParmanent: 502,
+                UnionParmanent: 4549,
+              } : {}
+            ),
+          },
+        }));
+        setSelectedAddress((prev) => ({
+          ...prev,
+          District: "",
+          Thana: "",
+          Union: "",
+          ...(isPermanentSameAsPresent ? 
+            {
+              DistrictParmanent: "",
+              ThanaParmanent: "",
+              UnionParmanent: "",
+            } : {}
+          ),
+        }))
+        return;
+      }
+
       try {
          const response = await axios.get(`${API_URL}/api/upazilla`, {
             params: {
@@ -230,6 +263,25 @@ const PatientReg = () => {
          UnionParmanent: "",
       }));
 
+      if (!e || !e.value) {
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          addressInfo: {
+            ...prevFormData.addressInfo,
+            DistrictParmanent: 9,
+            ThanaParmanent: 502,
+            UnionParmanent: 4549,
+          },
+        }));
+        setSelectedAddress((prev) => ({
+          ...prev,
+          DistrictParmanent: "",
+          ThanaParmanent: "",
+          UnionParmanent: "",
+        }))
+        return;
+      }
+
       try {
          const response = await axios.get(`${API_URL}/api/upazilla`, {
             params: {
@@ -269,6 +321,35 @@ const PatientReg = () => {
          ...prev,
          Union: "",
       }));
+
+      if (!e || !e.value) {
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          addressInfo: {
+            ...prevFormData.addressInfo,
+            Thana: "",
+            Union: "",
+            ...(isPermanentSameAsPresent ? 
+              {
+                ThanaParmanent: "",
+                UnionParmanent: "",
+              } : {}
+            ),
+          },
+        }));
+        setSelectedAddress((prev) => ({
+          ...prev,
+          Thana: "",
+          Union: "",
+          ...(isPermanentSameAsPresent ? 
+            {
+              ThanaParmanent: "",
+              UnionParmanent: "",
+            } : {}
+          ),
+        }))
+        return;
+      }
 
       try {
          const response = await axios.get(`${API_URL}/api/union`, {
@@ -310,6 +391,23 @@ const PatientReg = () => {
          UnionParmanent: "",
       }));
 
+      if (!e || !e.value) {
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          addressInfo: {
+            ...prevFormData.addressInfo,
+            ThanaParmanent: "",
+            UnionParmanent: "",
+          },
+        }));
+        setSelectedAddress((prev) => ({
+          ...prev,
+          ThanaParmanent: "",
+          UnionParmanent: "",
+        }))
+        return;
+      }
+
       try {
          const response = await axios.get(`${API_URL}/api/union`, {
             params: {
@@ -334,6 +432,50 @@ const PatientReg = () => {
          console.error(error);
       }
    };
+
+   const handleUnionChange = async (e) => {
+    if (!e || !e.value) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        addressInfo: {
+          ...prevFormData.addressInfo,
+          Union: "",
+          ...(isPermanentSameAsPresent ? 
+            {
+              UnionParmanent: "",
+            } : {}
+          ),
+        },
+      }));
+      setSelectedAddress((prev) => ({
+        ...prev,
+        Union: "",
+        ...(isPermanentSameAsPresent ? 
+          {
+            UnionParmanent: "",
+          } : {}
+        ),
+      }))
+      return;
+    }
+  }
+
+  const handleUnionParmanentChange = async (e) => {
+    if (!e || !e.value) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        addressInfo: {
+          ...prevFormData.addressInfo,
+          UnionParmanent: "",
+        },
+      }));
+      setSelectedAddress((prev) => ({
+        ...prev,
+        UnionParmanent: ""
+      }))
+      return;
+    }
+  }
 
    // // union
    // const getUnionData = async () => {
@@ -397,6 +539,8 @@ const PatientReg = () => {
     const { name, value } = e.target;
     const [section, field] = name.split(".");
     const parmanentField = field + "Parmanent"
+
+    setErrors({...errors, [field]: null})
   
     setFormData((prevFormData) => {
       const updatedSection = { ...prevFormData[section] }; // Create a copy of the section
@@ -412,9 +556,10 @@ const PatientReg = () => {
   };
 
    const handleSelectInputChange = async (e) => {
-    // if (!e?.name || !e?.value) {
-    //   return;
-    // }
+    // console.log(e)
+    if (!e || !e.value) {
+      return;
+    }
       const { name, value } = e;
       const [section, field] = name.split(".");
       const parmanentField = field + "Parmanent"
@@ -478,14 +623,14 @@ const PatientReg = () => {
          AddressLine2Parmanent: "nnnn",
          Village: "",
          VillageParmanent: "",
-         Thana: "",
-         ThanaParmanent: "",
-         District: "",
-         DistrictParmanent: "",
+         Thana: 502,
+         ThanaParmanent: 502,
+         District: 9,
+         DistrictParmanent: 9,
          Upazila: "",
          UpazilaParmanent: "",
-         Union: "",
-         UnionParmanent: "",
+         Union: 4549,
+         UnionParmanent: 4549,
          PostCode: "",
          PostCodeParmanent: "",
          Country: "Bangladesh",
@@ -526,6 +671,14 @@ const PatientReg = () => {
    //   });
    // };
 
+   const checkIsEmpty = (val) => {
+      if (val === null || val === undefined || val === '') {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
    const doValidation = () => {
       return new Promise(function (resolve, reject) {
          const { RegistrationId, GenderId, MariatalStatus } =
@@ -541,31 +694,31 @@ const PatientReg = () => {
 
          let myErrors = {};
 
-         if (_.isEmpty(RegistrationId)) {
+         if (checkIsEmpty(RegistrationId)) {
             myErrors.RegistrationId = "Registration ID is required.";
          }
-         if (_.isEmpty(GenderId)) {
+         if (checkIsEmpty(GenderId)) {
             myErrors.GenderId = "Gender is required.";
          }
-         if (_.isEmpty(MariatalStatus)) {
+         if (checkIsEmpty(MariatalStatus)) {
             myErrors.MariatalStatus = "Marital Status is required.";
          }
-         if (_.isEmpty(District)) {
+         if (checkIsEmpty(District)) {
             myErrors.District = "District is required.";
          }
-         if (_.isEmpty(DistrictParmanent)) {
+         if (checkIsEmpty(DistrictParmanent)) {
             myErrors.DistrictParmanent = "District is required.";
          }
-         if (_.isEmpty(Thana)) {
+         if (checkIsEmpty(Thana)) {
             myErrors.Thana = "Thana is required.";
          }
-         if (_.isEmpty(ThanaParmanent)) {
+         if (checkIsEmpty(ThanaParmanent)) {
             myErrors.ThanaParmanent = "Thana is required.";
          }
-         if (_.isEmpty(Union)) {
+         if (checkIsEmpty(Union)) {
             myErrors.Union = "Union is required.";
          }
-         if (_.isEmpty(UnionParmanent)) {
+         if (checkIsEmpty(UnionParmanent)) {
             myErrors.UnionParmanent = "Union is required.";
          }
 
@@ -593,6 +746,7 @@ const PatientReg = () => {
          if (codeCheckResponse.data.code === 200) {
             try {
                doValidation();
+               return
                const registrationResponse = await axios.post(
                   `${API_URL}/api/patient-reg-create`,
                   formData
@@ -1255,7 +1409,7 @@ const PatientReg = () => {
                               className="form-label text-capitalize"
                            >
                               District{" "}
-                              <span className="text-danger font-20 ">*</span>
+                              {/* <span className="text-danger font-20 ">*</span> */}
                            </label>
                            <Select
                               className={`form-select form-radious inputBox c-select ${
@@ -1268,6 +1422,7 @@ const PatientReg = () => {
                                  handleDistrictChange(e);
                               }}
                               value={selectedAddress.District}
+                              isClearable={true}
                               // isClearable
                               // // defaultValue={0}
                            />
@@ -1279,7 +1434,7 @@ const PatientReg = () => {
                               className="form-label text-capitalize"
                            >
                               Upazila{" "}
-                              <span className="text-danger font-20 ">*</span>
+                              {/* <span className="text-danger font-20 ">*</span> */}
                            </label>
                            <Select
                               className={`form-select form-radious inputBox c-select ${
@@ -1292,6 +1447,7 @@ const PatientReg = () => {
                                  handleUpazilaChange(e);
                               }}
                               value={selectedAddress.Thana}
+                              isClearable={true}
                            />
                         </div>
 
@@ -1301,7 +1457,7 @@ const PatientReg = () => {
                               className="form-label text-capitalize"
                            >
                               Union{" "}
-                              <span className="text-danger font-20 ">*</span>
+                              {/* <span className="text-danger font-20 ">*</span> */}
                            </label>
                            <Select
                               className={`form-select form-radious inputBox c-select ${
@@ -1309,8 +1465,13 @@ const PatientReg = () => {
                               }`}
                               classNamePrefix="select"
                               options={unions}
-                              onChange={handleSelectInputChange}
+                              // onChange={handleSelectInputChange}
+                              onChange={(e) => {
+                                handleSelectInputChange(e);
+                                handleUnionChange(e);
+                              }}
                               value={selectedAddress.Union}
+                              isClearable={true}
                            />
                         </div>
 
@@ -1423,7 +1584,7 @@ const PatientReg = () => {
                               className="form-label text-capitalize"
                            >
                               District{" "}
-                              <span className="text-danger font-20 ">*</span>
+                              {/* <span className="text-danger font-20 ">*</span> */}
                            </label>
                            <Select
                               className={`form-select form-radious inputBox c-select ${
@@ -1437,6 +1598,7 @@ const PatientReg = () => {
                               }}
                               value={selectedAddress.DistrictParmanent}
                               isDisabled={isPermanentSameAsPresent}
+                              isClearable={true}
                            />
                         </div>
 
@@ -1446,7 +1608,7 @@ const PatientReg = () => {
                               className="form-label text-capitalize"
                            >
                               Upazila{" "}
-                              <span className="text-danger font-20 ">*</span>
+                              {/* <span className="text-danger font-20 ">*</span> */}
                            </label>
                            <Select
                               className={`form-select form-radious inputBox c-select ${
@@ -1460,6 +1622,7 @@ const PatientReg = () => {
                               }}
                               value={selectedAddress.ThanaParmanent}
                               isDisabled={isPermanentSameAsPresent}
+                              isClearable={true}
                            />
                         </div>
 
@@ -1469,7 +1632,7 @@ const PatientReg = () => {
                               className="form-label text-capitalize"
                            >
                               Union{" "}
-                              <span className="text-danger font-20 ">*</span>
+                              {/* <span className="text-danger font-20 ">*</span> */}
                            </label>
                            <Select
                               className={`form-select form-radious inputBox c-select ${
@@ -1477,9 +1640,14 @@ const PatientReg = () => {
                               }`}
                               classNamePrefix="select"
                               options={isPermanentSameAsPresent ? unions : unionsParmanent}
-                              onChange={handleSelectInputChange}
+                              // onChange={handleSelectInputChange}
+                              onChange={(e) => {
+                                handleSelectInputChange(e);
+                                handleUnionParmanentChange(e);
+                              }}
                               value={selectedAddress.UnionParmanent}
                               isDisabled={isPermanentSameAsPresent}
+                              isClearable={true}
                            />
                         </div>
 
