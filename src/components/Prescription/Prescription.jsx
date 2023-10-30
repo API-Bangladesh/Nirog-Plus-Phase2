@@ -17,7 +17,7 @@ const Prescription = () => {
   const patientId = patient?.PatientId;
 
   const [prescriptionpreviewall, setPrescriptionpreviewalldata] = useState([]);
-  console.log(prescriptionpreviewall);
+  // console.log(prescriptionpreviewall);
 
   useEffect(() => {
     prescriptionpreviewalldata();
@@ -33,13 +33,13 @@ const Prescription = () => {
         }
       );
       setPrescriptionpreviewalldata(response.data);
-      // console.log(response.data)
+      console.log(response.data)
     } catch (error) {
       console.error("Error fetching prescription preview data:", error);
     }
   };
 
-  console.log(prescriptionpreviewall.RxTaken);
+  // console.log(prescriptionpreviewall.RxTaken);
   return (
     <>
       <SectionBanner title="Prescription Preview" />
