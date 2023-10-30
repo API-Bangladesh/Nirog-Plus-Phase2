@@ -22,7 +22,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
       .get(`${API_URL}/api/provisional-diagonisis`, {
         params: {
           keyword: provisionalDiagnosis,
-          limit: 20,
+          limit: 100,
         },
       })
       .then((response) => {

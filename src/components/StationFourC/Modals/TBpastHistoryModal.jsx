@@ -68,7 +68,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
             .get(`${API_URL}/api/treatment-suggestins`, {
                params: {
                   keyword: drugCode,
-                  limit: 20,
+                  // limit: 20,
                },
             })
             .then((response) => {
