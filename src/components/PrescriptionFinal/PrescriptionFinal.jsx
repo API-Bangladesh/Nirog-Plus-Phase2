@@ -411,15 +411,19 @@ const PrescriptionFinal = () => {
             
               <address className="mb-0">
                 <p className="mb-0">Haefa USA</p>
-                <p className="mb-0">311 Bedford St, Lexington MA 07420, USA</p>
-                <p className="mb-0">Email: healthonwheels.usa@gmail.com</p>
-                <p className="mb-0">Website: www.healthonwheels.usa.org</p>
+                <p className="mb-0">Health and Education for All (HAEFA), USA <br />
+                311 Bedford St Lexington, MA 02420, USA
+                </p>
+                <p className="mb-0">Email: haefa@haefa.org</p>
+                <p className="mb-0">Website: www.haefa.org</p>
               </address>
               <address className="mb-0">
                 <p className="mb-0">Haefa Bangladesh</p>
-                <p className="mb-0">House: 31, Road: 16 Sector: 13 Uttara</p>
-                <p className="mb-0">Email: healthonwheels.usa@gmail.com</p>
-                <p className="mb-0">Website: www.healthonwheels.usa.org</p>
+                <p className="mb-0">Health and Education for All (HAEFA), Bangladesh <br />
+                House: 31, Road: 16, Sector: 13, Uttara, Dhaka
+                </p>
+                <p className="mb-0">Email: haefa@haefa.org</p>
+                <p className="mb-0">Website: www.haefabd.org</p>
               </address>
             </footer>
             <p className="mb-0 text-center pb-4 logoText">
