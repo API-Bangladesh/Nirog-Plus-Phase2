@@ -10,10 +10,13 @@ import Glucose from "./../../assets/img/GlucoseImage.jpg";
 import Hemoglobin from "./../../assets/img/HemoglobinImage.png";
 import { API_URL } from "../../helper/Constants";
 import { useSelector } from "react-redux";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { getClassNameByValue, getClassNameForHB } from "../../helper/lib";
+
 const Prescription = () => {
   const navigate = useNavigate();
   const { patient } = useSelector((state) => state.patients);
+  // console.log(patient);
   const patientId = patient?.PatientId;
 
   const [prescriptionpreviewall, setPrescriptionpreviewalldata] = useState([]);
@@ -22,6 +25,7 @@ const Prescription = () => {
   useEffect(() => {
     prescriptionpreviewalldata();
   }, []);
+
   const prescriptionpreviewalldata = async () => {
     try {
       const response = await axios.get(
@@ -33,34 +37,123 @@ const Prescription = () => {
         }
       );
       setPrescriptionpreviewalldata(response.data);
-      console.log(response.data)
+      console.log(response.data);
     } catch (error) {
       console.error("Error fetching prescription preview data:", error);
     }
   };
 
   // console.log(prescriptionpreviewall.RxTaken);
+
   return (
     <>
       <SectionBanner title="Prescription Preview" />
+
       <section id="prescription">
         <div className="container bg-light py-5 px-5">
-          {/*            */}
-
           <div className="patienStatus mb-4">
             <h3>Height and Weight</h3>
             {prescriptionpreviewall.HeightWeight?.map((item, index) => (
               <div key={index}>
                 <span>{item.CreateDate} &gt;&gt;</span>
-                <span>Height: {item.Height} cm</span>
-                <span>Weight: {item.Weight} kg</span>
-                <span>
-                  BMI: {item.BMI} ({item.BMIStatus})
-                </span>
+                {item.Height && <span>Height: {item.Height} cm</span>}
+                {item.Weight && <span>Weight: {item.Weight} kg</span>}
+                {item.BMI && (
+                  <span>
+                    BMI:{" "}
+                    <span
+                      className={getClassNameByValue("bmi", item.BMI).className}
+                    >
+                      {item.BMI} ({item.BMIStatus})
+                    </span>
+                  </span>
+                )}
               </div>
             ))}
           </div>
+
           <div className="patienStatus mb-4">
+            <h3>BP, Temparature, HR</h3>
+            {prescriptionpreviewall.BP?.map((item, index) => (
+              <div key={index}>
+                <span>{item.CreateDate} &gt;&gt;</span>
+                {/* {item.Height && <span>Height: {item.Height} cm</span>} */}
+                {/* {item.Weight && <span>Weight: {item.Weight} kg</span>} */}
+                {item.CurrentTemparature && (
+                  <span>
+                    Temparature:{" "}
+                    <span
+                      className={
+                        getClassNameByValue("temp", item.CurrentTemparature)
+                          .className
+                      }
+                    >
+                      {item.CurrentTemparature} &deg;F
+                    </span>
+                  </span>
+                )}
+                {item.HeartRate && (
+                  <span>
+                    Heart Rate:{" "}
+                    <span
+                      className={
+                        getClassNameByValue("hr", item.HeartRate).className
+                      }
+                    >
+                      {item.HeartRate} / min
+                    </span>
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="patienStatus mb-4">
+            <h3>GlucoseHb</h3>
+            {prescriptionpreviewall.GlucoseHb?.map((item, index) => (
+              <div key={index}>
+                <span>{item.CreateDate} &gt;&gt;</span>
+                <span>Hours From Last Eat: {item.HrsFromLastEat}</span>
+                {item.Hemoglobin && (
+                  <span>
+                    Hemoglobin:{" "}
+                    <span
+                      className={
+                        getClassNameForHB(patient.GenderId, item.Hemoglobin)
+                          .className
+                      }
+                    >
+                      {item.Hemoglobin} gm/dl
+                    </span>
+                  </span>
+                )}
+
+                {item.FBG && (
+                  <span>
+                    FBG:{" "}
+                    <span
+                      className={getClassNameByValue("fbs", item.FBG).className}
+                    >
+                      {item.FBG} mmol/L
+                    </span>
+                  </span>
+                )}
+
+                {item.RBG && (
+                  <span>
+                    RBG:{" "}
+                    <span
+                      className={getClassNameByValue("rbs", item.RBG).className}
+                    >
+                      {item.RBG} mmol/L
+                    </span>
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+
+          {/* <div className="patienStatus mb-4">
             <h3>GlucoseHb</h3>
             {prescriptionpreviewall.GlucoseHb?.map((item, index) => (
               <div key={index}>
@@ -71,7 +164,7 @@ const Prescription = () => {
                 <span>Create Date: {item.CreateDate}</span>
               </div>
             ))}
-          </div>
+          </div> */}
 
           {/* <div className="patienStatus mb-4">
             <h3>Hemoglobin</h3>
@@ -183,7 +276,10 @@ const Prescription = () => {
             <h3>Current Medication Taken</h3>
             {prescriptionpreviewall.RxTaken?.map((item, index) => (
               <div key={index}>
-                <span>Drug: {item.Rx === "Others" ? <>{item?.Status}</> : <>{item.Rx}</>}</span>
+                <span>
+                  Drug:{" "}
+                  {item.Rx === "Others" ? <>{item?.Status}</> : <>{item.Rx}</>}
+                </span>
                 {item.AllergyToMedication == 1 ? (
                   <span className="bg-danger text-decoration-none px-2">
                     Allergic to medication
@@ -208,7 +304,6 @@ const Prescription = () => {
                       item.RxDurationValue.includes("C")
                     ? item.RxDurationValue.replace(/c/i, " Continious")
                     : ""}
-                  
                 </span>
               </div>
             ))}
@@ -242,6 +337,7 @@ const Prescription = () => {
           </button>
         </div>
       </section>
+
       <GlobalButton />
     </>
   );
