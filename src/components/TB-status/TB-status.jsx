@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Accordion from "react-bootstrap/Accordion";
+import axios from "axios";
+import Swal from "sweetalert2";
+import { API_URL } from "../../helper/Constants";
 import SectionBanner from "../SectionBannerDemo/SectionBanner";
 import GlobalButton from "../GlobalBtn/GlobalButton";
 import { Button } from "react-bootstrap";
@@ -11,7 +14,7 @@ import "./TbStatus.css";
 
 import AdditionalSymptoms from "../StationFourA/Illness/AdditionalSymptoms";
 import ExaminationFinding from "../StationFourA/Illness/ExaminationFinding";
-import TBPastHistory from "../StationFourA/Illness/TBPastHistory";
+import TBPastHistory from "../StationFourA/Illness/TBPastHistoryOLD";
 
 const TbStatus = () => {
   const userData = loggedInUserData();
@@ -19,14 +22,14 @@ const TbStatus = () => {
   // console.log(user);
 
   const { patient } = useSelector((state) => state.patients);
-
   const [PatientId] = useState(patient?.PatientId);
+
   const [formData, setFormData] = useState({
-    ProvisionalDiagnosis: [],
-    LabInvestigation: [],
+    TBSymptoms: [],
+    TBEFindings: [],
+    TBEvidences: [],
+    TBPastHistories: [],
     TreatmentSuggestion: [],
-    Referral: [],
-    Advice: [],
     FollowUpDate: [
       {
         PatientId: PatientId,
@@ -38,6 +41,31 @@ const TbStatus = () => {
       },
     ],
   });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await axios.post(
+        `${API_URL}/api/patient-tb-create`,
+        formData
+      );
+
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: response.data.message,
+      }).then(function () {
+        window.location = "cardiovascular-risk-nonlab";
+      });
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "An error occurred.",
+      });
+    }
+  };
 
   return (
     <>

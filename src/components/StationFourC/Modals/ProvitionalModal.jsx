@@ -11,11 +11,12 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
 
   const [PatientId] = useState(patient?.PatientId);
   const [provisionalDiagnosis, setProvisionalDiagnosis] = useState("");
-  const [otherProvisionalDiagnosis, setOtherProvisionalDiagnosis] = useState("");
+  const [otherProvisionalDiagnosis, setOtherProvisionalDiagnosis] =
+    useState("");
   const [diagnosisStatus, setDiagnosisStatus] = useState("");
   const [provisionalDiagnosisList, setprovisionalDiagnosisList] = useState([]);
   const [showSuggestion, setShowSuggestion] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   useEffect(() => {
     axios
@@ -37,9 +38,9 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
     e.preventDefault();
     let myFormData = { ...formData };
 
-    if(provisionalDiagnosis === ''){
-      setError('This field can not be empty!');
-    }else{
+    if (provisionalDiagnosis === "") {
+      setError("This field can not be empty!");
+    } else {
       myFormData.ProvisionalDiagnosis.push({
         PatientId: PatientId,
         RefProvisionalDiagnosisId: "40391CDF-F43C-4A23-9CF2-000061D61331",
@@ -51,7 +52,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
         CreateUser: "Maruf",
         OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
       });
-  
+
       setFormData(myFormData);
       setProvisionalDiagnosis("");
       setOtherProvisionalDiagnosis("");
@@ -80,7 +81,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
           id="contained-modal-title-vcenter"
           className="text-light font-18"
         >
-          Provitional Diagnosis
+          Provisional Diagnosis
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className="px-3">
@@ -91,29 +92,34 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
             onChange={(e) => {
               setProvisionalDiagnosis(e.target.value);
               setShowSuggestion(true);
-              setError('');
+              setError("");
             }}
             // className="form-control input-padding rounded-pill py-2 border-0"
-            className={`form-control input-padding rounded-pill py-2 border-0 ${error ? 'error-input' : ''}`}
+            className={`form-control input-padding rounded-pill py-2 border-0 ${
+              error ? "error-input" : ""
+            }`}
             placeholder="Search (code/commen terms )"
             list="browsers"
           />
-          {error && <p style={{ color: 'red' }}>{error}</p>} 
+          {error && <p style={{ color: "red" }}>{error}</p>}
           <ul className="autocompleteDataList">
-          {showSuggestion && provisionalDiagnosisList.map((item, key) => {
-              return (
-                <li
-                  key={key}
-                  onClick={() => {
-                    setShowSuggestion(false);
-                    //I had to check only code or name?
-                    setProvisionalDiagnosis(`${item.ProvisionalDiagnosisName}`);
-                  }}
-                >
-                  {item.ProvisionalDiagnosisName}
-                </li>
-              );
-            })}
+            {showSuggestion &&
+              provisionalDiagnosisList.map((item, key) => {
+                return (
+                  <li
+                    key={key}
+                    onClick={() => {
+                      setShowSuggestion(false);
+                      //I had to check only code or name?
+                      setProvisionalDiagnosis(
+                        `${item.ProvisionalDiagnosisCode} - ${item.ProvisionalDiagnosisName}`
+                      );
+                    }}
+                  >
+                    {`${item.ProvisionalDiagnosisCode} - ${item.ProvisionalDiagnosisName}`}
+                  </li>
+                );
+              })}
           </ul>
         </div>
 

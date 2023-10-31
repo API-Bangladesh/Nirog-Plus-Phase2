@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import OthersField from "../Illness/OthersField";
+import OthersField from "./OthersField";
 import axios from "axios";
 import { API_URL } from "../../../helper/Constants";
 import { useSelector } from "react-redux";
@@ -13,7 +13,7 @@ const PatientIllness = ({ formData, setFormData }) => {
   const [OrgId] = useState(patient?.OrgId);
 
   const userData = loggedInUserData();
-  const userName = userData?.name; 
+  const userName = userData?.name;
 
   const handleClick = (event) => {
     setIsShown((current) => !current);
@@ -21,7 +21,7 @@ const PatientIllness = ({ formData, setFormData }) => {
 
   // PresentIllness
   const [PresentIllness, setPresentIllness] = useState([]);
-  
+
   const getPresentIllnessData = async () => {
     try {
       const response = await axios.get(
@@ -71,7 +71,6 @@ const PatientIllness = ({ formData, setFormData }) => {
     setFormData(myFormData);
     console.log(myFormData?.PatientHOPresentIllness);
   };
-  
 
   const handleRemove = (illnessId) => {
     let myFormData = { ...formData };
@@ -101,66 +100,110 @@ const PatientIllness = ({ formData, setFormData }) => {
 
       {isShown && (
         <div className="col-lg-12">
-          {PresentIllness.map((item, key) => (
-            <div
-              key={item.IllnessId}
-              value={item.IllnessId}
-              className="d-flex justify-content-between"
-            >
+          <div className="col-lg-12">
+            <div className="d-flex justify-content-between">
               <div className="">
-                <p className="font-16"> {item.IllnessCode}</p>
+                <p className="font-16">Signs of pleural effusion</p>
               </div>
               <div className="">
                 <div className="form-check form-check-inline">
                   <input
                     className="form-check-input"
                     type="radio"
-                    name={item.IllnessId}
-                    id="inlineRadio1"
-                    value="no"
-                    onChange={(e) =>
-                      handleChangeRadio(item.IllnessId, e.target.value)
-                    }
-                    onDoubleClick={(e) => {
-                      e.target.checked = false;
-                      e.target.value = null;
-                      handleRemove(item.IllnessId);
-                    }}
+                    name="option1"
+                    id="no1"
+                    value=""
                   />
-                  <label
-                    className="form-check-label text-capitalize"
-                    htmlFor="inlineRadio1"
-                  >
+                  <label className="form-check-label text-capitalize" for="no1">
                     no
                   </label>
                 </div>
-
                 <div className="form-check form-check-inline">
                   <input
                     className="form-check-input"
                     type="radio"
-                    name={item.IllnessId}
-                    id="inlineRadio2"
-                    value="yes"
-                    onChange={(e) =>
-                      handleChangeRadio(item.IllnessId, e.target.value)
-                    }
-                    onDoubleClick={(e) => {
-                      e.target.checked = false;
-                      e.target.value = null;
-                      handleRemove(item.IllnessId);
-                    }}
+                    name="option1"
+                    id="yes1"
+                    value=""
                   />
                   <label
                     className="form-check-label text-capitalize"
-                    htmlFor="inlineRadio2"
+                    for="yes1"
                   >
                     yes
                   </label>
                 </div>
               </div>
             </div>
-          ))}
+            <div className="d-flex justify-content-between">
+              <div className="">
+                <p className="font-16">Signs of consolidation</p>
+              </div>
+              <div className="">
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="option2"
+                    id="no2"
+                    value=""
+                  />
+                  <label className="form-check-label text-capitalize" for="no2">
+                    no
+                  </label>
+                </div>
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="option2"
+                    id="yes2"
+                    value=""
+                  />
+                  <label
+                    className="form-check-label text-capitalize"
+                    for="yes2"
+                  >
+                    yes
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div className="d-flex justify-content-between">
+              <div className="">
+                <p className="font-16">Crepitation</p>
+              </div>
+              <div className="">
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="option3"
+                    id="no3"
+                    value=""
+                  />
+                  <label className="form-check-label text-capitalize" for="no3">
+                    no
+                  </label>
+                </div>
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name="option3"
+                    id="yes3"
+                    value=""
+                  />
+                  <label
+                    className="form-check-label text-capitalize"
+                    for="yes3"
+                  >
+                    yes
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
 
           {/* Other */}
           <div className="mb-1">
