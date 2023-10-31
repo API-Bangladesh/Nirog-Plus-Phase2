@@ -11,7 +11,11 @@ import Hemoglobin from "./../../assets/img/HemoglobinImage.png";
 import { API_URL } from "../../helper/Constants";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getClassNameByValue, getClassNameForHB } from "../../helper/lib";
+import {
+  getClassNameByValue,
+  getClassNameForHB,
+  getClassNameForBP,
+} from "../../helper/lib";
 
 const Prescription = () => {
   const navigate = useNavigate();
@@ -79,6 +83,19 @@ const Prescription = () => {
                 <span>{item.CreateDate} &gt;&gt;</span>
                 {/* {item.Height && <span>Height: {item.Height} cm</span>} */}
                 {/* {item.Weight && <span>Weight: {item.Weight} kg</span>} */}
+                {item.BPSystolic1 && item.BPDiastolic1 && (
+                  <span>
+                    BP:{" "}
+                    <span
+                      className={
+                        getClassNameForBP(item.BPSystolic1, item.BPDiastolic1)
+                          .className
+                      }
+                    >
+                      {item.BPSystolic1}/{item.BPDiastolic1}
+                    </span>
+                  </span>
+                )}
                 {item.CurrentTemparature && (
                   <span>
                     Temparature:{" "}
@@ -88,7 +105,7 @@ const Prescription = () => {
                           .className
                       }
                     >
-                      {item.CurrentTemparature} &deg;F
+                      {item.CurrentTemparature}&deg;F
                     </span>
                   </span>
                 )}
@@ -100,7 +117,7 @@ const Prescription = () => {
                         getClassNameByValue("hr", item.HeartRate).className
                       }
                     >
-                      {item.HeartRate} / min
+                      {item.HeartRate}/min
                     </span>
                   </span>
                 )}
@@ -173,7 +190,7 @@ const Prescription = () => {
             <span>FBG: 0.0 mMol</span>
             <span>Hemoglobin: 11.0 g/dl</span>
           </div>  */}
-          {/* <div className="patienStatus mb-4">
+          <div className="patienStatus mb-4">
             <h3>Physical (Chief) Complaints</h3>
             {prescriptionpreviewall.Complaints?.map((item, index) => (
               <div key={index}>
@@ -182,7 +199,7 @@ const Prescription = () => {
                 </span>
               </div>
             ))}
-          </div> */}
+          </div>
           {/* <div className="patienStatus mb-4">
             <h3>General Examination</h3>
             <div className="d-flex">
@@ -281,7 +298,7 @@ const Prescription = () => {
                   {item.Rx === "Others" ? <>{item?.Status}</> : <>{item.Rx}</>}
                 </span>
                 {item.AllergyToMedication == 1 ? (
-                  <span className="bg-danger text-decoration-none px-2">
+                  <span className="red text-decoration-none px-2">
                     Allergic to medication
                   </span>
                 ) : (

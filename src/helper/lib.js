@@ -306,3 +306,46 @@ export const getClassNameForHB = (GenderId, value) => {
     status: "Normal",
   };
 };
+
+// export const getClassNameForBP = (systolic, diastolic) => {
+//   const systolicBP = parseFloat(systolic);
+//   const diastolicBP = parseFloat(diastolic);
+
+//   const normal = { className: "white", status: "Normal" };
+//   const mild = { className: "yellow", status: "Mild" };
+//   const moderate = { className: "red", status: "Moderate" };
+//   const severe = { className: "red", status: "Severe" };
+
+//   if (systolicBP <= 130 && diastolicBP <= 80) {
+//     return normal;
+//   } else if (
+//     (systolicBP > 130 && systolicBP < 140) ||
+//     (diastolicBP > 80 && diastolicBP < 90)
+//   ) {
+//     return mild;
+//   } else if (
+//     (systolicBP > 140 && systolicBP <= 180) ||
+//     (diastolicBP > 90 && diastolicBP <= 110)
+//   ) {
+//     return moderate;
+//   } else if (systolicBP > 180 || diastolicBP > 110) {
+//     return severe;
+//   } else {
+//     return normal;
+//   }
+// };
+
+export const getClassNameForBP = (systolic, diastolic) => {
+  const systolicBP = parseFloat(systolic);
+  const diastolicBP = parseFloat(diastolic);
+
+  if (systolicBP <= 130 && diastolicBP <= 80) {
+    return { className: "white", status: "Normal" };
+  } else if (systolicBP <= 140 || diastolicBP <= 90) {
+    return { className: "yellow", status: "Mild" };
+  } else if (systolicBP <= 180 || diastolicBP <= 110) {
+    return { className: "red", status: "Moderate" };
+  } else {
+    return { className: "red", status: "Severe" };
+  }
+};
