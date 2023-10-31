@@ -1,274 +1,194 @@
 import React, { useEffect, useState } from "react";
-import OthersField from "../Illness/OthersField";
+import OthersField from "./OthersField";
 import axios from "axios";
 import { API_URL } from "../../../helper/Constants";
 import { useSelector } from "react-redux";
 import { loggedInUserData } from "../../../helper/localStorageHelper";
 
-const PatientIllness = ({ formData, setFormData }) => {
-   const [isShown, setIsShown] = useState(false);
-   const { patient } = useSelector((state) => state.patients);
+const AdditionalSymptoms = ({ formData, setFormData }) => {
+  const [isShown, setIsShown] = useState(false);
+  const { patient } = useSelector((state) => state.patients);
 
-   const [PatientId] = useState(patient?.PatientId);
-   const [OrgId] = useState(patient?.OrgId);
+  const [PatientId] = useState(patient?.PatientId);
+  const [OrgId] = useState(patient?.OrgId);
 
-   const userData = loggedInUserData();
-   const userName = userData?.name;
+  const userData = loggedInUserData();
+  const userName = userData?.name;
 
-   const handleClick = (event) => {
-      setIsShown((current) => !current);
-   };
+  const handleClick = () => {
+    setIsShown((current) => !current);
+    setFormData({ ...formData, TBSymptoms: [] });
+  };
 
-   // PresentIllness
-   const [PresentIllness, setPresentIllness] = useState([]);
+  // TBSymptoms
+  const [TBSymptoms, setTBSymptoms] = useState([]);
 
-   const getPresentIllnessData = async () => {
-      try {
-         const response = await axios.get(
-            `${API_URL}/api/patient-ho-present-illness`
-         );
-         if (response.status === 200) {
-            setPresentIllness(response.data.data);
-         }
-      } catch (error) {
-         console.error(error);
+  const getTBSymptomsData = async () => {
+    try {
+      const response = await axios.get(`${API_URL}/api/tb_symptom`, {
+        data: {
+          CatType: "CAT1",
+        },
+      });
+      console.log(response.data.data);
+      if (response.status === 200) {
+        setTBSymptoms(response.data.data);
       }
-   };
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-   useEffect(() => {
-      getPresentIllnessData();
-   }, []);
+  useEffect(() => {
+    getTBSymptomsData();
+  }, []);
 
-   const handleChangeRadio = (illnessId, value) => {
-      let myFormData = { ...formData };
+  const handleChangeRadio = (TBSymptomId, TBSymptomCode, value) => {
+    let myFormData = { ...formData };
 
-      const index = myFormData.PatientHOPresentIllness.findIndex(
-         (object) => object.illnessId === illnessId
-      );
+    const index = myFormData.TBSymptoms.findIndex(
+      (object) => object.TBSymptom === TBSymptomId
+    );
 
-      if (index === -1) {
-         myFormData.PatientHOPresentIllness.push({
-            PatientId: PatientId,
-            illnessId: illnessId,
-            otherIllness: "",
-            Status: value,
-            CreateUser: userName,
-            UpdateUser: userName,
-            OrgId: OrgId,
-         });
-      }
+    if (index === -1) {
+      myFormData.TBSymptoms.push({
+        PatientId: PatientId,
+        TBSymptom: TBSymptomId,
+        TBSymptomCode: TBSymptomCode,
+        OthersSymptom: "",
+        Status: value,
+        CreateUser: userName,
+        UpdateUser: userName,
+        OrgId: OrgId,
+      });
+    }
 
-      if (index === 0) {
-         myFormData.PatientHOPresentIllness =
-            myFormData.PatientHOPresentIllness.filter((item) => {
-               if (item.illnessId == illnessId) {
-                  item.Status = value;
-               }
-               return item;
-            });
-      }
+    if (index === 0) {
+      myFormData.TBSymptoms = myFormData.TBSymptoms.filter((item) => {
+        if (item.TBSymptom == TBSymptomId) {
+          item.Status = value;
+        }
+        return item;
+      });
+    }
 
-      setFormData(myFormData);
-      console.log(myFormData?.PatientHOPresentIllness);
-   };
+    setFormData(myFormData);
+    console.log(myFormData?.TBSymptoms);
+  };
 
-   const handleRemove = (illnessId) => {
-      let myFormData = { ...formData };
+  const handleRemove = (TBSymptomId) => {
+    let myFormData = { ...formData };
 
-      myFormData.PatientHOPresentIllness =
-         myFormData.PatientHOPresentIllness.filter((item) => {
-            return item.illnessId != illnessId;
-         });
+    myFormData.TBSymptoms = myFormData.TBSymptoms.filter((item) => {
+      return item.TBSymptom != TBSymptomId;
+    });
 
-      setFormData(myFormData);
-   };
+    setFormData(myFormData);
+  };
 
-   return (
-      <>
-         <div className="col-lg-12">
-            <div className="form-check form-switch">
-               <input
-                  className="form-check-input"
-                  type="checkbox"
-                  onClick={handleClick}
-                  role="switch"
-                  id="flexSwitchCheckChecked"
-                  defaultChecked=""
-               />
+  return (
+    <>
+      <div className="col-lg-12">
+        <div className="form-check form-switch">
+          <input
+            className="form-check-input"
+            type="checkbox"
+            onClick={handleClick}
+            role="switch"
+            id="flexSwitchCheckChecked"
+            defaultChecked=""
+          />
+        </div>
+      </div>
+
+      {isShown && (
+        <div className="col-lg-12">
+          {TBSymptoms.map((item, key) => (
+            <div
+              key={item.TBSymptomId}
+              className="d-flex justify-content-between"
+            >
+              <div className="">
+                <p className="font-16">{item.TBSymptomCode}</p>
+              </div>
+              <div className="">
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name={item.TBSymptomId}
+                    id={item.TBSymptomId + "1"}
+                    value="no"
+                    onChange={(e) =>
+                      handleChangeRadio(
+                        item.TBSymptomId,
+                        item.TBSymptomCode,
+                        e.target.value
+                      )
+                    }
+                    onDoubleClick={(e) => {
+                      e.target.checked = false;
+                      // e.target.value = null;
+                      handleRemove(item.TBSymptomId);
+                    }}
+                  />
+                  <label
+                    className="form-check-label text-capitalize"
+                    htmlFor={item.TBSymptomId + "1"}
+                  >
+                    no
+                  </label>
+                </div>
+
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name={item.TBSymptomId}
+                    id={item.TBSymptomId + "2"}
+                    value="yes"
+                    onChange={(e) =>
+                      handleChangeRadio(
+                        item.TBSymptomId,
+                        item.TBSymptomCode,
+                        e.target.value
+                      )
+                    }
+                    onDoubleClick={(e) => {
+                      e.target.checked = false;
+                      // e.target.value = null;
+                      handleRemove(item.TBSymptomId);
+                    }}
+                  />
+                  <label
+                    className="form-check-label text-capitalize"
+                    htmlFor={item.TBSymptomId + "2"}
+                  >
+                    yes
+                  </label>
+                </div>
+              </div>
             </div>
-         </div>
+          ))}
 
-         {isShown && (
-            <div className="col-lg-12">
-               <div className="d-flex justify-content-between">
-                  <div className="">
-                     <p className="font-16">Breathlessness</p>
-                  </div>
-                  <div className="">
-                     <div className="form-check form-check-inline">
-                        <input
-                           className="form-check-input"
-                           type="radio"
-                           name="option1"
-                           id="no1"
-                           value=""
-                        />
-                        <label
-                           className="form-check-label text-capitalize"
-                           for="no1"
-                        >
-                           no
-                        </label>
-                     </div>
-                     <div className="form-check form-check-inline">
-                        <input
-                           className="form-check-input"
-                           type="radio"
-                           name="option1"
-                           id="yes1"
-                           value=""
-                        />
-                        <label
-                           className="form-check-label text-capitalize"
-                           for="yes1"
-                        >
-                           yes
-                        </label>
-                     </div>
-                  </div>
-               </div>
-               <div className="d-flex justify-content-between">
-                  <div className="">
-                     <p className="font-16">Chest Pain</p>
-                  </div>
-                  <div className="">
-                     <div className="form-check form-check-inline">
-                        <input
-                           className="form-check-input"
-                           type="radio"
-                           name="option2"
-                           id="no2"
-                           value=""
-                        />
-                        <label
-                           className="form-check-label text-capitalize"
-                           for="no2"
-                        >
-                           no
-                        </label>
-                     </div>
-                     <div className="form-check form-check-inline">
-                        <input
-                           className="form-check-input"
-                           type="radio"
-                           name="option2"
-                           id="yes2"
-                           value=""
-                        />
-                        <label
-                           className="form-check-label text-capitalize"
-                           for="yes2"
-                        >
-                           yes
-                        </label>
-                     </div>
-                  </div>
-               </div>
-               <div className="d-flex justify-content-between">
-                  <div className="">
-                     <p className="font-16">loss of appetite</p>
-                  </div>
-                  <div className="">
-                     <div className="form-check form-check-inline">
-                        <input
-                           className="form-check-input"
-                           type="radio"
-                           name="option3"
-                           id="no3"
-                           value=""
-                        />
-                        <label
-                           className="form-check-label text-capitalize"
-                           for="no3"
-                        >
-                           no
-                        </label>
-                     </div>
-                     <div className="form-check form-check-inline">
-                        <input
-                           className="form-check-input"
-                           type="radio"
-                           name="option3"
-                           id="yes3"
-                           value=""
-                        />
-                        <label
-                           className="form-check-label text-capitalize"
-                           for="yes3"
-                        >
-                           yes
-                        </label>
-                     </div>
-                  </div>
-               </div>
-               <div className="d-flex justify-content-between">
-                  <div className="">
-                     <p className="font-16">
-                        Hemoptysis (Coughing up to blood)
-                     </p>
-                  </div>
-                  <div className="">
-                     <div className="form-check form-check-inline">
-                        <input
-                           className="form-check-input"
-                           type="radio"
-                           name="option4"
-                           id="no4"
-                           value=""
-                        />
-                        <label
-                           className="form-check-label text-capitalize"
-                           for="no4"
-                        >
-                           no
-                        </label>
-                     </div>
-                     <div className="form-check form-check-inline">
-                        <input
-                           className="form-check-input"
-                           type="radio"
-                           name="option4"
-                           id="yes4"
-                           value=""
-                        />
-                        <label
-                           className="form-check-label text-capitalize"
-                           for="yes4"
-                        >
-                           yes
-                        </label>
-                     </div>
-                  </div>
-               </div>
-               
-               {/* Other */}
-               <div className="mb-1">
-                  <p className="font-16 mb-1">Others</p>
-                  <div className="position-relative onBtn">
-                     <OthersField />
-                  </div>
-               </div>
+          {/* Other */}
+          <div className="mb-1">
+            <p className="font-16 mb-1">Others</p>
+            <div className="position-relative onBtn">
+              <OthersField />
             </div>
-         )}
+          </div>
+        </div>
+      )}
 
-         {/* show component on click  */}
-         {isShown || (
-            <div>
-               <h2></h2>
-            </div>
-         )}
-      </>
-   );
+      {/* show component on click  */}
+      {isShown || (
+        <div>
+          <h2></h2>
+        </div>
+      )}
+    </>
+  );
 };
 
-export default PatientIllness;
+export default AdditionalSymptoms;

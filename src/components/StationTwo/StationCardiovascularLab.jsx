@@ -185,7 +185,6 @@ const StationCardiovascular = () => {
                     <option> 20-24 kg/m2</option>
                     <option> 25-29 kg/m2</option>
                     <option> 30-35 kg/m2</option>
-                    <option> 30-35 kg/m2</option>
                     <option>{"≥"} 35 kg/m2</option>
                   </select>
                 </div>

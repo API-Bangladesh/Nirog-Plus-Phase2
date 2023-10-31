@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import OthersField from "../Illness/OthersField";
+import OthersField from "./OthersField";
 import axios from "axios";
 import { API_URL } from "../../../helper/Constants";
 import { useSelector } from "react-redux";
 import { loggedInUserData } from "../../../helper/localStorageHelper";
 
-const PatientIllness = ({ formData, setFormData }) => {
+const ExaminationFindings = ({ formData, setFormData }) => {
   const [isShown, setIsShown] = useState(false);
   const { patient } = useSelector((state) => state.patients);
 
@@ -13,22 +13,26 @@ const PatientIllness = ({ formData, setFormData }) => {
   const [OrgId] = useState(patient?.OrgId);
 
   const userData = loggedInUserData();
-  const userName = userData?.name; 
+  const userName = userData?.name;
 
-  const handleClick = (event) => {
+  const handleClick = () => {
     setIsShown((current) => !current);
+    setFormData({ ...formData, TBEFindings: [] });
   };
 
-  // PresentIllness
-  const [PresentIllness, setPresentIllness] = useState([]);
-  
-  const getPresentIllnessData = async () => {
+  // TBEFindings
+  const [TBEFindings, setTBEFindings] = useState([]);
+
+  const getTBEFindingsData = async () => {
     try {
-      const response = await axios.get(
-        `${API_URL}/api/patient-ho-present-illness`
-      );
+      const response = await axios.get(`${API_URL}/api/tb_eFinding`, {
+        data: {
+          CatType: "CAT1",
+        },
+      });
+      console.log(response.data.data);
       if (response.status === 200) {
-        setPresentIllness(response.data.data);
+        setTBEFindings(response.data.data);
       }
     } catch (error) {
       console.error(error);
@@ -36,21 +40,22 @@ const PatientIllness = ({ formData, setFormData }) => {
   };
 
   useEffect(() => {
-    getPresentIllnessData();
+    getTBEFindingsData();
   }, []);
 
-  const handleChangeRadio = (illnessId, value) => {
+  const handleChangeRadio = (TBEFindingId, TBEFindingCode, value) => {
     let myFormData = { ...formData };
 
-    const index = myFormData.PatientHOPresentIllness.findIndex(
-      (object) => object.illnessId === illnessId
+    const index = myFormData.TBEFindings.findIndex(
+      (object) => object.TBEFindingId === TBEFindingId
     );
 
     if (index === -1) {
-      myFormData.PatientHOPresentIllness.push({
+      myFormData.TBEFindings.push({
         PatientId: PatientId,
-        illnessId: illnessId,
-        otherIllness: "",
+        TBEFindingId: TBEFindingId,
+        TBEFindingCode: TBEFindingCode,
+        TBEFindingOthers: "",
         Status: value,
         CreateUser: userName,
         UpdateUser: userName,
@@ -59,27 +64,24 @@ const PatientIllness = ({ formData, setFormData }) => {
     }
 
     if (index === 0) {
-      myFormData.PatientHOPresentIllness =
-        myFormData.PatientHOPresentIllness.filter((item) => {
-          if (item.illnessId == illnessId) {
-            item.Status = value;
-          }
-          return item;
-        });
+      myFormData.TBEFindings = myFormData.TBEFindings.filter((item) => {
+        if (item.TBEFindingId == TBEFindingId) {
+          item.Status = value;
+        }
+        return item;
+      });
     }
 
     setFormData(myFormData);
-    console.log(myFormData?.PatientHOPresentIllness);
+    console.log(myFormData?.TBEFindings);
   };
-  
 
-  const handleRemove = (illnessId) => {
+  const handleRemove = (TBEFindingId) => {
     let myFormData = { ...formData };
 
-    myFormData.PatientHOPresentIllness =
-      myFormData.PatientHOPresentIllness.filter((item) => {
-        return item.illnessId != illnessId;
-      });
+    myFormData.TBEFindings = myFormData.TBEFindings.filter((item) => {
+      return item.TBEFindingId != TBEFindingId;
+    });
 
     setFormData(myFormData);
   };
@@ -93,7 +95,7 @@ const PatientIllness = ({ formData, setFormData }) => {
             type="checkbox"
             onClick={handleClick}
             role="switch"
-            id="flexSwitchCheckChecked"
+            // id="flexSwitchCheckChecked"
             defaultChecked=""
           />
         </div>
@@ -101,120 +103,73 @@ const PatientIllness = ({ formData, setFormData }) => {
 
       {isShown && (
         <div className="col-lg-12">
-          <div className="col-lg-12">
-               <div className="d-flex justify-content-between">
-                  <div className="">
-                     <p className="font-16">Signs of pleural effusion</p>
-                  </div>
-                  <div className="">
-                     <div className="form-check form-check-inline">
-                        <input
-                           className="form-check-input"
-                           type="radio"
-                           name="option1"
-                           id="no1"
-                           value=""
-                        />
-                        <label
-                           className="form-check-label text-capitalize"
-                           for="no1"
-                        >
-                           no
-                        </label>
-                     </div>
-                     <div className="form-check form-check-inline">
-                        <input
-                           className="form-check-input"
-                           type="radio"
-                           name="option1"
-                           id="yes1"
-                           value=""
-                        />
-                        <label
-                           className="form-check-label text-capitalize"
-                           for="yes1"
-                        >
-                           yes
-                        </label>
-                     </div>
-                  </div>
-               </div>
-               <div className="d-flex justify-content-between">
-                  <div className="">
-                     <p className="font-16">Signs of consolidation</p>
-                  </div>
-                  <div className="">
-                     <div className="form-check form-check-inline">
-                        <input
-                           className="form-check-input"
-                           type="radio"
-                           name="option2"
-                           id="no2"
-                           value=""
-                        />
-                        <label
-                           className="form-check-label text-capitalize"
-                           for="no2"
-                        >
-                           no
-                        </label>
-                     </div>
-                     <div className="form-check form-check-inline">
-                        <input
-                           className="form-check-input"
-                           type="radio"
-                           name="option2"
-                           id="yes2"
-                           value=""
-                        />
-                        <label
-                           className="form-check-label text-capitalize"
-                           for="yes2"
-                        >
-                           yes
-                        </label>
-                     </div>
-                  </div>
-               </div>
-               <div className="d-flex justify-content-between">
-                  <div className="">
-                     <p className="font-16">Crepitation</p>
-                  </div>
-                  <div className="">
-                     <div className="form-check form-check-inline">
-                        <input
-                           className="form-check-input"
-                           type="radio"
-                           name="option3"
-                           id="no3"
-                           value=""
-                        />
-                        <label
-                           className="form-check-label text-capitalize"
-                           for="no3"
-                        >
-                           no
-                        </label>
-                     </div>
-                     <div className="form-check form-check-inline">
-                        <input
-                           className="form-check-input"
-                           type="radio"
-                           name="option3"
-                           id="yes3"
-                           value=""
-                        />
-                        <label
-                           className="form-check-label text-capitalize"
-                           for="yes3"
-                        >
-                           yes
-                        </label>
-                     </div>
-                  </div>
-               </div>
-               
+          {TBEFindings.map((item, key) => (
+            <div
+              key={item.TBEFindingId}
+              className="d-flex justify-content-between"
+            >
+              <div className="">
+                <p className="font-16">{item.TBEFindingCode}</p>
+              </div>
+              <div className="">
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name={item.TBEFindingId}
+                    id={item.TBEFindingId + "1"}
+                    value="no"
+                    onChange={(e) =>
+                      handleChangeRadio(
+                        item.TBEFindingId,
+                        item.TBEFindingCode,
+                        e.target.value
+                      )
+                    }
+                    onDoubleClick={(e) => {
+                      e.target.checked = false;
+                      // e.target.value = null;
+                      handleRemove(item.TBEFindingId);
+                    }}
+                  />
+                  <label
+                    className="form-check-label text-capitalize"
+                    htmlFor={item.TBEFindingId + "1"}
+                  >
+                    no
+                  </label>
+                </div>
+
+                <div className="form-check form-check-inline">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name={item.TBEFindingId}
+                    id={item.TBEFindingId + "2"}
+                    value="yes"
+                    onChange={(e) =>
+                      handleChangeRadio(
+                        item.TBEFindingId,
+                        item.TBEFindingCode,
+                        e.target.value
+                      )
+                    }
+                    onDoubleClick={(e) => {
+                      e.target.checked = false;
+                      // e.target.value = null;
+                      handleRemove(item.TBEFindingId);
+                    }}
+                  />
+                  <label
+                    className="form-check-label text-capitalize"
+                    htmlFor={item.TBEFindingId + "2"}
+                  >
+                    yes
+                  </label>
+                </div>
+              </div>
             </div>
+          ))}
 
           {/* Other */}
           <div className="mb-1">
@@ -236,4 +191,4 @@ const PatientIllness = ({ formData, setFormData }) => {
   );
 };
 
-export default PatientIllness;
+export default ExaminationFindings;

@@ -337,13 +337,13 @@ a:hover {
   padding: 13px 0px !important;
   padding-left: 15px !important;
 }
-/* input[type=number] { 
+/* input[type=number] {
     box-shadow: rgba(0, 0, 0, 0.06) 0px 5px 15px 0px !important;
 } */
-/* input[type=text] { 
+/* input[type=text] {
     box-shadow: rgba(0, 0, 0, 0.06) 0px 5px 15px 0px !important;
 } */
-/* select { 
+/* select {
     box-shadow: rgba(0, 0, 0, 0.06) 0px 5px 15px 0px !important;
 } */
 ::placeholder {
@@ -404,13 +404,13 @@ kbd {
   display: inline-block;
   font-size: 16px;
 }
-.previewBtn{
+.previewBtn {
   position: absolute;
   left: 0;
   top: 50%;
   transform: translateY(-50%);
 }
-.previewBtn>a{
+.previewBtn > a {
   background-color: #999;
 }
 /* Jiaur extra css end here  */
@@ -525,7 +525,7 @@ div:where(.swal2-icon) {
   } */
 }
 
-.error-input{
+.error-input {
   border: 2px solid red !important;
 }
 
@@ -563,5 +563,16 @@ div:where(.swal2-icon) {
   color: #fff;
 }
 
-
-
+/* flagging color */
+.white {
+  background-color: transparent;
+  margin: 0 !important;
+}
+.yellow {
+  background-color: #ffff00;
+  margin: 0 !important;
+}
+.red {
+  background-color: #ff0000;
+  margin: 0 !important;
+}
