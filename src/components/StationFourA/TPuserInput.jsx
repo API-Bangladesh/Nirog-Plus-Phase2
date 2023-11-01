@@ -286,7 +286,7 @@ const TPuserData = () => {
                       <div className="">
                         <div className="">
                           <p className="font-16 fw-semibold">
-                            Do you have any of the following diseases?
+                            Does your family have any of the following diseases?
                           </p>
                         </div>
                         <div className="position-relative">
