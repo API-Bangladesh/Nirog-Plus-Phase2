@@ -599,16 +599,16 @@ const PatientReg = () => {
       OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
       usersID: "1",
       CreateUser: userData?.name,
-      SpouseName: "",
-      ReligionId: "0644AF95-95E2-4170-B607-E68A23949E66",
-      FamilyMembers: "",
-      FatherName: "",
-      MotherName: "",
-      EducationId: "EB642FBB-9CB4-4957-84F3-1314EF36B819",
-      HeadOfFamilyId: "74F37870-EE9A-4132-ABC8-F8B71FFA88D1",
-      ChildAge0To1: "",
-      ChildAge1To5: "",
-      ChildAgeOver5: "",
+      // SpouseName: "",
+      // ReligionId: "0644AF95-95E2-4170-B607-E68A23949E66",
+      // FamilyMembers: "",
+      // FatherName: "",
+      // MotherName: "",
+      // EducationId: "EB642FBB-9CB4-4957-84F3-1314EF36B819",
+      // HeadOfFamilyId: "74F37870-EE9A-4132-ABC8-F8B71FFA88D1",
+      // ChildAge0To1: "",
+      // ChildAge1To5: "",
+      // ChildAgeOver5: "",
     },
     addressInfo: {
       AddressLine1: "",
@@ -1102,7 +1102,7 @@ const PatientReg = () => {
                   </select>
                 </div>
 
-                <div className="mb-3 shadowme">
+                {/* <div className="mb-3 shadowme">
                   <label htmlFor="" className="form-label text-capitalize">
                     Spouse Name (if any)
                   </label>
@@ -1114,9 +1114,9 @@ const PatientReg = () => {
                     className="form-control form-radious inputBox"
                     placeholder="Type here"
                   />
-                </div>
+                </div> */}
 
-                <div className="mb-3 shadowme">
+                {/* <div className="mb-3 shadowme">
                   <label htmlFor="" className="form-label text-capitalize">
                     Father's Name
                   </label>
@@ -1128,8 +1128,8 @@ const PatientReg = () => {
                     className="form-control form-radious inputBox"
                     placeholder="Type here"
                   />
-                </div>
-                <div className="mb-3 shadowme">
+                </div> */}
+                {/* <div className="mb-3 shadowme">
                   <label htmlFor="" className="form-label text-capitalize">
                     Mother's Name
                   </label>
@@ -1141,8 +1141,8 @@ const PatientReg = () => {
                     className="form-control form-radious inputBox"
                     placeholder="Type here"
                   />
-                </div>
-                <div className="mb-3 shadowme">
+                </div> */}
+                {/* <div className="mb-3 shadowme">
                   <label htmlFor="" className="form-label text-capitalize">
                     Family Members
                   </label>
@@ -1154,8 +1154,8 @@ const PatientReg = () => {
                     className="form-control form-radious inputBox"
                     placeholder="Ex: 5"
                   />
-                </div>
-                <div className="mb-3 shadowme">
+                </div> */}
+                {/* <div className="mb-3 shadowme">
                   <label htmlFor="" className="form-label text-capitalize">
                     Head of Family
                   </label>
@@ -1175,8 +1175,8 @@ const PatientReg = () => {
                       </option>
                     ))}
                   </select>
-                </div>
-                <div className="mb-3 shadowme">
+                </div> */}
+                {/* <div className="mb-3 shadowme">
                   <label htmlFor="" className="form-label text-capitalize mb-0">
                     Childrens
                   </label>
@@ -1236,9 +1236,9 @@ const PatientReg = () => {
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> */}
 
-                <div className="mb-3">
+                {/* <div className="mb-3">
                   <label htmlFor="" className="form-label text-capitalize">
                     Education
                   </label>
@@ -1255,8 +1255,8 @@ const PatientReg = () => {
                       </option>
                     ))}
                   </select>
-                </div>
-                <div className="mb-3">
+                </div> */}
+                {/* <div className="mb-3">
                   <label htmlFor="" className="form-label text-capitalize">
                     Religion
                   </label>
@@ -1273,7 +1273,7 @@ const PatientReg = () => {
                       </option>
                     ))}
                   </select>
-                </div>
+                </div> */}
               </div>
             </div>
 

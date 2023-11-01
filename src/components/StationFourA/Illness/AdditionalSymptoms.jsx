@@ -30,7 +30,7 @@ const AdditionalSymptoms = ({ formData, setFormData }) => {
           CatType: "CAT1",
         },
       });
-      console.log(response.data.data);
+      // console.log(response.data.data);
       if (response.status === 200) {
         setTBSymptoms(response.data.data);
       }
@@ -63,7 +63,7 @@ const AdditionalSymptoms = ({ formData, setFormData }) => {
       });
     }
 
-    if (index === 0) {
+    if (index !== -1) {
       myFormData.TBSymptoms = myFormData.TBSymptoms.filter((item) => {
         if (item.TBSymptom == TBSymptomId) {
           item.Status = value;
@@ -73,7 +73,7 @@ const AdditionalSymptoms = ({ formData, setFormData }) => {
     }
 
     setFormData(myFormData);
-    console.log(myFormData?.TBSymptoms);
+    // console.log(myFormData?.TBSymptoms);
   };
 
   const handleRemove = (TBSymptomId) => {
@@ -172,12 +172,12 @@ const AdditionalSymptoms = ({ formData, setFormData }) => {
           ))}
 
           {/* Other */}
-          <div className="mb-1">
+          {/* <div className="mb-1">
             <p className="font-16 mb-1">Others</p>
             <div className="position-relative onBtn">
               <OthersField />
             </div>
-          </div>
+          </div> */}
         </div>
       )}
 

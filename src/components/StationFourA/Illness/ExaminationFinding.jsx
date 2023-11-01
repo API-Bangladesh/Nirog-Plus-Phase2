@@ -30,7 +30,7 @@ const ExaminationFindings = ({ formData, setFormData }) => {
           CatType: "CAT1",
         },
       });
-      console.log(response.data.data);
+      // console.log(response.data.data);
       if (response.status === 200) {
         setTBEFindings(response.data.data);
       }
@@ -63,7 +63,7 @@ const ExaminationFindings = ({ formData, setFormData }) => {
       });
     }
 
-    if (index === 0) {
+    if (index !== -1) {
       myFormData.TBEFindings = myFormData.TBEFindings.filter((item) => {
         if (item.TBEFindingId == TBEFindingId) {
           item.Status = value;
@@ -73,7 +73,7 @@ const ExaminationFindings = ({ formData, setFormData }) => {
     }
 
     setFormData(myFormData);
-    console.log(myFormData?.TBEFindings);
+    // console.log(myFormData?.TBEFindings);
   };
 
   const handleRemove = (TBEFindingId) => {
@@ -172,12 +172,12 @@ const ExaminationFindings = ({ formData, setFormData }) => {
           ))}
 
           {/* Other */}
-          <div className="mb-1">
+          {/* <div className="mb-1">
             <p className="font-16 mb-1">Others</p>
             <div className="position-relative onBtn">
               <OthersField />
             </div>
-          </div>
+          </div> */}
         </div>
       )}
 
