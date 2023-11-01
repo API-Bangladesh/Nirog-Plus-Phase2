@@ -24,19 +24,19 @@ import SingleButton from "./../Buttons/SingleButton/SingleButton";
 import StationButton from "./../Buttons/StationButton/StationButton";
 import axios from "axios";
 import { Link } from "react-router-dom";
-import { Button } from "react-bootstrap";  
-import { GrFormClose } from 'react-icons/gr';
+import { Button } from "react-bootstrap";
+import { GrFormClose } from "react-icons/gr";
 import Swal from "sweetalert2";
 import { API_URL } from "../../helper/Constants";
 import { useSelector } from "react-redux";
 import PatientShortInfo from "../Common/PatientShortInfo";
-import { AiOutlineClose  } from 'react-icons/ai';
+import { AiOutlineClose } from "react-icons/ai";
 import { loggedInUserData } from "../../helper/localStorageHelper";
 import { Navigate } from "react-router-dom";
 
 const TPuserData = () => {
   const userData = loggedInUserData();
-  const userName = userData?.name; 
+  const userName = userData?.name;
 
   const [patientGender, setPatientGender] = useState();
   const [tbScreeningCough, setTbScreeingCough] = useState("");
@@ -49,7 +49,7 @@ const TPuserData = () => {
   // let patientGender = patient.gender.GenderCode;
   // console.log(patientGender);
   const [PatientId] = useState(patient?.PatientId);
-  
+
   const [formData, setFormData] = useState({
     Complaints: [],
     PatientHOPresentIllness: [],
@@ -87,15 +87,15 @@ const TPuserData = () => {
   });
 
   //  console.log(formData?.ChildVaccination);
-   
+
   //pushing tb-screening da.a
   const handleChangeTbScreening = (e) => {
     let myFormData = { ...formData };
 
     myFormData.TBScreening.push({
       PatientId: PatientId,
-      AnemiaSeverityId:null, 
-      Status: "",
+      AnemiaSeverityId: null,
+      Status: e.target.value,
       AnemiaSeverity: tbScreenHistory, //sending history data to this field!
       coughGreaterThanMonth: tbScreeningCough,
       LGERF: tbScreeningLGERF,
@@ -103,7 +103,7 @@ const TPuserData = () => {
       weightLoss: tbScreeningweightLoss,
       CreateUser: userName,
       UpdateUser: userName,
-      OrgId:"73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B"
+      OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
     });
 
     setFormData(myFormData);
@@ -124,11 +124,11 @@ const TPuserData = () => {
         title: "Success",
         text: response.data.message,
       }).then(function () {
-        if(patientGender === "Female"){
+        if (patientGender === "Female") {
           window.location = "station-fourb";
           // <Navigate to="/station-fourb" />
           console.log("I am in four-b block");
-        }else{
+        } else {
           window.location = "four-c-userinput";
           // <Navigate to="/four-c-userinput" />
         }
@@ -151,9 +151,57 @@ const TPuserData = () => {
     setFormData(myFormData);
   };
 
+  const handleRemove = (e) => {
+    let myFormData = { ...formData };
+
+    myFormData.TBScreening = myFormData.TBScreening.filter((item) => {
+      return item[e.target.name] != "yes";
+    });
+
+    setFormData(myFormData);
+  };
+
   useEffect(() => {
     // console.log(formData.GeneralExamination[0]);
     setPatientGender(patient?.gender?.GenderCode);
+  }, [formData]);
+
+  useEffect(() => {
+    let count = 0;
+    formData.TBScreening.map((item) => {
+      if (item.Status === "yes") {
+        count += 1;
+      }
+    });
+
+    if (count >= 2) {
+      const submitData = async () => {
+        try {
+          const response = await axios.post(
+            `${API_URL}/api/patient-s4-create`,
+            formData
+          );
+
+          Swal.fire({
+            icon: "success",
+            title: "Success",
+            text: response.data.message,
+          }).then(function () {
+            window.location = "tb-status";
+          });
+        } catch (error) {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "An error occurred.",
+          });
+        }
+      };
+      submitData();
+      return;
+    } else {
+      return;
+    }
   }, [formData]);
 
   return (
@@ -204,13 +252,13 @@ const TPuserData = () => {
                                 return (
                                   <tr key={key}>
                                     <td>{item.chiefComplain}</td>
-                                    <td>{item.durationText}</td> 
+                                    <td>{item.durationText}</td>
                                     <td>{item.ccDurationValue}</td>
                                     <td>{item.otherCC}</td>
                                     <td>{item.nature}</td>
                                     <td>
                                       <button
-                                      className="btn btn-danger btn-sm"
+                                        className="btn btn-danger btn-sm"
                                         onClick={(e) =>
                                           handleRemoveByKey(
                                             e,
@@ -219,7 +267,7 @@ const TPuserData = () => {
                                           )
                                         }
                                       >
-                                        <AiOutlineClose className="fs-5"/>
+                                        <AiOutlineClose className="fs-5" />
                                       </button>
                                     </td>
                                   </tr>
@@ -250,7 +298,11 @@ const TPuserData = () => {
                           </p>
                         </div>
                         <div className="position-relative">
-                          <PatientIllness className="toggle-btn" formData={formData} setFormData={setFormData} />
+                          <PatientIllness
+                            className="toggle-btn"
+                            formData={formData}
+                            setFormData={setFormData}
+                          />
                         </div>
                       </div>
                     </Accordion.Body>
@@ -270,7 +322,11 @@ const TPuserData = () => {
                           </p>
                         </div>
                         <div className="position-relative">
-                          <PastIllness className="toggle-btn" formData={formData} setFormData={setFormData} />
+                          <PastIllness
+                            className="toggle-btn"
+                            formData={formData}
+                            setFormData={setFormData}
+                          />
                         </div>
                       </div>
                     </Accordion.Body>
@@ -282,7 +338,7 @@ const TPuserData = () => {
                     className="input-shadow mb-3 rounded"
                   >
                     <Accordion.Header>Family history</Accordion.Header>
-                    <Accordion.Body> 
+                    <Accordion.Body>
                       <div className="">
                         <div className="">
                           <p className="font-16 fw-semibold">
@@ -290,7 +346,11 @@ const TPuserData = () => {
                           </p>
                         </div>
                         <div className="position-relative">
-                          <FamilyIllness className="toggle-btn"  formData={formData} setFormData={setFormData} />
+                          <FamilyIllness
+                            className="toggle-btn"
+                            formData={formData}
+                            setFormData={setFormData}
+                          />
                         </div>
                       </div>
                     </Accordion.Body>
@@ -310,12 +370,15 @@ const TPuserData = () => {
                           </p>
                         </div>
                         <div className="position-relative">
-                          <PatientSocial className="toggle-btn"  formData={formData} setFormData={setFormData} />
+                          <PatientSocial
+                            className="toggle-btn"
+                            formData={formData}
+                            setFormData={setFormData}
+                          />
                         </div>
                       </div>
                     </Accordion.Body>
                   </Accordion.Item>
-
 
                   {/* General examintion  */}
                   <Accordion.Item
@@ -419,7 +482,7 @@ const TPuserData = () => {
                                     <td>{item.Status}</td>
                                     <td>
                                       <button
-                                      className="btn btn-danger btn-sm"
+                                        className="btn btn-danger btn-sm"
                                         onClick={(e) =>
                                           handleRemoveByKey(
                                             e,
@@ -428,7 +491,7 @@ const TPuserData = () => {
                                           )
                                         }
                                       >
-                                        <AiOutlineClose className="fs-5"/>
+                                        <AiOutlineClose className="fs-5" />
                                       </button>
                                     </td>
                                   </tr>
@@ -520,7 +583,11 @@ const TPuserData = () => {
                           </p>
                         </div>
                         <div className="position-relative">
-                          <PatientWellbeing className="toggle-btn" formData={formData} setFormData={setFormData}/>
+                          <PatientWellbeing
+                            className="toggle-btn"
+                            formData={formData}
+                            setFormData={setFormData}
+                          />
                         </div>
                       </div>
                     </Accordion.Body>
@@ -540,7 +607,11 @@ const TPuserData = () => {
                           </p>
                         </div>
                         <div className="position-relative">
-                          <ChildVaccination className="toggle-btn" formData={formData} setFormData={setFormData}/>
+                          <ChildVaccination
+                            className="toggle-btn"
+                            formData={formData}
+                            setFormData={setFormData}
+                          />
                         </div>
                       </div>
                     </Accordion.Body>
@@ -549,7 +620,7 @@ const TPuserData = () => {
                   {/* Abult Vaccination */}
 
                   <Accordion.Item
-                    eventKey="11" 
+                    eventKey="11"
                     className="input-shadow mb-3 rounded"
                   >
                     <Accordion.Header>Adult Vaccination</Accordion.Header>
@@ -561,7 +632,11 @@ const TPuserData = () => {
                           </p>
                         </div>
                         <div className="position-relative">
-                          <AdultVaccination className="toggle-btn" formData={formData} setFormData={setFormData}/>
+                          <AdultVaccination
+                            className="toggle-btn"
+                            formData={formData}
+                            setFormData={setFormData}
+                          />
                         </div>
                       </div>
                     </Accordion.Body>
@@ -583,13 +658,17 @@ const TPuserData = () => {
                             <input
                               className="form-check-input"
                               type="radio"
-                              name="coughGreaterThanMonth" 
+                              name="coughGreaterThanMonth"
                               id="no1"
                               value="no"
-                              onChange={(e)=>{setTbScreeingCough(e.target.value); handleChangeTbScreening(e)}}
+                              onChange={(e) => {
+                                setTbScreeingCough(e.target.value);
+                                handleChangeTbScreening(e);
+                              }}
                               onDoubleClick={(e) => {
                                 e.target.checked = false;
-                                e.target.value = null;
+                                // e.target.value = null;
+                                handleRemove(e);
                               }}
                             />
                             <label
@@ -606,10 +685,14 @@ const TPuserData = () => {
                               name="coughGreaterThanMonth"
                               id="yes1"
                               value="yes"
-                              onChange={(e)=>{setTbScreeingCough(e.target.value); handleChangeTbScreening(e)}}
+                              onChange={(e) => {
+                                setTbScreeingCough(e.target.value);
+                                handleChangeTbScreening(e);
+                              }}
                               onDoubleClick={(e) => {
                                 e.target.checked = false;
-                                e.target.value = null;
+                                // e.target.value = null;
+                                handleRemove(e);
                               }}
                             />
                             <label
@@ -634,10 +717,14 @@ const TPuserData = () => {
                               name="LGERF"
                               id="no2"
                               value="no"
-                              onChange={(e)=>{setTbScreeingLGERF(e.target.value); handleChangeTbScreening(e)}}
+                              onChange={(e) => {
+                                setTbScreeingLGERF(e.target.value);
+                                handleChangeTbScreening(e);
+                              }}
                               onDoubleClick={(e) => {
                                 e.target.checked = false;
-                                e.target.value = null;
+                                // e.target.value = null;
+                                handleRemove(e);
                               }}
                             />
                             <label
@@ -654,10 +741,14 @@ const TPuserData = () => {
                               name="LGERF"
                               id="yes2"
                               value="yes"
-                              onChange={(e)=>{setTbScreeingLGERF(e.target.value); handleChangeTbScreening(e)}}
+                              onChange={(e) => {
+                                setTbScreeingLGERF(e.target.value);
+                                handleChangeTbScreening(e);
+                              }}
                               onDoubleClick={(e) => {
                                 e.target.checked = false;
-                                e.target.value = null;
+                                // e.target.value = null;
+                                handleRemove(e);
                               }}
                             />
                             <label
@@ -682,10 +773,14 @@ const TPuserData = () => {
                               name="nightSweat"
                               id="no3"
                               value="no"
-                              onChange={(e)=>{setTbScreeingnightSweat(e.target.value); handleChangeTbScreening(e)}}
+                              onChange={(e) => {
+                                setTbScreeingnightSweat(e.target.value);
+                                handleChangeTbScreening(e);
+                              }}
                               onDoubleClick={(e) => {
                                 e.target.checked = false;
-                                e.target.value = null;
+                                // e.target.value = null;
+                                handleRemove(e);
                               }}
                             />
                             <label
@@ -702,10 +797,14 @@ const TPuserData = () => {
                               name="nightSweat"
                               id="yes3"
                               value="yes"
-                              onChange={(e)=>{setTbScreeingnightSweat(e.target.value); handleChangeTbScreening(e)}}
+                              onChange={(e) => {
+                                setTbScreeingnightSweat(e.target.value);
+                                handleChangeTbScreening(e);
+                              }}
                               onDoubleClick={(e) => {
                                 e.target.checked = false;
-                                e.target.value = null;
+                                // e.target.value = null;
+                                handleRemove(e);
                               }}
                             />
                             <label
@@ -729,7 +828,10 @@ const TPuserData = () => {
                               name="weightLoss"
                               id="no4"
                               value="no"
-                              onChange={(e)=>{setTbScreeingweightLoss(e.target.value); handleChangeTbScreening(e)}}
+                              onChange={(e) => {
+                                setTbScreeingweightLoss(e.target.value);
+                                handleChangeTbScreening(e);
+                              }}
                             />
                             <label
                               className="form-check-label text-capitalize"
@@ -745,7 +847,10 @@ const TPuserData = () => {
                               name="weightLoss"
                               id="yes4"
                               value="yes"
-                              onChange={(e)=>{setTbScreeingweightLoss(e.target.value); handleChangeTbScreening(e)}}
+                              onChange={(e) => {
+                                setTbScreeingweightLoss(e.target.value);
+                                handleChangeTbScreening(e);
+                              }}
                             />
                             <label
                               className="form-check-label text-capitalize"
@@ -768,7 +873,10 @@ const TPuserData = () => {
                               name="option5"
                               id="no5"
                               value="no"
-                              onChange={(e)=>{setTbScreenHistory(e.target.value); handleChangeTbScreening(e)}}
+                              onChange={(e) => {
+                                setTbScreenHistory(e.target.value);
+                                handleChangeTbScreening(e);
+                              }}
                             />
                             <label
                               className="form-check-label text-capitalize"
@@ -784,7 +892,10 @@ const TPuserData = () => {
                               name="option5"
                               id="yes5"
                               value="yes"
-                              onChange={(e)=>{setTbScreenHistory(e.target.value); handleChangeTbScreening(e)}}
+                              onChange={(e) => {
+                                setTbScreenHistory(e.target.value);
+                                handleChangeTbScreening(e);
+                              }}
                             />
                             <label
                               className="form-check-label text-capitalize"
@@ -797,7 +908,6 @@ const TPuserData = () => {
                       </div>
                     </Accordion.Body>
                   </Accordion.Item>
-                  
                 </Accordion>
               </div>
             </div>
@@ -817,12 +927,13 @@ const TPuserData = () => {
                 </div>
               </section>
               <div className="previewBtn">
-                <Link to="/prescription"
+                <Link
+                  to="/prescription"
                   className="border-0 button-color text-white py-2 px-3 text-capitalize rounded"
                 >
                   Histrory
                 </Link>
-            </div>
+              </div>
             </div>
           </form>
         </div>

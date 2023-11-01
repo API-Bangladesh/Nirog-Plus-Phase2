@@ -14,7 +14,7 @@ import "./TbStatus.css";
 
 import AdditionalSymptoms from "../StationFourA/Illness/AdditionalSymptoms";
 import ExaminationFinding from "../StationFourA/Illness/ExaminationFinding";
-import TBPastHistory from "../StationFourA/Illness/TBPastHistoryOLD";
+import TBPastHistory from "../StationFourA/Illness/TBPastHistory";
 
 const TbStatus = () => {
   const userData = loggedInUserData();
@@ -30,20 +30,12 @@ const TbStatus = () => {
     TBEvidences: [],
     TBPastHistories: [],
     TreatmentSuggestion: [],
-    FollowUpDate: [
-      {
-        PatientId: PatientId,
-        followUpDate: "",
-        comment: "",
-        Status: "",
-        CreateUser: user,
-        OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
-      },
-    ],
   });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // console.log(formData);
+    // return;
 
     try {
       const response = await axios.post(
@@ -56,7 +48,7 @@ const TbStatus = () => {
         title: "Success",
         text: response.data.message,
       }).then(function () {
-        window.location = "cardiovascular-risk-nonlab";
+        window.location = "four-c-userinput";
       });
     } catch (error) {
       Swal.fire({
@@ -80,7 +72,7 @@ const TbStatus = () => {
             </div>
           </div>
 
-          <form className="mt-3">
+          <form className="mt-3" onSubmit={(e) => handleSubmit(e)}>
             <div className="row d-flex justify-content-center">
               <div className="col-lg-6">
                 <h6>Additional History for Suspected TB Cases (PTB only)</h6>
