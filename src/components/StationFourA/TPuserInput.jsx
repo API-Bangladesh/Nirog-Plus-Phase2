@@ -113,7 +113,8 @@ const TPuserData = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     // console.log(formData?.PatientHOFamilyIllness);
-    // return
+    // console.log(formData?.PatientHOPresentIllness);
+    // return;
 
     try {
       const response = await axios.post(
@@ -605,7 +606,7 @@ const TPuserData = () => {
                       <div className="">
                         <div className="">
                           <p className="font-16 fw-semibold">
-                            Do you have any of the following diseases?
+                            Did you get any of the following vaccinations?
                           </p>
                         </div>
                         <div className="position-relative">
@@ -630,7 +631,7 @@ const TPuserData = () => {
                       <div className="">
                         <div className="">
                           <p className="font-16 fw-semibold">
-                            Do you have any of the following diseases?
+                            Did you get any of the following vaccinations?
                           </p>
                         </div>
                         <div className="position-relative">

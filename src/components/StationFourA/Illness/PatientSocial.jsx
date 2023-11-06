@@ -47,7 +47,7 @@ const PatientIllness = ({ formData, setFormData }) => {
     if (index === -1) {
       myFormData.SocialHistory.push({
         PatientId: PatientId,
-        socialBehaviorId: "C91982FF-851A-4701-BD45-6A6C490E440B",
+        socialBehaviorId: illnessId,
         otherSocialBehavior: "Test SocialHistory",
         Status: value,
         CreateUser: userName,
