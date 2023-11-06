@@ -292,7 +292,7 @@ const TPuserData = () => {
                     eventKey="1"
                     className="input-shadow mb-3 rounded"
                   >
-                    <Accordion.Header>H/O Present illness</Accordion.Header>
+                    <Accordion.Header>H/O Present Illness</Accordion.Header>
                     <Accordion.Body>
                       <div className="">
                         <div className="">
@@ -316,12 +316,12 @@ const TPuserData = () => {
                     eventKey="2"
                     className="input-shadow mb-3 rounded"
                   >
-                    <Accordion.Header>H/O Past illness</Accordion.Header>
+                    <Accordion.Header>H/O Past Illness</Accordion.Header>
                     <Accordion.Body>
                       <div className="">
                         <div className="">
                           <p className="font-16 fw-semibold">
-                            Do you have any of the following diseases?
+                            Did you have any of the following diseases?
                           </p>
                         </div>
                         <div className="position-relative">
@@ -340,7 +340,7 @@ const TPuserData = () => {
                     eventKey="3"
                     className="input-shadow mb-3 rounded"
                   >
-                    <Accordion.Header>Family history</Accordion.Header>
+                    <Accordion.Header>Family History</Accordion.Header>
                     <Accordion.Body>
                       <div className="">
                         <div className="">
