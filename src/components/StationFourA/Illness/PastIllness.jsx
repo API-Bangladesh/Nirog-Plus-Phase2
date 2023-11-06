@@ -5,7 +5,7 @@ import { API_URL } from "../../../helper/Constants";
 import { useSelector } from "react-redux";
 import { loggedInUserData } from "../../../helper/localStorageHelper";
 
-const pastIllness = ({ formData, setFormData }) => {
+const PatientIllness = ({ formData, setFormData }) => {
   const [isShown, setIsShown] = useState(false);
   const { patient } = useSelector((state) => state.patients);
 
@@ -13,18 +13,16 @@ const pastIllness = ({ formData, setFormData }) => {
   const [OrgId] = useState(patient?.OrgId);
 
   const userData = loggedInUserData();
-  const userName = userData?.name; 
+  const userName = userData?.name;
 
-  const handleClick = (event) => {
-    setIsShown((current) => !current);
-  };
-
-  //pastIllness
+  // pastIllness
   const [pastIllness, setpastIllness] = useState([]);
 
   const getpastIllnessData = async () => {
     try {
-      const response = await axios.get(`${API_URL}/api/patient-ho-past-illness`);
+      const response = await axios.get(
+        `${API_URL}/api/patient-ho-past-illness`
+      );
 
       if (response.status === 200) {
         setpastIllness(response.data.data);
@@ -57,30 +55,37 @@ const pastIllness = ({ formData, setFormData }) => {
       });
     }
 
-    if (index === 0) {
-      myFormData.PatientHOPastIllness =
-        myFormData.PatientHOPastIllness.filter((item) => {
+    if (index !== -1) {
+      myFormData.PatientHOPastIllness = myFormData.PatientHOPastIllness.filter(
+        (item) => {
           if (item.illnessId == illnessId) {
             item.Status = value;
           }
           return item;
-        });
+        }
+      );
     }
 
     setFormData(myFormData);
     console.log(myFormData?.PatientHOPastIllness);
   };
-  
 
   const handleRemove = (illnessId) => {
     let myFormData = { ...formData };
 
-    myFormData.PatientHOPastIllness =
-      myFormData.PatientHOPastIllness.filter((item) => {
+    myFormData.PatientHOPastIllness = myFormData.PatientHOPastIllness.filter(
+      (item) => {
         return item.illnessId != illnessId;
-      });
+      }
+    );
 
     setFormData(myFormData);
+    console.log(myFormData?.PatientHOPastIllness);
+  };
+
+  const handleClick = () => {
+    setIsShown((current) => !current);
+    setFormData({ ...formData, PatientHOPastIllness: [] });
   };
 
   return (
@@ -92,8 +97,8 @@ const pastIllness = ({ formData, setFormData }) => {
             type="checkbox"
             onClick={handleClick}
             role="switch"
-            id="flexSwitchCheckChecked"
-            defaultChecked=""
+            // id="flexSwitchCheckChecked"
+            // defaultChecked=""
           />
         </div>
       </div>
@@ -103,55 +108,55 @@ const pastIllness = ({ formData, setFormData }) => {
           {pastIllness.map((item) => (
             <div
               key={item.IllnessId}
-              value={item.IllnessId}
               className="d-flex justify-content-between"
             >
               <div className="">
-                <p className="font-16"> {item.IllnessCode}</p>
+                <p className="font-16">{item.IllnessCode}</p>
               </div>
               <div className="">
                 <div className="form-check form-check-inline">
                   <input
                     className="form-check-input"
                     type="radio"
-                    name={item.IllnessCode}
-                    id="inlineRadio1"
+                    name={item.IllnessId}
+                    id={item.IllnessId + "hopastillness1"}
                     value="no"
                     onChange={(e) =>
                       handleChangeRadio(item.IllnessId, e.target.value)
                     }
                     onDoubleClick={(e) => {
                       e.target.checked = false;
-                      e.target.value = null;
+                      // e.target.value = null;
                       handleRemove(item.IllnessId);
                     }}
                   />
                   <label
                     className="form-check-label text-capitalize"
-                    htmlFor="inlineRadio1"
+                    htmlFor={item.IllnessId + "hopastillness1"}
                   >
                     no
                   </label>
                 </div>
+
                 <div className="form-check form-check-inline">
                   <input
                     className="form-check-input"
                     type="radio"
-                    name={item.IllnessCode}
-                    id="inlineRadio2"
+                    name={item.IllnessId}
+                    id={item.IllnessId + "hopastillness2"}
                     value="yes"
                     onChange={(e) =>
                       handleChangeRadio(item.IllnessId, e.target.value)
                     }
                     onDoubleClick={(e) => {
                       e.target.checked = false;
-                      e.target.value = null;
+                      // e.target.value = null;
                       handleRemove(item.IllnessId);
                     }}
                   />
                   <label
                     className="form-check-label text-capitalize"
-                    htmlFor="inlineRadio2"
+                    htmlFor={item.IllnessId + "hopastillness2"}
                   >
                     yes
                   </label>
@@ -167,7 +172,7 @@ const pastIllness = ({ formData, setFormData }) => {
               <OthersField />
             </div>
           </div>
-          </div>
+        </div>
       )}
 
       {/* show component on click  */}
@@ -180,4 +185,4 @@ const pastIllness = ({ formData, setFormData }) => {
   );
 };
 
-export default pastIllness;
+export default PatientIllness;
