@@ -16,23 +16,21 @@ const PatientIllness = () => {
             type="checkbox"
             onClick={handleClick}
             role="switch"
-            id="flexSwitchCheckChecked"
-            defaultChecked=""
+            name="flexSwitchCheckChecked"
           />
         </div>
       </div>
 
       {isShown && (
         <div className="col-lg-12">
-          <form action="">
+          <div>
             <textarea
-              id=""
-              name=""
+              name="othersField"
               rows="3"
               className="comment form-control"
               placeholder="type here"
             ></textarea>
-          </form>
+          </div>
         </div>
       )}
 

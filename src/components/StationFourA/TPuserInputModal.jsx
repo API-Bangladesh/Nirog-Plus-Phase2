@@ -8,7 +8,6 @@ import { useSelector } from "react-redux";
 import { loggedInUserData } from "../../helper/localStorageHelper";
 import { showErrorNotification } from "../../helper/notificationHelper";
 
-
 //main modal starts here..
 const MyVerticallyCenteredModal = ({ show, onHide, formData, setFormData }) => {
   const userData = loggedInUserData();
@@ -26,9 +25,9 @@ const MyVerticallyCenteredModal = ({ show, onHide, formData, setFormData }) => {
   const [nature, setNature] = useState("");
   const [durationList, setDurationList] = useState([]);
   const [complainList, setComplainList] = useState([]);
-  const [error, setError] = useState('');
-  const [error2, setError2] = useState('');
-  const [error3, setError3] = useState('');
+  const [error, setError] = useState("");
+  const [error2, setError2] = useState("");
+  const [error3, setError3] = useState("");
 
   useEffect(() => {
     axios
@@ -48,7 +47,6 @@ const MyVerticallyCenteredModal = ({ show, onHide, formData, setFormData }) => {
       .catch((error) => {
         console.error(error);
       });
-
   }, []);
 
   const handleSubmit = (e) => {
@@ -56,16 +54,16 @@ const MyVerticallyCenteredModal = ({ show, onHide, formData, setFormData }) => {
 
     let myFormData = { ...formData };
 
-    if(chiefComplain === ''){
-      setError('This field can not be empty!');
+    if (chiefComplain === "") {
+      setError("This field can not be empty!");
     }
-    if(durationText === ''){
-      setError2('This field can not be empty!');
+    if (durationText === "") {
+      setError2("This field can not be empty!");
     }
-    if(ccDurationValue === ''){
-      setError3('This field can not be empty!');
+    if (ccDurationValue === "") {
+      setError3("This field can not be empty!");
     }
-    if(chiefComplain && durationText && ccDurationValue ){
+    if (chiefComplain && durationText && ccDurationValue) {
       myFormData.Complaints.push({
         PatientId: PatientId,
         illnessId: "72649855-E62A-4662-A7C0-C730271ADEE1",
@@ -102,7 +100,7 @@ const MyVerticallyCenteredModal = ({ show, onHide, formData, setFormData }) => {
           id="contained-modal-title-vcenter"
           className="text-light font-18"
         >
-          Chief Complaints            
+          Chief Complaints
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className="px-3 ">
@@ -110,13 +108,18 @@ const MyVerticallyCenteredModal = ({ show, onHide, formData, setFormData }) => {
           <input
             type="text"
             value={chiefComplain}
-            onChange={(e) => {setChiefComplain(e.target.value); setError('');}}
+            onChange={(e) => {
+              setChiefComplain(e.target.value);
+              setError("");
+            }}
             // className="form-control input-padding py-2 border-0"
-            className={`form-control input-padding py-2 border-0 ${error ? 'error-input' : ''}`}
+            className={`form-control input-padding py-2 border-0 ${
+              error ? "error-input" : ""
+            }`}
             placeholder="Enter Complaints"
             list="browsers"
           />
-          {error && <p style={{ color: 'red' }}>{error}</p>} 
+          {error && <p style={{ color: "red" }}>{error}</p>}
           <datalist id="browsers">
             {complainList.map((item, key) => {
               return <option key={key} value={item.CCCode} />;
@@ -128,13 +131,15 @@ const MyVerticallyCenteredModal = ({ show, onHide, formData, setFormData }) => {
           <select
             id="Select"
             // className="form-select input-padding select-form-padding"
-            className={`form-select input-padding select-form-padding ${error2 ? 'error-input' : ''}`}
+            className={`form-select input-padding select-form-padding ${
+              error2 ? "error-input" : ""
+            }`}
             onChange={(e) => {
               let OptionText =
                 e.target.selectedOptions[0].getAttribute("option-text");
 
               setDurationId(e.target.value);
-              setError2('');
+              setError2("");
               setDurationText(OptionText);
             }}
             value={durationId}
@@ -152,26 +157,33 @@ const MyVerticallyCenteredModal = ({ show, onHide, formData, setFormData }) => {
               </option>
             ))}
           </select>
-            {error2 && <p style={{ color: 'red' }}>{error2}</p>}
+          {error2 && <p style={{ color: "red" }}>{error2}</p>}
         </div>
 
         <div className="mb-3 pb-0 m-0 input-shadow">
           <input
             type="number"
             // className="form-control input-padding py-2 border-0"
-            className={`form-control input-padding py-2 border-0 ${error3 ? 'error-input' : ''}`}
+            className={`form-control input-padding py-2 border-0 ${
+              error3 ? "error-input" : ""
+            }`}
             placeholder="Enter CcDuration Value"
-            onChange={(e) => {setCcDurationValue(e.target.value); setError3('')}}
+            onChange={(e) => {
+              setCcDurationValue(e.target.value);
+              setError3("");
+            }}
             value={ccDurationValue}
           />
-          {error3 && <p style={{ color: 'red' }}>{error3}</p>}
+          {error3 && <p style={{ color: "red" }}>{error3}</p>}
         </div>
         <div className="mb-3 pb-0 m-0 input-shadow">
           <input
             type="text"
             className="form-control input-padding py-2 border-0"
             placeholder="Enter Other CC (text)"
-            onChange={(e) => {setOtherCC(e.target.value)}}
+            onChange={(e) => {
+              setOtherCC(e.target.value);
+            }}
             value={otherCC}
           />
         </div>

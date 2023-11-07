@@ -33,8 +33,7 @@ const LungsWithNAD = ({ formData, setFormData }) => {
             onClick={handleClick}
             checked={isLungsWithNAD}
             role="switch"
-            id="flexSwitchCheckChecked"
-            defaultChecked=""
+            name="flexSwitchCheckChecked"
           />
         </div>
       </div>

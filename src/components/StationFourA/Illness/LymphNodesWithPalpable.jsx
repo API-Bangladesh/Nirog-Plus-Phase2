@@ -37,8 +37,7 @@ const LymphNodesWithPalpable = ({ formData, setFormData }) => {
             onClick={handleClick}
             checked={isLymphNodesWithPalpable}
             role="switch"
-            id="flexSwitchCheckChecked"
-            defaultChecked=""
+            name="flexSwitchCheckChecked"
           />
         </div>
       </div>

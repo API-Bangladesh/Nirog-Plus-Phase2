@@ -33,8 +33,7 @@ const HeartWithNAD = ({ formData, setFormData }) => {
             onClick={handleClick}
             checked={isHeartWithNAD}
             role="switch"
-            id="flexSwitchCheckChecked"
-            defaultChecked=""
+            name="flexSwitchCheckChecked"
           />
         </div>
       </div>
