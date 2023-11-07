@@ -30,7 +30,7 @@ const HeartWithNAD = ({ formData, setFormData }) => {
           <input
             className="form-check-input"
             type="checkbox"
-            onClick={handleClick}
+            onChange={handleClick}
             checked={isHeartWithNAD}
             role="switch"
             name="flexSwitchCheckChecked"
@@ -41,6 +41,7 @@ const HeartWithNAD = ({ formData, setFormData }) => {
       {isHeartWithNAD && (
         <div className="col-lg-12">
           <textarea
+            id="HeartWithNADText"
             rows="3"
             className="comment form-control"
             placeholder="type here"

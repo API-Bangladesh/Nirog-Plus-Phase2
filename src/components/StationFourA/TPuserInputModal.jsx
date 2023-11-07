@@ -75,7 +75,7 @@ const MyVerticallyCenteredModal = ({ show, onHide, formData, setFormData }) => {
         nature: nature,
         OrgId: OrgId,
         CreateUser: userName,
-        UpdateUser: "",
+        UpdateUser: userName,
       });
       setFormData(myFormData);
       setChiefComplain("");
@@ -85,6 +85,7 @@ const MyVerticallyCenteredModal = ({ show, onHide, formData, setFormData }) => {
       setOtherCC("");
       setNature("");
       onHide();
+      console.log(myFormData.Complaints);
     }
   };
 
@@ -103,9 +104,10 @@ const MyVerticallyCenteredModal = ({ show, onHide, formData, setFormData }) => {
           Chief Complaints
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body className="px-3 ">
+      <Modal.Body className="px-3">
         <div className="mb-2 pb-0 m-0 input-shadow">
           <input
+            id="ChiefComplaintsComplain"
             type="text"
             value={chiefComplain}
             onChange={(e) => {
@@ -129,7 +131,7 @@ const MyVerticallyCenteredModal = ({ show, onHide, formData, setFormData }) => {
 
         <div className="mb-3 input-shadow">
           <select
-            id="Select"
+            id="ChiefComplaintsSelect"
             // className="form-select input-padding select-form-padding"
             className={`form-select input-padding select-form-padding ${
               error2 ? "error-input" : ""
@@ -162,6 +164,7 @@ const MyVerticallyCenteredModal = ({ show, onHide, formData, setFormData }) => {
 
         <div className="mb-3 pb-0 m-0 input-shadow">
           <input
+            id="ChiefComplaintsDurationValue"
             type="number"
             // className="form-control input-padding py-2 border-0"
             className={`form-control input-padding py-2 border-0 ${
@@ -178,6 +181,7 @@ const MyVerticallyCenteredModal = ({ show, onHide, formData, setFormData }) => {
         </div>
         <div className="mb-3 pb-0 m-0 input-shadow">
           <input
+            id="ChiefComplaintsOtherCC"
             type="text"
             className="form-control input-padding py-2 border-0"
             placeholder="Enter Other CC (text)"
@@ -189,7 +193,7 @@ const MyVerticallyCenteredModal = ({ show, onHide, formData, setFormData }) => {
         </div>
         <div className="mb-3 input-shadow">
           <select
-            id="Select"
+            id="ChiefComplaintsSelect2"
             className="form-select input-padding select-form-padding"
             onChange={(e) => setNature(e.target.value)}
             value={nature}

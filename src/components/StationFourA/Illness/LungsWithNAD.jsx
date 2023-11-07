@@ -30,7 +30,7 @@ const LungsWithNAD = ({ formData, setFormData }) => {
           <input
             className="form-check-input"
             type="checkbox"
-            onClick={handleClick}
+            onChange={handleClick}
             checked={isLungsWithNAD}
             role="switch"
             name="flexSwitchCheckChecked"
@@ -41,6 +41,7 @@ const LungsWithNAD = ({ formData, setFormData }) => {
       {isLungsWithNAD && (
         <div className="col-lg-12">
           <textarea
+            id="LungsWithNADText"
             rows="3"
             className="comment form-control"
             placeholder="type here"

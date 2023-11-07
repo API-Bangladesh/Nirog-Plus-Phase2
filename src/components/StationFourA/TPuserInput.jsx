@@ -392,39 +392,39 @@ const TPuserData = () => {
                     <Accordion.Body>
                       <div className="mb-0 ratingItem">
                         <p className="mb-0 font-15">Anemia</p>
-                        <p className="mb-0">
+                        <div className="mb-0">
                           <Anemia
                             formData={formData}
                             setFormData={setFormData}
                           />
-                        </p>
+                        </div>
                       </div>
                       <div className="mb-0 ratingItem">
                         <p className="mb-0 font-15">Jaundice</p>
-                        <p className="mb-0">
+                        <div className="mb-0">
                           <Jaundice
                             formData={formData}
                             setFormData={setFormData}
                           />
-                        </p>
+                        </div>
                       </div>
                       <div className="mb-0 ratingItem">
                         <p className="mb-0 font-15">Cyanosis</p>
-                        <p className="mb-0">
+                        <div className="mb-0">
                           <Cyanosis
                             formData={formData}
                             setFormData={setFormData}
                           />
-                        </p>
+                        </div>
                       </div>
                       <div className="mb-0 ratingItem">
                         <p className="mb-0 font-15">Edema</p>
-                        <p className="mb-0">
+                        <div className="mb-0">
                           <Edema
                             formData={formData}
                             setFormData={setFormData}
                           />
-                        </p>
+                        </div>
                       </div>
 
                       {/* Lymph Nodes with Palpable */}
