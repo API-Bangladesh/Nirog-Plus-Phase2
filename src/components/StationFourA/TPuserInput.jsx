@@ -75,7 +75,7 @@ const TPuserData = () => {
         cyanosis: null,
         Status: "A",
         CreateUser: userName,
-        UpdateUser: "Nazmul1",
+        UpdateUser: userName,
         OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
       },
     ],
