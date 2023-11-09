@@ -146,9 +146,7 @@ const MyVerticallyCenteredModal = ({ show, onHide, formData, setFormData }) => {
             }}
             value={durationId}
           >
-            <option selected value="">
-              -- Select --
-            </option>
+            <option value="">-- Select --</option>
             {durationList?.map((duration) => (
               <option
                 value={duration.DurationId}
@@ -198,9 +196,7 @@ const MyVerticallyCenteredModal = ({ show, onHide, formData, setFormData }) => {
             onChange={(e) => setNature(e.target.value)}
             value={nature}
           >
-            <option selected value="">
-              -- Select --
-            </option>
+            <option value="">-- Select --</option>
             <option value="Nature">Nature</option>
             <option value="Continuous">Continuous</option>
             <option value="Episodic">Episodic</option>
