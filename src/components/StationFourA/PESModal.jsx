@@ -3,8 +3,13 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import "./TPuserInput.css";
 import { useSelector } from "react-redux";
+import { loggedInUserData } from "../../helper/localStorageHelper";
 
 function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
+  const userData = loggedInUserData();
+  const userName = userData?.name;
+  // console.log(userName);
+
   const { patient } = useSelector((state) => state.patients);
 
   const [PatientId] = useState(patient?.PatientId);
@@ -24,8 +29,8 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
         PatientId: PatientId,
         physicalFinding: physicalFinding,
         Status: status,
-        CreateUser: "Nazmul",
-        UpdateUser: "Nazmul1",
+        CreateUser: userName,
+        UpdateUser: userName,
         OrgId: OrgId,
       });
       setFormData(myFormData);
@@ -33,6 +38,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
       setStatus("");
       onHide();
     }
+    console.log(physicalFinding);
   };
 
   return (
@@ -55,7 +61,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
           {/* <label htmlFor="bmi" className="form-label text-capitalize">BMI class</label> */}
           <div className="mb-3 rounded">
             <select
-              id="Select"
+              id="SystemicExaminationSelect"
               value={physicalFinding}
               onChange={(e) => {
                 setPhysicalFinding(e.target.value);
@@ -66,9 +72,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
                 error ? "error-input" : ""
               }`}
             >
-              <option selected value="">
-                -- Select --
-              </option>
+              <option value="">-- Select --</option>
               <option value="Cardiovascular System">
                 Cardiovascular System
               </option>
