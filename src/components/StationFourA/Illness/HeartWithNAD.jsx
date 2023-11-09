@@ -21,6 +21,7 @@ const HeartWithNAD = ({ formData, setFormData }) => {
     myFormData.GeneralExamination[0].heartWithNAD = heartWithNAD;
 
     setFormData(myFormData);
+    console.log(myFormData.GeneralExamination[0]);
   }, [isHeartWithNAD, heartWithNAD]);
 
   return (

@@ -21,6 +21,7 @@ const LungsWithNAD = ({ formData, setFormData }) => {
     myFormData.GeneralExamination[0].lungsWithNAD = lungsWithNAD;
 
     setFormData(myFormData);
+    console.log(myFormData.GeneralExamination[0]);
   }, [isLungsWithNAD, lungsWithNAD]);
 
   return (

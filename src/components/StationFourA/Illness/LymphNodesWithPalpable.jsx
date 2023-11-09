@@ -25,6 +25,7 @@ const LymphNodesWithPalpable = ({ formData, setFormData }) => {
       lymphNodesWithPalpableSite;
 
     setFormData(myFormData);
+    console.log(myFormData.GeneralExamination[0]);
   }, [isLymphNodesWithPalpable, lymphNodesWithPalpableSite]);
 
   return (
