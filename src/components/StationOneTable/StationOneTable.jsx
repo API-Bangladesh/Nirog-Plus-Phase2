@@ -19,7 +19,9 @@ const StationOneTable = ({ station, link, title }) => {
 
   const dispatch = useDispatch();
 
-  const handleSearch = async () => {
+  const handleSearch = async (e) => {
+    e.preventDefault()
+    
     try {
       let searchKey = "";
       switch (searchOption) {
@@ -127,7 +129,7 @@ const StationOneTable = ({ station, link, title }) => {
           </div>
 
           <div className="search">
-            <form action="" className="searchBox">
+            <form action="" className="searchBox" onSubmit={handleSearch} method="POST">
               <input
                 type="text"
                 value={searchQuery}

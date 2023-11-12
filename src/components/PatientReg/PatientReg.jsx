@@ -855,7 +855,7 @@ const PatientReg = () => {
               <div className="col-lg-6">
                 <SectionTitle title="Registration" />
                 <div className="mb-3 shadowme">
-                  <label htmlFor="" className="form-label text-capitalize">
+                  <label className="form-label text-capitalize">
                     Registration Number{" "}
                     <span className="text-danger font-20 ">*</span>
                   </label>
@@ -873,7 +873,7 @@ const PatientReg = () => {
                 </div>
 
                 <div className="mb-3 shadowme">
-                  <label htmlFor="" className="form-label text-capitalize">
+                  <label className="form-label text-capitalize">
                     First name
                   </label>
                   <input
@@ -887,7 +887,7 @@ const PatientReg = () => {
                 </div>
 
                 <div className="mb-3 shadowme">
-                  <label htmlFor="" className="form-label text-capitalize">
+                  <label className="form-label text-capitalize">
                     Last name
                   </label>
                   <input
@@ -901,7 +901,7 @@ const PatientReg = () => {
                 </div>
 
                 <div className="mb-3">
-                  <label htmlFor="" className="form-label text-capitalize">
+                  <label className="form-label text-capitalize">
                     Date of Birth
                   </label>
                   <input
@@ -914,7 +914,7 @@ const PatientReg = () => {
                 </div>
 
                 <div className="mb-3 shadowme position-relative">
-                  <label htmlFor="" className="form-label text-capitalize">
+                  <label className="form-label text-capitalize">
                     Patient Age
                   </label>
                   <input
@@ -928,7 +928,7 @@ const PatientReg = () => {
                   <div className="iputComon">Year</div>
                 </div>
                 <div className="mb-3 shadowme">
-                  <label htmlFor="" className="form-label text-capitalize">
+                  <label className="form-label text-capitalize">
                     Contact Number
                   </label>
                   <input
@@ -941,11 +941,11 @@ const PatientReg = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="" className="form-label text-capitalize">
+                  <label className="form-label text-capitalize">
                     Gender <span className="text-danger font-20 ">*</span>
                   </label>
                   <select
-                    id="Select"
+                    id="GenderId"
                     name="patientInfo.GenderId"
                     value={formData.patientInfo.GenderId}
                     onChange={handleInputChange}
@@ -953,7 +953,7 @@ const PatientReg = () => {
                       errors?.GenderId && "invalid-field"
                     }`}
                   >
-                    <option selected value="" disabled>
+                    <option value="" disabled>
                       Select
                     </option>
                     {genders.map((item) => (
@@ -969,6 +969,7 @@ const PatientReg = () => {
                     <div className="d-flex">
                       <div className="form-check me-3 mb-2">
                         <input
+                          id="nid1"
                           className="form-check-input"
                           type="radio"
                           name="patientInfo.idType"
@@ -992,6 +993,7 @@ const PatientReg = () => {
                       </div>
                       <div className="form-check me-3 mb-2">
                         <input
+                          id="nid2"
                           className="form-check-input"
                           type="radio"
                           name="patientInfo.idType"
@@ -1005,6 +1007,7 @@ const PatientReg = () => {
                       </div>
                       <div className="form-check me-3 mb-2">
                         <input
+                          id="nid3"
                           className="form-check-input"
                           type="radio"
                           name="patientInfo.idType"
@@ -1052,13 +1055,13 @@ const PatientReg = () => {
 
                   <div className="col-lg-4">
                     <select
-                      id="Select"
+                      id="selfType"
                       name="patientInfo.selfType"
                       value={formData.patientInfo.selfType}
                       onChange={handleInputChange}
                       className="form-select inputBox"
                     >
-                      <option selected value="" disabled>
+                      <option value="" disabled>
                         Select
                       </option>
                       {selftype.map((item) => (
@@ -1074,12 +1077,12 @@ const PatientReg = () => {
                 </div>
 
                 <div className="mb-3">
-                  <label htmlFor="" className="form-label text-capitalize">
+                  <label className="form-label text-capitalize">
                     Marital Status
                     <span className="text-danger font-20 ">*</span>
                   </label>
                   <select
-                    id="Select"
+                    id="MariatalStatus"
                     name="patientInfo.MariatalStatus"
                     value={formData.patientInfo.MariatalStatus}
                     onChange={handleInputChange}
@@ -1088,7 +1091,7 @@ const PatientReg = () => {
                       errors?.MariatalStatus && "invalid-field"
                     }`}
                   >
-                    <option selected value="" disabled>
+                    <option value="" disabled>
                       Select
                     </option>
                     {maritalstatus.map((item) => (
@@ -1103,7 +1106,7 @@ const PatientReg = () => {
                 </div>
 
                 {/* <div className="mb-3 shadowme">
-                  <label htmlFor="" className="form-label text-capitalize">
+                  <label  className="form-label text-capitalize">
                     Spouse Name (if any)
                   </label>
                   <input
@@ -1117,7 +1120,7 @@ const PatientReg = () => {
                 </div> */}
 
                 {/* <div className="mb-3 shadowme">
-                  <label htmlFor="" className="form-label text-capitalize">
+                  <label  className="form-label text-capitalize">
                     Father's Name
                   </label>
                   <input
@@ -1130,7 +1133,7 @@ const PatientReg = () => {
                   />
                 </div> */}
                 {/* <div className="mb-3 shadowme">
-                  <label htmlFor="" className="form-label text-capitalize">
+                  <label  className="form-label text-capitalize">
                     Mother's Name
                   </label>
                   <input
@@ -1143,7 +1146,7 @@ const PatientReg = () => {
                   />
                 </div> */}
                 {/* <div className="mb-3 shadowme">
-                  <label htmlFor="" className="form-label text-capitalize">
+                  <label  className="form-label text-capitalize">
                     Family Members
                   </label>
                   <input
@@ -1156,7 +1159,7 @@ const PatientReg = () => {
                   />
                 </div> */}
                 {/* <div className="mb-3 shadowme">
-                  <label htmlFor="" className="form-label text-capitalize">
+                  <label  className="form-label text-capitalize">
                     Head of Family
                   </label>
                   <select
@@ -1177,7 +1180,7 @@ const PatientReg = () => {
                   </select>
                 </div> */}
                 {/* <div className="mb-3 shadowme">
-                  <label htmlFor="" className="form-label text-capitalize mb-0">
+                  <label  className="form-label text-capitalize mb-0">
                     Childrens
                   </label>
                   <div className="row">
@@ -1239,7 +1242,7 @@ const PatientReg = () => {
                 </div> */}
 
                 {/* <div className="mb-3">
-                  <label htmlFor="" className="form-label text-capitalize">
+                  <label  className="form-label text-capitalize">
                     Education
                   </label>
                   <select
@@ -1257,7 +1260,7 @@ const PatientReg = () => {
                   </select>
                 </div> */}
                 {/* <div className="mb-3">
-                  <label htmlFor="" className="form-label text-capitalize">
+                  <label  className="form-label text-capitalize">
                     Religion
                   </label>
                   <select
@@ -1283,7 +1286,7 @@ const PatientReg = () => {
                 <SectionTitle title="Present Address" />
                 <div className="mb-3">
                   <label
-                    htmlFor="comments"
+                    htmlFor="AddressLine1"
                     className="form-label text-capitalize"
                   >
                     Address
@@ -1294,14 +1297,12 @@ const PatientReg = () => {
                     onChange={handleInputChange}
                     className="form-control form-radious inputBox"
                     placeholder="type here"
-                    id="comments"
+                    id="AddressLine1"
                   ></textarea>
                 </div>
 
                 <div className="mb-3">
-                  <label htmlFor="" className="form-label text-capitalize">
-                    Village
-                  </label>
+                  <label className="form-label text-capitalize">Village</label>
                   <input
                     type="text"
                     name="addressInfo.Village"
@@ -1313,7 +1314,7 @@ const PatientReg = () => {
                 </div>
 
                 <div className="mb-3">
-                  <label htmlFor="" className="form-label text-capitalize">
+                  <label className="form-label text-capitalize">
                     District{" "}
                     {/* <span className="text-danger font-20 ">*</span> */}
                   </label>
@@ -1335,7 +1336,7 @@ const PatientReg = () => {
                 </div>
 
                 <div className="mb-3">
-                  <label htmlFor="" className="form-label text-capitalize">
+                  <label className="form-label text-capitalize">
                     Upazila{" "}
                     {/* <span className="text-danger font-20 ">*</span> */}
                   </label>
@@ -1355,7 +1356,7 @@ const PatientReg = () => {
                 </div>
 
                 <div className="mb-3">
-                  <label htmlFor="" className="form-label text-capitalize">
+                  <label className="form-label text-capitalize">
                     Union{" "}
                     {/* <span className="text-danger font-20 ">*</span> */}
                   </label>
@@ -1376,7 +1377,7 @@ const PatientReg = () => {
                 </div>
 
                 <div className="mb-3">
-                  <label htmlFor="" className="form-label text-capitalize">
+                  <label className="form-label text-capitalize">
                     Post Code
                   </label>
                   <input
@@ -1390,9 +1391,7 @@ const PatientReg = () => {
                 </div>
 
                 <div className="mb-3">
-                  <label htmlFor="" className="form-label text-capitalize">
-                    Country
-                  </label>
+                  <label className="form-label text-capitalize">Country</label>
                   <input
                     type="text"
                     name="addressInfo.Country"
@@ -1414,7 +1413,7 @@ const PatientReg = () => {
                     <input
                       className="form-check-input"
                       type="checkbox"
-                      onClick={handlePermanentSameAsPresent}
+                      onChange={handlePermanentSameAsPresent}
                       checked={isPermanentSameAsPresent}
                       role="switch"
                       id="permanentSameAsPresent"
@@ -1424,7 +1423,7 @@ const PatientReg = () => {
                 </div>
                 <div className="mb-3">
                   <label
-                    htmlFor="comments"
+                    htmlFor="AddressLine1Parmanent"
                     className="form-label text-capitalize"
                   >
                     Address
@@ -1435,15 +1434,13 @@ const PatientReg = () => {
                     onChange={handleInputChange}
                     className="form-control form-radious inputBox"
                     placeholder="type here"
-                    id="comments"
+                    id="AddressLine1Parmanent"
                     disabled={isPermanentSameAsPresent}
                   ></textarea>
                 </div>
 
                 <div className="mb-3">
-                  <label htmlFor="" className="form-label text-capitalize">
-                    Village
-                  </label>
+                  <label className="form-label text-capitalize">Village</label>
                   <input
                     type="text"
                     name="addressInfo.VillageParmanent"
@@ -1456,7 +1453,7 @@ const PatientReg = () => {
                 </div>
 
                 {/* <div className="mb-3">
-                  <label htmlFor="" className="form-label text-capitalize">
+                  <label  className="form-label text-capitalize">
                     Union
                   </label>
                   <input
@@ -1470,7 +1467,7 @@ const PatientReg = () => {
                 </div> */}
 
                 <div className="mb-3">
-                  <label htmlFor="" className="form-label text-capitalize">
+                  <label className="form-label text-capitalize">
                     District{" "}
                     {/* <span className="text-danger font-20 ">*</span> */}
                   </label>
@@ -1493,7 +1490,7 @@ const PatientReg = () => {
                 </div>
 
                 <div className="mb-3">
-                  <label htmlFor="" className="form-label text-capitalize">
+                  <label className="form-label text-capitalize">
                     Upazila{" "}
                     {/* <span className="text-danger font-20 ">*</span> */}
                   </label>
@@ -1516,7 +1513,7 @@ const PatientReg = () => {
                 </div>
 
                 <div className="mb-3">
-                  <label htmlFor="" className="form-label text-capitalize">
+                  <label className="form-label text-capitalize">
                     Union{" "}
                     {/* <span className="text-danger font-20 ">*</span> */}
                   </label>
@@ -1540,7 +1537,7 @@ const PatientReg = () => {
                 </div>
 
                 {/* <div className="mb-3">
-                  <label htmlFor="" className="form-label text-capitalize">
+                  <label  className="form-label text-capitalize">
                   Union
                   </label>
                   <select
@@ -1550,7 +1547,7 @@ const PatientReg = () => {
                     onChange={handleInputChange}
                     className="form-control form-radious inputBox"
                   >
-                    <option selected value="" disabled>
+                    <option value="" disabled>
                       Select
                     </option>
                     {union.map((item) => (
@@ -1565,7 +1562,7 @@ const PatientReg = () => {
                 </div> */}
 
                 <div className="mb-3">
-                  <label htmlFor="" className="form-label text-capitalize">
+                  <label className="form-label text-capitalize">
                     Post Code
                   </label>
                   <input
@@ -1580,9 +1577,7 @@ const PatientReg = () => {
                 </div>
 
                 <div className="mb-3">
-                  <label htmlFor="" className="form-label text-capitalize">
-                    Country
-                  </label>
+                  <label className="form-label text-capitalize">Country</label>
                   <input
                     type="text"
                     name="addressInfo.CountryParmanent"
@@ -1601,9 +1596,7 @@ const PatientReg = () => {
               <div className="col-lg-6">
                 <SectionTitle title="FDMN camp" />
                 <div className="mb-3">
-                  <label htmlFor="" className="form-label text-capitalize">
-                    Camp
-                  </label>
+                  <label className="form-label text-capitalize">Camp</label>
                   <input
                     type="text"
                     name="addressInfo.Camp"
@@ -1615,7 +1608,7 @@ const PatientReg = () => {
                 </div>
 
                 <div className="mb-3">
-                  <label htmlFor="" className="form-label text-capitalize">
+                  <label className="form-label text-capitalize">
                     Block Number
                   </label>
                   <input
@@ -1629,7 +1622,7 @@ const PatientReg = () => {
                 </div>
 
                 <div className="mb-3">
-                  <label htmlFor="" className="form-label text-capitalize">
+                  <label className="form-label text-capitalize">
                     Majhi / Captain
                   </label>
                   <input
@@ -1642,7 +1635,7 @@ const PatientReg = () => {
                   />
                 </div>
                 <div className="mb-3">
-                  <label htmlFor="" className="form-label text-capitalize">
+                  <label className="form-label text-capitalize">
                     Tent Number
                   </label>
                   <input
@@ -1656,7 +1649,7 @@ const PatientReg = () => {
                 </div>
 
                 <div className="mb-3">
-                  <label htmlFor="" className="form-label text-capitalize">
+                  <label className="form-label text-capitalize">
                     FCN Number
                   </label>
                   <input
