@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import SectionBannerDemo from "../../components/SectionBannerDemo/SectionBanner";
 import GlobalButton from "../GlobalBtn/GlobalButton";
 import SectionTitle from "../SectionTitleDemo/SectionTitle";
-import StationButton from "../Buttons/StationButton/StationButton";
-import SingleButton from "../Buttons/SingleButton/SingleButton";
+// import StationButton from "../Buttons/StationButton/StationButton";
+// import SingleButton from "../Buttons/SingleButton/SingleButton";
 import "./StationOneHeight.css";
 import { Button } from "react-bootstrap";
 import Swal from "sweetalert2";
@@ -11,11 +11,17 @@ import axios from "axios";
 import { API_URL } from "../../helper/Constants";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { loggedInUserData } from "../../helper/localStorageHelper";
 
 const StationOneHeight = () => {
   const { patient } = useSelector((state) => state.patients);
 
   const [PatientId] = useState(patient?.PatientId);
+  // const [OrgId] = useState(patient?.OrgId);
+
+  const userData = loggedInUserData();
+  const userName = userData?.name;
+
   const [Height, setHeight] = useState("");
   const [Weight, setWeight] = useState("");
   const [BMI, setBMI] = useState("");
@@ -24,7 +30,7 @@ const StationOneHeight = () => {
   const [MUACClass, setMUACClass] = useState("");
   const [RefBloodGroupId, setRefBloodGroupId] = useState("");
   const [OrgId] = useState("73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B");
-  const [CreateUser] = useState("mmr");
+  // const [CreateUser] = useState("mmr");
   const [error, setError] = useState("");
 
   const token = localStorage.getItem("token");
@@ -36,7 +42,7 @@ const StationOneHeight = () => {
     e.preventDefault();
     try {
       if (RefBloodGroupId === "") {
-        setError("  This field can not be empty!");
+        setError("This field can not be empty!");
       } else {
         const response = await axios.post(
           `${API_URL}/api/patient-height-width-create`,
@@ -49,8 +55,8 @@ const StationOneHeight = () => {
             MUAC,
             MUACClass,
             RefBloodGroupId,
-            OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
-            CreateUser: "Mizanur Rahaman sobuz",
+            OrgId: OrgId,
+            CreateUser: userName,
           }
         );
 
@@ -95,14 +101,25 @@ const StationOneHeight = () => {
   }, []);
 
   useEffect(() => {
+    let BMIValue = (Weight / ((Height / 100) * (Height / 100))).toFixed(2);
+
+    // Check if BMI is a valid number
+    if (isNaN(BMIValue) || !isFinite(BMIValue)) {
+      BMIValue = "";
+    }
+
+    setBMI(BMIValue);
+
     let result =
-      BMI <= 0
-        ? "----"
-        : BMI <= 18.5
+      BMIValue === null || BMIValue === ""
+        ? ""
+        : BMIValue <= 0
+        ? ""
+        : BMIValue <= 18.5
         ? "UnderWeight"
-        : BMI > 18.5 && BMI <= 24.9
+        : BMIValue > 18.5 && BMIValue <= 24.9
         ? "Normal"
-        : BMI >= 25 && BMI <= 29.9
+        : BMIValue > 24.9 && BMIValue <= 29.9
         ? "OverWeight"
         : "Obese";
     setBMIClass(result);
@@ -118,7 +135,7 @@ const StationOneHeight = () => {
         ? " At Risk for Acute Malnutrition "
         : MUAC >= 13.5
         ? "Normal"
-        : "----";
+        : "";
     setMUACClass(result);
   }, [MUAC]);
 
@@ -146,15 +163,9 @@ const StationOneHeight = () => {
                 <input
                   type="number"
                   value={Height}
+                  min="0"
                   onChange={(event) => {
                     setHeight(event.target.value);
-                    setBMI(
-                      (
-                        Weight /
-                        ((event.target.value / 100) *
-                          (event.target.value / 100))
-                      ).toFixed(2)
-                    );
                   }}
                   name="Height"
                   id="Height"
@@ -172,14 +183,9 @@ const StationOneHeight = () => {
                 <input
                   type="number"
                   value={Weight}
+                  min="0"
                   onChange={(event) => {
                     setWeight(event.target.value);
-                    setBMI(
-                      (
-                        event.target.value /
-                        ((Height / 100) * (Height / 100))
-                      ).toFixed(2)
-                    );
                   }}
                   name="Weight"
                   id="Weight"
@@ -194,8 +200,10 @@ const StationOneHeight = () => {
                   BMI
                 </label>
                 <input
+                  id="BMI"
                   type="text"
-                  value={Height == 0 || Weight == 0 ? "0" : BMI}
+                  name="BMI"
+                  value={Height == 0 || Weight == 0 ? "----" : BMI}
                   onChange={(event) => {
                     setBMI(event.target.value);
                   }}
@@ -207,13 +215,18 @@ const StationOneHeight = () => {
 
               {/* BMI class */}
               <div className="mb-3 shadowme">
-                <label htmlFor="BMI" className="form-label text-capitalize">
+                <label
+                  htmlFor="BMIClass"
+                  className="form-label text-capitalize"
+                >
                   BMI Class
                 </label>
                 <input
+                  id="BMIClass"
                   type="text"
+                  name="BMIClass"
                   readOnly
-                  value={BMIClass}
+                  value={BMIClass === "" ? "----" : BMIClass}
                   className="form-control form-radious inputBox"
                   placeholder=""
                 />
@@ -222,11 +235,13 @@ const StationOneHeight = () => {
               {/* MUAC */}
               <div className="mb-3 shadowme position-relative">
                 <div className="iputComon">cm</div>
-                <label htmlFor="BMI" className="form-label text-capitalize">
+                <label htmlFor="MUAC" className="form-label text-capitalize">
                   MUAC
                 </label>
                 <input
+                  id="MUAC"
                   type="number"
+                  name="MUAC"
                   value={MUAC}
                   onChange={(event) => {
                     setMUAC(event.target.value);
@@ -238,23 +253,32 @@ const StationOneHeight = () => {
 
               {/* MUAC class */}
               <div className="mb-3 shadowme">
-                <label htmlFor="BMI" className="form-label text-capitalize">
+                <label
+                  htmlFor="MUACClass"
+                  className="form-label text-capitalize"
+                >
                   MUAC class
                 </label>
                 <div className="mb-3">
                   <input
+                    id="MUACClass"
                     type="text"
-                    value={MUACClass}
+                    name="MUACClass"
+                    readOnly
+                    value={MUACClass === "" ? "----" : MUACClass}
                     className="form-control form-radious inputBox"
                   />
                 </div>
               </div>
               <div className="mb-3">
-                <label htmlFor="BMI" className="form-label text-capitalize">
+                <label
+                  htmlFor="RefBloodGroupIdSelect"
+                  className="form-label text-capitalize"
+                >
                   blood group <span className="text-danger font-20 ">*</span>
                 </label>
                 <select
-                  id="Select"
+                  id="RefBloodGroupIdSelect"
                   value={RefBloodGroupId}
                   onChange={(event) => {
                     setRefBloodGroupId(event.target.value);
@@ -265,7 +289,7 @@ const StationOneHeight = () => {
                   }`}
                   // className="form-select inputBox"
                 >
-                  <option>-- Select --</option>
+                  <option value="">-- Select --</option>
                   {bloodgroup.map((item) => (
                     <option
                       key={item.RefBloodGroupId}

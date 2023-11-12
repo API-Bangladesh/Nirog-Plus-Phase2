@@ -732,6 +732,7 @@ const PatientReg = () => {
     // return
     try {
       // doValidation();
+      // return
       const codeCheckResponse = await axios.post(
         `${API_URL}/api/registration-code-check`,
         { registrationCode: formData.patientInfo.RegistrationId }
@@ -1000,6 +1001,15 @@ const PatientReg = () => {
                           value="Birth"
                           checked={formData.patientInfo.idType === "Birth"}
                           onChange={handleInputChange}
+                          onDoubleClick={() => {
+                            setFormData({
+                              ...formData,
+                              patientInfo: {
+                                ...formData.patientInfo,
+                                idType: "",
+                              },
+                            });
+                          }}
                         />
                         <label className="form-check-label" htmlFor="nid2">
                           Birth
