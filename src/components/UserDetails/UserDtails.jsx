@@ -80,7 +80,8 @@ const UserDtails = () => {
             <div className="profile">
               <p className="text-capitalize font-16 m-0">
                 <span className="fw-bold">name: </span>
-                {patient?.GivenName + " " + patient?.FamilyName}
+                {/* {patient?.GivenName + " " + patient?.FamilyName} */}
+                {patient?.GivenName ?? ''} {patient?.FamilyName ?? ''}
               </p>
               <p className="text-capitalize font-16 m-0">
                 <span className="fw-bold">age: </span> {patient?.Age}
@@ -96,7 +97,7 @@ const UserDtails = () => {
                 <span className="fw-bold">contact number : </span>{" "}
                 {patient?.CellNumber}
               </p>
-              <p className="text-capitalize font-16 m-0 mb-2">
+              <div className="text-capitalize font-16 m-0 mb-2">
                 <address className="mb-0">
                   <strong>Present Address: </strong>
                   {[
@@ -136,7 +137,7 @@ const UserDtails = () => {
                    ""
                 }
                 
-              </p>
+              </div>
             </div>
 
             <div className="barCodeBox ms-0 p-0">
