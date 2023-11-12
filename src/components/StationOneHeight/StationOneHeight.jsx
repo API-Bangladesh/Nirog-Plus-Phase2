@@ -25,9 +25,9 @@ const StationOneHeight = () => {
   const [RefBloodGroupId, setRefBloodGroupId] = useState("");
   const [OrgId] = useState("73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B");
   const [CreateUser] = useState("mmr");
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   const myTokenData = JSON.parse(token);
   const tokenData = myTokenData?.user?.station;
   const stations = tokenData.split(",");
@@ -35,9 +35,9 @@ const StationOneHeight = () => {
   const handleSubmit = async (e, redirectUrl) => {
     e.preventDefault();
     try {
-      if(RefBloodGroupId === ""){  
-        setError('  This field can not be empty!');
-      }else{
+      if (RefBloodGroupId === "") {
+        setError("  This field can not be empty!");
+      } else {
         const response = await axios.post(
           `${API_URL}/api/patient-height-width-create`,
           {
@@ -53,7 +53,7 @@ const StationOneHeight = () => {
             CreateUser: "Mizanur Rahaman sobuz",
           }
         );
-  
+
         Swal.fire({
           icon: "success",
           title: "Success",
@@ -127,7 +127,9 @@ const StationOneHeight = () => {
       <section className="Heightwidth">
         <SectionBannerDemo
           title="Station 1 - Height & Weight"
-          patientName={`patient name: ${patient?.GivenName + " " + patient?.FamilyName}`}
+          patientName={`patient name: ${
+            patient?.GivenName + " " + patient?.FamilyName
+          }`}
         />
 
         <div className="container">
@@ -256,9 +258,11 @@ const StationOneHeight = () => {
                   value={RefBloodGroupId}
                   onChange={(event) => {
                     setRefBloodGroupId(event.target.value);
-                    setError('');
+                    setError("");
                   }}
-                  className={`form-select inputBox ${error ? 'error-input' : ''}`}
+                  className={`form-select inputBox ${
+                    error ? "error-input" : ""
+                  }`}
                   // className="form-select inputBox"
                 >
                   <option>-- Select --</option>
@@ -271,50 +275,51 @@ const StationOneHeight = () => {
                     </option>
                   ))}
                 </select>
-                {error && <p style={{ color: 'red' }}>{error}</p>}
+                {error && <p style={{ color: "red" }}>{error}</p>}
               </div>
             </div>
           </div>
           <div className="text-center mt-3 position-relative">
             <section>
               <div className="container">
-                {
-                  stations?.includes("station_2") ? (<Button
+                {stations?.includes("station_2") ? (
+                  <Button
                     className="border-0 button-color text-white py-2 px-3 text-capitalize rounded	undefined"
                     block="block"
                     onClick={(e) => handleSubmit(e, "/user-table")}
                   >
                     Save
-                    </Button>) : (<Button
+                  </Button>
+                ) : (
+                  <Button
                     className="border-0 button-color text-white py-2 px-3 text-capitalize rounded	undefined"
                     block="block"
                     onClick={(e) => handleSubmit(e, "/dashboard")}
                   >
                     Save
-                  </Button>)
-                }
+                  </Button>
+                )}
               </div>
             </section>
             <section className="stationBtn">
-              {
-                stations?.includes("station_2") && 
-              <a
-                className="border-0 button-color text-white py-2 px-3 text-capitalize rounded	button-bg"
-                onClick={(e) => handleSubmit(e, "/blood-pressure-table")}
-              >
-                Save &amp; Station 2
-              </a>
-              }
+              {stations?.includes("station_2") && (
+                <a
+                  className="border-0 button-color text-white py-2 px-3 text-capitalize rounded	button-bg"
+                  onClick={(e) => handleSubmit(e, "/blood-pressure")}
+                >
+                  Save &amp; Station 2
+                </a>
+              )}
             </section>
 
             <div className="previewBtn">
-                <Link to="/prescription"
-                  className="border-0 button-color text-white py-2 px-3 text-capitalize rounded"
-                >
-                  Histrory
-                </Link>
+              <Link
+                to="/prescription"
+                className="border-0 button-color text-white py-2 px-3 text-capitalize rounded"
+              >
+                Histrory
+              </Link>
             </div>
-
           </div>
         </div>
         <GlobalButton />

@@ -410,7 +410,6 @@ const PrescriptionFinal = () => {
             <footer className="footer d-flex justify-content-between">
             
               <address className="mb-0">
-                <p className="mb-0">Haefa USA</p>
                 <p className="mb-0">Health and Education for All (HAEFA), USA <br />
                 311 Bedford St Lexington, MA 02420, USA
                 </p>
@@ -418,7 +417,6 @@ const PrescriptionFinal = () => {
                 <p className="mb-0">Website: www.haefa.org</p>
               </address>
               <address className="mb-0">
-                <p className="mb-0">Haefa Bangladesh</p>
                 <p className="mb-0">Health and Education for All (HAEFA), Bangladesh <br />
                 House: 31, Road: 16, Sector: 13, Uttara, Dhaka
                 </p>

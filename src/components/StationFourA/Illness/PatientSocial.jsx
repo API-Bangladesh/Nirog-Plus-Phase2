@@ -15,18 +15,16 @@ const PatientIllness = ({ formData, setFormData }) => {
   const userData = loggedInUserData();
   const userName = userData?.name;
 
-  const handleClick = (event) => {
-    setIsShown((current) => !current);
-  };
-
-  //SocialHistory
+  // SocialHistory
   const [SocialHistory, setSocialHistory] = useState([]);
+
   const getSocialHistoryData = async () => {
     try {
       const response = await axios.get(`${API_URL}/api/social-history`);
 
       if (response.status === 200) {
         setSocialHistory(response.data.data);
+        // console.log(response.data.data);
       }
     } catch (error) {
       console.error(error);
@@ -41,13 +39,13 @@ const PatientIllness = ({ formData, setFormData }) => {
     let myFormData = { ...formData };
 
     const index = myFormData.SocialHistory.findIndex(
-      (object) => object.illnessId === illnessId
+      (object) => object.socialBehaviorId === illnessId
     );
 
     if (index === -1) {
       myFormData.SocialHistory.push({
         PatientId: PatientId,
-        socialBehaviorId: "C91982FF-851A-4701-BD45-6A6C490E440B",
+        socialBehaviorId: illnessId,
         otherSocialBehavior: "Test SocialHistory",
         Status: value,
         CreateUser: userName,
@@ -56,9 +54,9 @@ const PatientIllness = ({ formData, setFormData }) => {
       });
     }
 
-    if (index === 0) {
+    if (index !== -1) {
       myFormData.SocialHistory = myFormData.SocialHistory.filter((item) => {
-        if (item.illnessId == illnessId) {
+        if (item.socialBehaviorId == illnessId) {
           item.Status = value;
         }
         return item;
@@ -73,10 +71,16 @@ const PatientIllness = ({ formData, setFormData }) => {
     let myFormData = { ...formData };
 
     myFormData.SocialHistory = myFormData.SocialHistory.filter((item) => {
-      return item.illnessId != illnessId;
+      return item.socialBehaviorId != illnessId;
     });
 
     setFormData(myFormData);
+    console.log(myFormData?.SocialHistory);
+  };
+
+  const handleClick = () => {
+    setIsShown((current) => !current);
+    setFormData({ ...formData, SocialHistory: [] });
   };
 
   return (
@@ -88,8 +92,7 @@ const PatientIllness = ({ formData, setFormData }) => {
             type="checkbox"
             onClick={handleClick}
             role="switch"
-            id="flexSwitchCheckChecked"
-            defaultChecked=""
+            name="flexSwitchCheckChecked"
           />
         </div>
       </div>
@@ -110,28 +113,34 @@ const PatientIllness = ({ formData, setFormData }) => {
                     className="form-check-input"
                     type="radio"
                     name={item.SocialBehaviorId}
-                    id="smoking1"
-                    value={item.SocialBehaviorCode === "Housing Mediation"
-                    ? "Catcha"
-                    : item.SocialBehaviorCode === "Drinking Water Sources"
-                    ? "Safe"
-                    : "No"}
+                    id={item.SocialBehaviorId + "SocialBehavior1"}
+                    value={
+                      item.SocialBehaviorId ===
+                      "C91982FF-851A-4701-BD45-6A6C490E440B"
+                        ? "Catcha"
+                        : item.SocialBehaviorId ===
+                          "3B5B6589-4B1C-469B-A1E7-6AB4C14A5B93"
+                        ? "Safe"
+                        : "No"
+                    }
                     onChange={(e) =>
                       handleChangeRadio(item.SocialBehaviorId, e.target.value)
                     }
                     onDoubleClick={(e) => {
                       e.target.checked = false;
-                      e.target.value = null;
+                      // e.target.value = null;
                       handleRemove(item.SocialBehaviorId);
                     }}
                   />
                   <label
                     className="form-check-label text-capitalize"
-                    htmlFor="smoking1"
+                    htmlFor={item.SocialBehaviorId + "SocialBehavior1"}
                   >
-                    {item.SocialBehaviorCode === "Housing Mediation"
+                    {item.SocialBehaviorId ===
+                    "C91982FF-851A-4701-BD45-6A6C490E440B"
                       ? "Catcha"
-                      : item.SocialBehaviorCode === "Drinking Water Sources"
+                      : item.SocialBehaviorId ===
+                        "3B5B6589-4B1C-469B-A1E7-6AB4C14A5B93"
                       ? "Safe"
                       : "No"}
                   </label>
@@ -141,28 +150,34 @@ const PatientIllness = ({ formData, setFormData }) => {
                     className="form-check-input"
                     type="radio"
                     name={item.SocialBehaviorId}
-                    id="smoking2"
-                    value={item.SocialBehaviorCode === "Housing Mediation"
-                    ? "Paka"
-                    : item.SocialBehaviorCode === "Drinking Water Sources"
-                    ? "Unsafe"
-                    : "Yes"}
+                    id={item.SocialBehaviorId + "SocialBehavior2"}
+                    value={
+                      item.SocialBehaviorId ===
+                      "C91982FF-851A-4701-BD45-6A6C490E440B"
+                        ? "Paka"
+                        : item.SocialBehaviorId ===
+                          "3B5B6589-4B1C-469B-A1E7-6AB4C14A5B93"
+                        ? "Unsafe"
+                        : "Yes"
+                    }
                     onChange={(e) =>
                       handleChangeRadio(item.SocialBehaviorId, e.target.value)
                     }
                     onDoubleClick={(e) => {
                       e.target.checked = false;
-                      e.target.value = null;
+                      // e.target.value = null;
                       handleRemove(item.SocialBehaviorId);
                     }}
                   />
                   <label
                     className="form-check-label text-capitalize"
-                    htmlFor="smoking2"
+                    htmlFor={item.SocialBehaviorId + "SocialBehavior2"}
                   >
-                    {item.SocialBehaviorCode === "Housing Mediation"
+                    {item.SocialBehaviorId ===
+                    "C91982FF-851A-4701-BD45-6A6C490E440B"
                       ? "Paka"
-                      : item.SocialBehaviorCode === "Drinking Water Sources"
+                      : item.SocialBehaviorId ===
+                        "3B5B6589-4B1C-469B-A1E7-6AB4C14A5B93"
                       ? "Unsafe"
                       : "Yes"}
                   </label>

@@ -13,15 +13,11 @@ const PatientIllness = ({ formData, setFormData }) => {
   const [OrgId] = useState(patient?.OrgId);
 
   const userData = loggedInUserData();
-  const userName = userData?.name; 
-
-  const handleClick = (event) => {
-    setIsShown((current) => !current);
-  };
+  const userName = userData?.name;
 
   // PresentIllness
   const [PresentIllness, setPresentIllness] = useState([]);
-  
+
   const getPresentIllnessData = async () => {
     try {
       const response = await axios.get(
@@ -58,7 +54,7 @@ const PatientIllness = ({ formData, setFormData }) => {
       });
     }
 
-    if (index === 0) {
+    if (index !== -1) {
       myFormData.PatientHOPresentIllness =
         myFormData.PatientHOPresentIllness.filter((item) => {
           if (item.illnessId == illnessId) {
@@ -71,7 +67,6 @@ const PatientIllness = ({ formData, setFormData }) => {
     setFormData(myFormData);
     console.log(myFormData?.PatientHOPresentIllness);
   };
-  
 
   const handleRemove = (illnessId) => {
     let myFormData = { ...formData };
@@ -82,6 +77,12 @@ const PatientIllness = ({ formData, setFormData }) => {
       });
 
     setFormData(myFormData);
+    console.log(myFormData?.PatientHOPresentIllness);
+  };
+
+  const handleClick = () => {
+    setIsShown((current) => !current);
+    setFormData({ ...formData, PatientHOPresentIllness: [] });
   };
 
   return (
@@ -93,8 +94,7 @@ const PatientIllness = ({ formData, setFormData }) => {
             type="checkbox"
             onClick={handleClick}
             role="switch"
-            id="flexSwitchCheckChecked"
-            defaultChecked=""
+            name="flexSwitchCheckChecked"
           />
         </div>
       </div>
@@ -104,11 +104,10 @@ const PatientIllness = ({ formData, setFormData }) => {
           {PresentIllness.map((item, key) => (
             <div
               key={item.IllnessId}
-              value={item.IllnessId}
               className="d-flex justify-content-between"
             >
               <div className="">
-                <p className="font-16"> {item.IllnessCode}</p>
+                <p className="font-16">{item.IllnessCode}</p>
               </div>
               <div className="">
                 <div className="form-check form-check-inline">
@@ -116,20 +115,20 @@ const PatientIllness = ({ formData, setFormData }) => {
                     className="form-check-input"
                     type="radio"
                     name={item.IllnessId}
-                    id="inlineRadio1"
+                    id={item.IllnessId + "inlineRadio1"}
                     value="no"
                     onChange={(e) =>
                       handleChangeRadio(item.IllnessId, e.target.value)
                     }
                     onDoubleClick={(e) => {
                       e.target.checked = false;
-                      e.target.value = null;
+                      // e.target.value = null;
                       handleRemove(item.IllnessId);
                     }}
                   />
                   <label
                     className="form-check-label text-capitalize"
-                    htmlFor="inlineRadio1"
+                    htmlFor={item.IllnessId + "inlineRadio1"}
                   >
                     no
                   </label>
@@ -140,20 +139,20 @@ const PatientIllness = ({ formData, setFormData }) => {
                     className="form-check-input"
                     type="radio"
                     name={item.IllnessId}
-                    id="inlineRadio2"
+                    id={item.IllnessId + "inlineRadio2"}
                     value="yes"
                     onChange={(e) =>
                       handleChangeRadio(item.IllnessId, e.target.value)
                     }
                     onDoubleClick={(e) => {
                       e.target.checked = false;
-                      e.target.value = null;
+                      // e.target.value = null;
                       handleRemove(item.IllnessId);
                     }}
                   />
                   <label
                     className="form-check-label text-capitalize"
-                    htmlFor="inlineRadio2"
+                    htmlFor={item.IllnessId + "inlineRadio2"}
                   >
                     yes
                   </label>

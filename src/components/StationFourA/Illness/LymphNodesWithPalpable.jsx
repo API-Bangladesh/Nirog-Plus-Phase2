@@ -25,6 +25,7 @@ const LymphNodesWithPalpable = ({ formData, setFormData }) => {
       lymphNodesWithPalpableSite;
 
     setFormData(myFormData);
+    console.log(myFormData.GeneralExamination[0]);
   }, [isLymphNodesWithPalpable, lymphNodesWithPalpableSite]);
 
   return (
@@ -34,11 +35,10 @@ const LymphNodesWithPalpable = ({ formData, setFormData }) => {
           <input
             className="form-check-input"
             type="checkbox"
-            onClick={handleClick}
+            onChange={handleClick}
             checked={isLymphNodesWithPalpable}
             role="switch"
-            id="flexSwitchCheckChecked"
-            defaultChecked=""
+            name="flexSwitchCheckChecked"
           />
         </div>
       </div>
@@ -46,6 +46,7 @@ const LymphNodesWithPalpable = ({ formData, setFormData }) => {
       {isLymphNodesWithPalpable && (
         <div className="col-lg-12">
           <textarea
+            id="NodesWithPalpableSiteText"
             rows="3"
             className="comment form-control"
             placeholder="type here"

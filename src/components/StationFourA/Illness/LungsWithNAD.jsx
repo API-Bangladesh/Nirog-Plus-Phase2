@@ -21,6 +21,7 @@ const LungsWithNAD = ({ formData, setFormData }) => {
     myFormData.GeneralExamination[0].lungsWithNAD = lungsWithNAD;
 
     setFormData(myFormData);
+    console.log(myFormData.GeneralExamination[0]);
   }, [isLungsWithNAD, lungsWithNAD]);
 
   return (
@@ -30,11 +31,10 @@ const LungsWithNAD = ({ formData, setFormData }) => {
           <input
             className="form-check-input"
             type="checkbox"
-            onClick={handleClick}
+            onChange={handleClick}
             checked={isLungsWithNAD}
             role="switch"
-            id="flexSwitchCheckChecked"
-            defaultChecked=""
+            name="flexSwitchCheckChecked"
           />
         </div>
       </div>
@@ -42,6 +42,7 @@ const LungsWithNAD = ({ formData, setFormData }) => {
       {isLungsWithNAD && (
         <div className="col-lg-12">
           <textarea
+            id="LungsWithNADText"
             rows="3"
             className="comment form-control"
             placeholder="type here"

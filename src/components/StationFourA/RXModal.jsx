@@ -4,10 +4,10 @@ import Modal from "react-bootstrap/Modal";
 import "./TPuserInput.css";
 import axios from "axios";
 import { API_URL } from "../../helper/Constants";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 
 function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
-  const {patient} = useSelector((state) => state.patients);
+  const { patient } = useSelector((state) => state.patients);
 
   const [PatientId] = useState(patient?.PatientId);
   const [OrgId] = useState(patient?.OrgId);
@@ -21,7 +21,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
   const [allergyToMedication, setAllergyToMedication] = useState("");
 
   const [medicineNameList, setMedicineNameList] = useState([]);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   // const [showMedicine, setShowMedicine] = useState(false)
   const [dos, setDos] = useState("");
   const [dosUnit, setDosUnit] = useState("");
@@ -41,34 +41,34 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
         console.error(error);
       });
   }, []);
- 
-   useEffect(() => {
-     let result;
-     if (frequencyHour == 4) {
-       result = "1+1+1+1+1+1";
-     } else if (frequencyHour == 6) {
-       result = "1+1+1+1";
-     } else if (frequencyHour == 8) {
-       result = "1+1+1";
-     } else if (frequencyHour == 12) {
-       result = "1+0+1";
-     } else if (frequencyHour == 24) {
-       result = "0+0+1";
-     } else {
-       result = "N/A";
-     }
-     setFrequencyValue(result);
-   }, [frequencyHour]);
+
+  useEffect(() => {
+    let result;
+    if (frequencyHour == 4) {
+      result = "1+1+1+1+1+1";
+    } else if (frequencyHour == 6) {
+      result = "1+1+1+1";
+    } else if (frequencyHour == 8) {
+      result = "1+1+1";
+    } else if (frequencyHour == 12) {
+      result = "1+0+1";
+    } else if (frequencyHour == 24) {
+      result = "0+0+1";
+    } else {
+      result = "N/A";
+    }
+    setFrequencyValue(result);
+  }, [frequencyHour]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     let myFormData = { ...formData };
 
-    if(medicineName === ''){
-      setError('This field can not be empty!');
-    }else{
+    if (medicineName === "") {
+      setError("This field can not be empty!");
+    } else {
       myFormData.CurrentMedicationTaken.push({
-        PatientId: PatientId, 
+        PatientId: PatientId,
         medicineName: medicineName,
         durationId: "D796D547-1815-4EB7-A74D-03AB1342A625",
         doseValue: durationVal,
@@ -80,7 +80,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
         UpdateUser: "Nazmul1",
         OrgId: OrgId,
       });
-  
+
       setFormData(myFormData);
       setMedicineName("");
       setDos("");
@@ -135,8 +135,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
           </div>
         </div>
 
-        {
-          medicineName === 'Others' &&
+        {medicineName === "Others" && (
           <div className="mb-3 input-shadow rounded-pill">
             <input
               type="text"
@@ -146,7 +145,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
               placeholder="Add Medicine"
             />
           </div>
-        }
+        )}
 
         <div className="form-check mb-3 ms-3 mt-3">
           <input
@@ -171,9 +170,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
             onChange={(e) => setFrequencyHour(e.target.value)}
             className="form-select input-padding rounded-pill select-form-padding"
           >
-            <option value="" selected>
-              Frequency Hours
-            </option>
+            <option value="">Frequency Hours</option>
             <option value="0">0</option>
             <option value="4">4</option>
             <option value="6">6</option>
@@ -185,19 +182,19 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
 
         {/* new drop div */}
         <div className="row mb-3 input-shadow rounded-pill">
-           <div className="col-lg-6">
-              <input
-                type="text"
-                value={dos}
-                onChange={(e) => setDos(e.target.value)}
-                className="form-control input-padding rounded-pill py-2 border-0"
-                placeholder="Dos : 10, 20..."
-              />
-            </div>
+          <div className="col-lg-6">
+            <input
+              type="text"
+              value={dos}
+              onChange={(e) => setDos(e.target.value)}
+              className="form-control input-padding rounded-pill py-2 border-0"
+              placeholder="Dos : 10, 20..."
+            />
+          </div>
           <div className="col-lg-6">
             <select
               id="Select"
-              onChange={(e) =>  setDosUnit(e.target.value)}
+              onChange={(e) => setDosUnit(e.target.value)}
               className="form-select input-padding rounded-pill select-form-padding"
             >
               <option>unit</option>
@@ -211,19 +208,19 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
 
         {/* new div here */}
         <div className="row mb-3 input-shadow rounded-pill">
-           <div className="col-lg-6">
-              <input
-                type="text"
-                value={duration}
-                onChange={(e) => setDuration(e.target.value)}
-                className="form-control input-padding rounded-pill py-2 border-0"
-                placeholder="Duration : 1, 2..."
-              />
-            </div>
+          <div className="col-lg-6">
+            <input
+              type="text"
+              value={duration}
+              onChange={(e) => setDuration(e.target.value)}
+              className="form-control input-padding rounded-pill py-2 border-0"
+              placeholder="Duration : 1, 2..."
+            />
+          </div>
           <div className="col-lg-6">
             <select
               id="Select"
-              onChange={(e) =>  setDurationUnit(e.target.value)}
+              onChange={(e) => setDurationUnit(e.target.value)}
               className="form-select input-padding rounded-pill select-form-padding"
             >
               <option>unit</option>
@@ -244,7 +241,6 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
             placeholder="Duration : 2 D,M,Y"
           />
         </div> */}
-
       </Modal.Body>
       <Modal.Footer className="d-flex justify-content-center border-0 pt-0">
         <Button

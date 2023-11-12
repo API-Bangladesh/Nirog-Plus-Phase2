@@ -4,10 +4,10 @@ import { API_URL } from "../../../helper/Constants";
 import { loggedInUserData } from "../../../helper/localStorageHelper";
 import { useSelector } from "react-redux";
 
-const PatientIllness = ({formData, setFormData}) => {
+const PatientIllness = ({ formData, setFormData }) => {
   const [isShown, setIsShown] = useState(false);
   const [AdultVaccination, setAdultVaccination] = useState([]);
-  
+
   const { patient } = useSelector((state) => state.patients);
   const [PatientId] = useState(patient?.PatientId);
   const [OrgId] = useState(patient?.OrgId);
@@ -36,7 +36,7 @@ const PatientIllness = ({formData, setFormData}) => {
     getAdultVaccinationData();
   }, []);
 
-    const handleChangeRadio = (illnessId, value) => {
+  const handleChangeRadio = (illnessId, value) => {
     const index = myFormData.AdultVaccination.findIndex(
       (object) => object.illnessId === illnessId
     );
@@ -55,13 +55,14 @@ const PatientIllness = ({formData, setFormData}) => {
     }
 
     if (index === 0) {
-      myFormData.AdultVaccination =
-        myFormData.AdultVaccination.filter((item) => {
+      myFormData.AdultVaccination = myFormData.AdultVaccination.filter(
+        (item) => {
           if (item.illnessId == illnessId) {
             item.Status = value;
           }
           return item;
-        });
+        }
+      );
     }
 
     setFormData(myFormData);
@@ -69,8 +70,8 @@ const PatientIllness = ({formData, setFormData}) => {
   };
 
   const handleRemove = (illnessId) => {
-    myFormData.AdultVaccination.map((item)=>{
-      if(item.vaccineId === illnessId){
+    myFormData.AdultVaccination.map((item) => {
+      if (item.vaccineId === illnessId) {
         myFormData.AdultVaccination.pop(item);
       }
     });
@@ -78,11 +79,11 @@ const PatientIllness = ({formData, setFormData}) => {
   };
 
   const handleChangeRadioTwo = (illnessId, value) => {
-    myFormData.AdultVaccination.map((item)=>{
-      if(item.vaccineId === illnessId){
+    myFormData.AdultVaccination.map((item) => {
+      if (item.vaccineId === illnessId) {
         item.isGivenByNirog = value;
       }
-  })
+    });
   };
 
   return (
@@ -94,7 +95,7 @@ const PatientIllness = ({formData, setFormData}) => {
             type="checkbox"
             onClick={handleClick}
             role="switch"
-            id="flexSwitchCheckChecked"
+            name="flexSwitchCheckChecked"
           />
         </div>
       </div>
@@ -168,13 +169,14 @@ const PatientIllness = ({formData, setFormData}) => {
                     name="inputOptions"
                     id="inlineRadio2"
                     value="yes"
-                     onClick={(e)=>handleChangeRadioTwo(item.VaccineId, e.target.value)}
+                    onClick={(e) =>
+                      handleChangeRadioTwo(item.VaccineId, e.target.value)
+                    }
                   />
                   <label
                     className="form-check-label text-capitalize"
                     htmlFor="inlineRadio2"
-                  >
-                  </label>
+                  ></label>
                 </div>
               </div>
             </div>

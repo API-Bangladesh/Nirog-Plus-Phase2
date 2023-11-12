@@ -19,7 +19,9 @@ const StationOneTable = ({ station, link, title }) => {
 
   const dispatch = useDispatch();
 
-  const handleSearch = async () => {
+  const handleSearch = async (e) => {
+    e.preventDefault()
+    
     try {
       let searchKey = "";
       switch (searchOption) {
@@ -65,7 +67,7 @@ const StationOneTable = ({ station, link, title }) => {
         <SectionBannerDemo title={title} />
 
         <div className="container">
-          <h3 className="sectionTitle text-center mb-4">Search Patient </h3>
+          <h3 className="sectionTitle text-center mb-4">Search Patient</h3>
 
           <div className="checkbox d-flex align-items-center">
             <div className="form-check form-check-inline">
@@ -78,7 +80,7 @@ const StationOneTable = ({ station, link, title }) => {
                 onChange={() => setSearchOption("Card")}
                 onDoubleClick={()=> setSearchOption("")}
               />
-              <label className="form-check-label" htmlhtmlFor="card">
+              <label className="form-check-label" htmlFor="card">
                 Card
               </label>
             </div>
@@ -92,7 +94,7 @@ const StationOneTable = ({ station, link, title }) => {
                 onChange={() => setSearchOption("NID")}
                 onDoubleClick={()=> setSearchOption("")}
               />
-              <label className="form-check-label" htmlhtmlFor="nid">
+              <label className="form-check-label" htmlFor="nid">
                 NID
               </label>
             </div>
@@ -106,7 +108,7 @@ const StationOneTable = ({ station, link, title }) => {
                 onChange={() => setSearchOption("Name")}
                 onDoubleClick={()=> setSearchOption("")}
               />
-              <label className="form-check-label" htmlhtmlFor="name">
+              <label className="form-check-label" htmlFor="name">
                 Name
               </label>
             </div>
@@ -120,14 +122,14 @@ const StationOneTable = ({ station, link, title }) => {
                 onChange={() => setSearchOption("Mobile")}
                 onDoubleClick={()=> setSearchOption("")}
               />
-              <label className="form-check-label" htmlhtmlFor="mobile">
+              <label className="form-check-label" htmlFor="mobile">
                 Mobile
               </label>
             </div>
           </div>
 
           <div className="search">
-            <form action="" className="searchBox">
+            <form action="" className="searchBox" onSubmit={handleSearch} method="POST">
               <input
                 type="text"
                 value={searchQuery}

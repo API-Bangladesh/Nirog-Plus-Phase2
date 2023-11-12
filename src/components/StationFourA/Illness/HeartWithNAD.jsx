@@ -21,6 +21,7 @@ const HeartWithNAD = ({ formData, setFormData }) => {
     myFormData.GeneralExamination[0].heartWithNAD = heartWithNAD;
 
     setFormData(myFormData);
+    console.log(myFormData.GeneralExamination[0]);
   }, [isHeartWithNAD, heartWithNAD]);
 
   return (
@@ -30,11 +31,10 @@ const HeartWithNAD = ({ formData, setFormData }) => {
           <input
             className="form-check-input"
             type="checkbox"
-            onClick={handleClick}
+            onChange={handleClick}
             checked={isHeartWithNAD}
             role="switch"
-            id="flexSwitchCheckChecked"
-            defaultChecked=""
+            name="flexSwitchCheckChecked"
           />
         </div>
       </div>
@@ -42,6 +42,7 @@ const HeartWithNAD = ({ formData, setFormData }) => {
       {isHeartWithNAD && (
         <div className="col-lg-12">
           <textarea
+            id="HeartWithNADText"
             rows="3"
             className="comment form-control"
             placeholder="type here"

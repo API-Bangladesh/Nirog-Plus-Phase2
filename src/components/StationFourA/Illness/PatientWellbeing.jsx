@@ -5,7 +5,7 @@ import { API_URL } from "../../../helper/Constants";
 import { useSelector } from "react-redux";
 import { loggedInUserData } from "../../../helper/localStorageHelper";
 
-const PatientIllness = ({formData, setFormData}) => {
+const PatientIllness = ({ formData, setFormData }) => {
   const [isShown, setIsShown] = useState(false);
   const [answers, setAnswers] = useState([]);
 
@@ -16,7 +16,7 @@ const PatientIllness = ({formData, setFormData}) => {
 
   const userData = loggedInUserData();
   const userName = userData?.name;
-  
+
   const handleClick = (event) => {
     setIsShown((current) => !current);
   };
@@ -54,27 +54,28 @@ const PatientIllness = ({formData, setFormData}) => {
     }
 
     if (index === 0) {
-      myFormData.PatientMentalHealth =
-        myFormData.PatientMentalHealth.filter((item) => {
+      myFormData.PatientMentalHealth = myFormData.PatientMentalHealth.filter(
+        (item) => {
           if (item.illnessId == illnessId) {
             item.Status = value;
           }
           return item;
-        });
+        }
+      );
     }
 
     setFormData(myFormData);
     console.log(myFormData?.PatientMentalHealth);
   };
-  
 
   const handleRemove = (illnessId) => {
     let myFormData = { ...formData };
 
-    myFormData.PatientMentalHealth =
-      myFormData.PatientMentalHealth.filter((item) => {
+    myFormData.PatientMentalHealth = myFormData.PatientMentalHealth.filter(
+      (item) => {
         return item.illnessId != illnessId;
-      });
+      }
+    );
 
     setFormData(myFormData);
   };
@@ -88,8 +89,7 @@ const PatientIllness = ({formData, setFormData}) => {
             type="checkbox"
             onClick={handleClick}
             role="switch"
-            id="flexSwitchCheckChecked"
-            defaultChecked=""
+            name="flexSwitchCheckChecked"
           />
         </div>
       </div>
@@ -126,7 +126,7 @@ const PatientIllness = ({formData, setFormData}) => {
                         className="form-check-input"
                         type="radio"
                         value={ans.AnswerId}
-                        name={`question-${i}`} 
+                        name={`question-${i}`}
                         id={ans.AnswerId + uniqueId}
                         onDoubleClick={(e) => {
                           e.target.checked = false;
@@ -142,7 +142,9 @@ const PatientIllness = ({formData, setFormData}) => {
                         //     }
                         //   });
                         // }}
-                        onChange={() => handleChangeRadio(answer.QuestionId, ans.AnswerId)}
+                        onChange={() =>
+                          handleChangeRadio(answer.QuestionId, ans.AnswerId)
+                        }
                       />
                       <label
                         className="form-check-label text-capitalize"

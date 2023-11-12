@@ -2,30 +2,35 @@ import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import "./TPuserInput.css";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
+import { loggedInUserData } from "../../helper/localStorageHelper";
 
 function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
-  const {patient} = useSelector((state) => state.patients);
+  const userData = loggedInUserData();
+  const userName = userData?.name;
+  // console.log(userName);
+
+  const { patient } = useSelector((state) => state.patients);
 
   const [PatientId] = useState(patient?.PatientId);
   const [OrgId] = useState(patient?.OrgId);
   const [physicalFinding, setPhysicalFinding] = useState("");
   const [status, setStatus] = useState("");
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     let myFormData = { ...formData };
-    if(physicalFinding === ''){
-      setError(' This field can not be empty!');
-    } else{
+    if (physicalFinding === "") {
+      setError(" This field can not be empty!");
+    } else {
       myFormData.SystemicExamination.push({
         PatientId: PatientId,
         physicalFinding: physicalFinding,
         Status: status,
-        CreateUser: "Nazmul",
-        UpdateUser: "Nazmul1",
+        CreateUser: userName,
+        UpdateUser: userName,
         OrgId: OrgId,
       });
       setFormData(myFormData);
@@ -33,6 +38,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
       setStatus("");
       onHide();
     }
+    console.log(physicalFinding);
   };
 
   return (
@@ -55,15 +61,18 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
           {/* <label htmlFor="bmi" className="form-label text-capitalize">BMI class</label> */}
           <div className="mb-3 rounded">
             <select
-              id="Select"
+              id="SystemicExaminationSelect"
               value={physicalFinding}
-              onChange={(e) => {setPhysicalFinding(e.target.value); setError('');}}
+              onChange={(e) => {
+                setPhysicalFinding(e.target.value);
+                setError("");
+              }}
               // className="form-select inputBox rounded-pill"
-              className={`form-select inputBox rounded-pill ${error ? 'error-input' : ''}`}
+              className={`form-select inputBox rounded-pill ${
+                error ? "error-input" : ""
+              }`}
             >
-              <option selected value="">
-                -- Select --
-              </option>
+              <option value="">-- Select --</option>
               <option value="Cardiovascular System">
                 Cardiovascular System
               </option>
@@ -72,7 +81,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
               <option value="Abdominal">Abdominal</option>
               <option value="Musculoskeletal">Musculoskeletal</option>
             </select>
-            {error && <p style={{ color: 'red' }}>{error}</p>} 
+            {error && <p style={{ color: "red" }}>{error}</p>}
           </div>
         </div>
         <div className="m-0 input-shadow rounded-pill">

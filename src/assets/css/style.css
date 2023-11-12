@@ -576,3 +576,8 @@ div:where(.swal2-icon) {
   background-color: #ff0000;
   margin: 0 !important;
 }
+
+.show-data kbd {
+  display: inline-block;
+  line-height: 1;
+}

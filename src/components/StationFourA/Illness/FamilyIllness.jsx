@@ -4,6 +4,7 @@ import axios from "axios";
 import { API_URL } from "../../../helper/Constants";
 import { loggedInUserData } from "../../../helper/localStorageHelper";
 import { useSelector } from "react-redux";
+
 const PatientIllness = ({ formData, setFormData }) => {
   const [isShown, setIsShown] = useState(false);
   const { patient } = useSelector((state) => state.patients);
@@ -14,11 +15,7 @@ const PatientIllness = ({ formData, setFormData }) => {
   const userData = loggedInUserData();
   const userName = userData?.name;
 
-  const handleClick = (event) => {
-    setIsShown((current) => !current);
-  };
-
-  //FamilyIllness
+  // FamilyIllness
   const [FamilyIllness, setFamilyIllness] = useState([]);
 
   // FamilyIllness expansion state
@@ -69,7 +66,7 @@ const PatientIllness = ({ formData, setFormData }) => {
       });
     }
 
-    if (index === 0) {
+    if (index !== -1) {
       myFormData.PatientHOFamilyIllness =
         myFormData.PatientHOFamilyIllness.filter((item) => {
           if (item.illnessId == illnessId) {
@@ -135,8 +132,8 @@ const PatientIllness = ({ formData, setFormData }) => {
         // Join the array back into a string with commas
         // item.OtherIllFamilyMember = updatedFamilyMembersArray.join(",");
         item.OtherIllFamilyMember = updatedFamilyMembersArray
-        .filter((member) => member) // Filter out empty values
-        .join(",");
+          .filter((member) => member) // Filter out empty values
+          .join(",");
       } else {
         // Add the family member to the array
         familyMembersArray.push(familyMember);
@@ -144,12 +141,18 @@ const PatientIllness = ({ formData, setFormData }) => {
         // Join the array back into a string with commas
         // item.OtherIllFamilyMember = familyMembersArray.join(",");
         item.OtherIllFamilyMember = familyMembersArray
-        .filter((member) => member) // Filter out empty values
-        .join(",");
+          .filter((member) => member) // Filter out empty values
+          .join(",");
       }
       setFormData(myFormData);
       console.log(myFormData?.PatientHOFamilyIllness);
     }
+  };
+
+  const handleClick = () => {
+    setIsShown((current) => !current);
+    setFormData({ ...formData, PatientHOFamilyIllness: [] });
+    setFamilyIllnessExpanded((prev) => prev.map(() => false));
   };
 
   return (
@@ -161,8 +164,7 @@ const PatientIllness = ({ formData, setFormData }) => {
             type="checkbox"
             onClick={handleClick}
             role="switch"
-            id="flexSwitchCheckChecked"
-            defaultChecked=""
+            name="flexSwitchCheckChecked"
           />
         </div>
       </div>
@@ -170,33 +172,29 @@ const PatientIllness = ({ formData, setFormData }) => {
       {isShown && (
         <div className="col-lg-12">
           {FamilyIllness.map((item, i) => (
-            <div className="DemoAll" key={i}>
-              <div
-                key={item.IllnessId}
-                value={item.IllnessId}
-                className="d-flex justify-content-between"
-              >
+            <div className="DemoAll" key={item.IllnessId}>
+              <div className="d-flex justify-content-between">
                 <p className="font-16">{item.IllnessCode}</p>
                 <div className="">
                   <div className="form-check form-check-inline">
                     <input
                       className="form-check-input"
                       type="radio"
-                      name={i}
-                      id="Hypertension1"
+                      name={item.IllnessId}
+                      id={item.IllnessId + "Hypertension1"}
                       value="no"
                       onChange={(e) =>
                         handleChangeRadio(i, item.IllnessId, e.target.value, e)
                       }
                       onDoubleClick={(e) => {
                         e.target.checked = false;
-                        e.target.value = null;
+                        // e.target.value = null;
                         handleRemove(item.IllnessId, i);
                       }}
                     />
                     <label
                       className="form-check-label text-capitalize"
-                      htmlFor="Hypertension1"
+                      htmlFor={item.IllnessId + "Hypertension1"}
                     >
                       no
                     </label>
@@ -205,21 +203,21 @@ const PatientIllness = ({ formData, setFormData }) => {
                     <input
                       className="form-check-input"
                       type="radio"
-                      name={i}
-                      id="Hypertension2"
+                      name={item.IllnessId}
+                      id={item.IllnessId + "Hypertension2"}
                       value="yes"
                       onChange={(e) =>
                         handleChangeRadio(i, item.IllnessId, e.target.value, e)
                       }
                       onDoubleClick={(e) => {
                         e.target.checked = false;
-                        e.target.value = null;
+                        // e.target.value = null;
                         handleRemove(item.IllnessId, i);
                       }}
                     />
                     <label
                       className="form-check-label text-capitalize"
-                      htmlFor="Hypertension2"
+                      htmlFor={item.IllnessId + "Hypertension2"}
                     >
                       yes
                     </label>
@@ -235,12 +233,15 @@ const PatientIllness = ({ formData, setFormData }) => {
                       className="form-check-input"
                       type="checkbox"
                       value="father"
-                      id="father"
+                      id={item.IllnessId + "father"}
                       onChange={() =>
                         handleCheckboxChange(item.IllnessId, "father", i)
                       }
                     />
-                    <label className="form-check-label" htmlFor="father">
+                    <label
+                      className="form-check-label"
+                      htmlFor={item.IllnessId + "father"}
+                    >
                       Father
                     </label>
                   </div>
@@ -249,12 +250,15 @@ const PatientIllness = ({ formData, setFormData }) => {
                       className="form-check-input"
                       type="checkbox"
                       value="mother"
-                      id="mother"
+                      id={item.IllnessId + "mother"}
                       onChange={() =>
                         handleCheckboxChange(item.IllnessId, "mother", i)
                       }
                     />
-                    <label className="form-check-label" htmlFor="mother">
+                    <label
+                      className="form-check-label"
+                      htmlFor={item.IllnessId + "mother"}
+                    >
                       Mother
                     </label>
                   </div>
@@ -262,13 +266,16 @@ const PatientIllness = ({ formData, setFormData }) => {
                     <input
                       className="form-check-input"
                       type="checkbox"
-                      value=""
-                      id="siblings"
+                      value="siblings"
+                      id={item.IllnessId + "siblings"}
                       onChange={() =>
                         handleCheckboxChange(item.IllnessId, "siblings", i)
                       }
                     />
-                    <label className="form-check-label" htmlFor="siblings">
+                    <label
+                      className="form-check-label"
+                      htmlFor={item.IllnessId + "siblings"}
+                    >
                       Siblings
                     </label>
                   </div>
@@ -276,13 +283,16 @@ const PatientIllness = ({ formData, setFormData }) => {
                     <input
                       className="form-check-input"
                       type="checkbox"
-                      value=""
-                      id="aunt"
+                      value="aunt"
+                      id={item.IllnessId + "aunt"}
                       onChange={() =>
                         handleCheckboxChange(item.IllnessId, "aunt", i)
                       }
                     />
-                    <label className="form-check-label" htmlFor="aunt">
+                    <label
+                      className="form-check-label"
+                      htmlFor={item.IllnessId + "aunt"}
+                    >
                       Aunt
                     </label>
                   </div>
@@ -290,13 +300,16 @@ const PatientIllness = ({ formData, setFormData }) => {
                     <input
                       className="form-check-input"
                       type="checkbox"
-                      value=""
-                      id="grandParents"
+                      value="grandParents"
+                      id={item.IllnessId + "grandParents"}
                       onChange={() =>
                         handleCheckboxChange(item.IllnessId, "grandParents", i)
                       }
                     />
-                    <label className="form-check-label" htmlFor="grandParents">
+                    <label
+                      className="form-check-label"
+                      htmlFor={item.IllnessId + "grandParents"}
+                    >
                       Grand Parents
                     </label>
                   </div>

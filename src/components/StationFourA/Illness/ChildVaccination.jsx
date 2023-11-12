@@ -4,7 +4,7 @@ import { API_URL } from "../../../helper/Constants";
 import { loggedInUserData } from "../../../helper/localStorageHelper";
 import { useSelector } from "react-redux";
 
-const PatientIllness = ({formData, setFormData}) => {
+const PatientIllness = ({ formData, setFormData }) => {
   const [isShown, setIsShown] = useState(false);
   const [ChildVaccination, setChildVaccination] = useState([]);
 
@@ -38,7 +38,6 @@ const PatientIllness = ({formData, setFormData}) => {
   }, []);
 
   const handleChangeRadio = (illnessId, value) => {
-    
     const index = myFormData.ChildVaccination.findIndex(
       (object) => object.illnessId === illnessId
     );
@@ -57,27 +56,27 @@ const PatientIllness = ({formData, setFormData}) => {
     }
 
     if (index === 0) {
-      myFormData.ChildVaccination =
-        myFormData.ChildVaccination.filter((item) => {
+      myFormData.ChildVaccination = myFormData.ChildVaccination.filter(
+        (item) => {
           if (item.illnessId == illnessId) {
             item.Status = value;
           }
           return item;
-        });
+        }
+      );
     }
 
     setFormData(myFormData);
     console.log(myFormData?.ChildVaccination);
   };
-  
 
   const handleRemove = (illnessId) => {
     // myFormData.ChildVaccination =
     //   myFormData.ChildVaccination.filter((item) => {
     //     return item.illnessId != illnessId;
     //   });
-    myFormData.ChildVaccination.map((item)=>{
-      if(item.vaccineId === illnessId){
+    myFormData.ChildVaccination.map((item) => {
+      if (item.vaccineId === illnessId) {
         myFormData.ChildVaccination.pop(item);
       }
     });
@@ -86,11 +85,11 @@ const PatientIllness = ({formData, setFormData}) => {
   };
 
   const handleChangeRadioTwo = (illnessId, value) => {
-    myFormData.ChildVaccination.map((item)=>{
-      if(item.vaccineId === illnessId){
+    myFormData.ChildVaccination.map((item) => {
+      if (item.vaccineId === illnessId) {
         item.isGivenByNirog = value;
       }
-  })
+    });
   };
 
   return (
@@ -102,8 +101,7 @@ const PatientIllness = ({formData, setFormData}) => {
             type="checkbox"
             onClick={handleClick}
             role="switch"
-            id="flexSwitchCheckChecked"
-            defaultChecked=""
+            name="flexSwitchCheckChecked"
           />
         </div>
       </div>
@@ -117,7 +115,7 @@ const PatientIllness = ({formData, setFormData}) => {
               nirog team?
             </p>
           </div>
-          
+
           {ChildVaccination.map((item) => (
             <div className="d-flex justify-content-between">
               <div className="">
@@ -178,14 +176,15 @@ const PatientIllness = ({formData, setFormData}) => {
                     name="inlineRadioOptions"
                     id="inlineRadio2"
                     value="yes"
-                    onClick={(e)=>handleChangeRadioTwo(item.VaccineId, e.target.value)}
+                    onClick={(e) =>
+                      handleChangeRadioTwo(item.VaccineId, e.target.value)
+                    }
                   />
                   <label
                     className="form-check-label text-capitalize"
                     htmlFor="inlineRadio2"
                   ></label>
                 </div>
-
               </div>
             </div>
           ))}

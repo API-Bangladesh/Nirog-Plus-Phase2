@@ -75,7 +75,7 @@ const TPuserData = () => {
         cyanosis: null,
         Status: "A",
         CreateUser: userName,
-        UpdateUser: "Nazmul1",
+        UpdateUser: userName,
         OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
       },
     ],
@@ -112,6 +112,9 @@ const TPuserData = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // console.log(formData?.PatientHOFamilyIllness);
+    // console.log(formData?.PatientHOPresentIllness);
+    // return;
 
     try {
       const response = await axios.post(
@@ -289,7 +292,7 @@ const TPuserData = () => {
                     eventKey="1"
                     className="input-shadow mb-3 rounded"
                   >
-                    <Accordion.Header>H/O Present illness</Accordion.Header>
+                    <Accordion.Header>H/O Present Illness</Accordion.Header>
                     <Accordion.Body>
                       <div className="">
                         <div className="">
@@ -313,12 +316,12 @@ const TPuserData = () => {
                     eventKey="2"
                     className="input-shadow mb-3 rounded"
                   >
-                    <Accordion.Header>H/O Past illness</Accordion.Header>
+                    <Accordion.Header>H/O Past Illness</Accordion.Header>
                     <Accordion.Body>
                       <div className="">
                         <div className="">
                           <p className="font-16 fw-semibold">
-                            Do you have any of the following diseases?
+                            Did you have any of the following diseases?
                           </p>
                         </div>
                         <div className="position-relative">
@@ -337,7 +340,7 @@ const TPuserData = () => {
                     eventKey="3"
                     className="input-shadow mb-3 rounded"
                   >
-                    <Accordion.Header>Family history</Accordion.Header>
+                    <Accordion.Header>Family History</Accordion.Header>
                     <Accordion.Body>
                       <div className="">
                         <div className="">
@@ -389,39 +392,39 @@ const TPuserData = () => {
                     <Accordion.Body>
                       <div className="mb-0 ratingItem">
                         <p className="mb-0 font-15">Anemia</p>
-                        <p className="mb-0">
+                        <div className="mb-0">
                           <Anemia
                             formData={formData}
                             setFormData={setFormData}
                           />
-                        </p>
+                        </div>
                       </div>
                       <div className="mb-0 ratingItem">
                         <p className="mb-0 font-15">Jaundice</p>
-                        <p className="mb-0">
+                        <div className="mb-0">
                           <Jaundice
                             formData={formData}
                             setFormData={setFormData}
                           />
-                        </p>
+                        </div>
                       </div>
                       <div className="mb-0 ratingItem">
                         <p className="mb-0 font-15">Cyanosis</p>
-                        <p className="mb-0">
+                        <div className="mb-0">
                           <Cyanosis
                             formData={formData}
                             setFormData={setFormData}
                           />
-                        </p>
+                        </div>
                       </div>
                       <div className="mb-0 ratingItem">
                         <p className="mb-0 font-15">Edema</p>
-                        <p className="mb-0">
+                        <div className="mb-0">
                           <Edema
                             formData={formData}
                             setFormData={setFormData}
                           />
-                        </p>
+                        </div>
                       </div>
 
                       {/* Lymph Nodes with Palpable */}
@@ -603,7 +606,7 @@ const TPuserData = () => {
                       <div className="">
                         <div className="">
                           <p className="font-16 fw-semibold">
-                            Do you have any of the following diseases?
+                            Did you get any of the following vaccinations?
                           </p>
                         </div>
                         <div className="position-relative">
@@ -628,7 +631,7 @@ const TPuserData = () => {
                       <div className="">
                         <div className="">
                           <p className="font-16 fw-semibold">
-                            Do you have any of the following diseases?
+                            Did you get any of the following vaccinations?
                           </p>
                         </div>
                         <div className="position-relative">
