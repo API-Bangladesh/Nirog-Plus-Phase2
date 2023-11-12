@@ -151,11 +151,11 @@ const UserDtails = () => {
             <img src={patientImage} alt="userImg" className="userImg" />
           </div>
 
-          <div className="ps-3 mt-3 printBox">
+          {/* <div className="ps-3 mt-3 printBox">
             <Link to="/" className="exportBtn">
               <BsFillPrinterFill />
             </Link>
-          </div>
+          </div> */}
 
           <div className="text-center mt-3 position-relative">
             <Button
