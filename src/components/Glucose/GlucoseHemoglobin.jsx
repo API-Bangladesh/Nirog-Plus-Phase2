@@ -20,7 +20,7 @@ const GlucoseHemoglobin = () => {
   const [HrsFromLastEat, setHrsFromLastEat] = useState("");
   const [Hemoglobin, setHemoglobin] = useState("");
 
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   const myTokenData = JSON.parse(token);
   const tokenData = myTokenData?.user?.station;
   const stations = tokenData.split(",");
@@ -44,7 +44,6 @@ const GlucoseHemoglobin = () => {
       );
 
       // console.log(response);
-
 
       Swal.fire({
         icon: "success",
@@ -70,7 +69,11 @@ const GlucoseHemoglobin = () => {
   return (
     <>
       <section>
-        <SectionBanner title={`Station 3 - ${patient?.GivenName + " " + patient?.FamilyName}`} />
+        <SectionBanner
+          title={`Station 3 - ${
+            patient?.GivenName + " " + patient?.FamilyName
+          }`}
+        />
         <div className="container">
           <div className="row justify-content-center">
             <div className="col-lg-6">
@@ -140,48 +143,45 @@ const GlucoseHemoglobin = () => {
           <div className="text-center mt-3 position-relative">
             <section>
               <div className="container">
-                {    
-                stations?.includes("station_4") ? (
+                {stations?.includes("station_4") ? (
                   <Button
-                  className="border-0 button-color text-white py-2 px-3 text-capitalize rounded	undefined btn btn-primary"
-                  block="block"
-                  type="button"
-                  onClick={(e) => handleSubmit(e)}
-                >
-                  Save
-                </Button>
+                    className="border-0 button-color text-white py-2 px-3 text-capitalize rounded	undefined btn btn-primary"
+                    block="block"
+                    type="button"
+                    onClick={(e) => handleSubmit(e)}
+                  >
+                    Save
+                  </Button>
                 ) : (
                   <Button
-                  className="border-0 button-color text-white py-2 px-3 text-capitalize rounded	undefined btn btn-primary"
-                  block="block"
-                  type="button"
-                  onClick={(e) => handleSubmit(e,"/dashboard")}
-                >
-                  Save
+                    className="border-0 button-color text-white py-2 px-3 text-capitalize rounded	undefined btn btn-primary"
+                    block="block"
+                    type="button"
+                    onClick={(e) => handleSubmit(e, "/dashboard")}
+                  >
+                    Save
                   </Button>
-                )          
-                }
+                )}
               </div>
             </section>
             <section className="stationBtn">
-              {
-                stations?.includes("station_4") && 
+              {stations?.includes("station_4") && (
                 <a
-                className="border-0 button-color text-white py-2 px-3 text-capitalize rounded	button-bg"
-                onClick={(e) => handleSubmit(e, "/user-data")}
-               >
-                Save &amp; Station 4
-                </a> 
-              }
+                  className="border-0 button-color text-white py-2 px-3 text-capitalize rounded	button-bg"
+                  onClick={(e) => handleSubmit(e, "/user-data")}
+                >
+                  Save &amp; Station 4
+                </a>
+              )}
             </section>
             <div className="previewBtn">
-                <Link to="/prescription"
-                  className="border-0 button-color text-white py-2 px-3 text-capitalize rounded"
-                >
-                  Histrory
-                </Link>
+              <Link
+                to="/prescription"
+                className="border-0 button-color text-white py-2 px-3 text-capitalize rounded"
+              >
+                Histrory
+              </Link>
             </div>
-            
           </div>
         </div>
         <GlobalButton />
