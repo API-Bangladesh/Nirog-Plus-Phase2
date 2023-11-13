@@ -10,8 +10,12 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { API_URL } from "../../helper/Constants";
 import { useSelector } from "react-redux";
+import { loggedInUserData } from "../../helper/localStorageHelper";
 
 const GlucoseHemoglobin = () => {
+  const userData = loggedInUserData();
+  const userName = userData?.name;
+
   const { patient } = useSelector((state) => state.patients);
 
   const [PatientId] = useState(patient?.PatientId);
@@ -39,7 +43,7 @@ const GlucoseHemoglobin = () => {
           HrsFromLastEat,
           Hemoglobin,
           OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
-          CreateUser: "",
+          CreateUser: userName,
         }
       );
 
@@ -80,10 +84,11 @@ const GlucoseHemoglobin = () => {
               <SectionTitle title="Glucose & Hemoglobin" />
               <div className="mb-3 shadowme position-relative">
                 <div className="iputComon">mmol/L</div>
-                <label htmlFor="" className="form-label text-capitalize">
+                <label htmlFor="RBG" className="form-label text-capitalize">
                   RBG
                 </label>
                 <input
+                  id="RBG"
                   type="number"
                   value={RBG}
                   onChange={(event) => {
@@ -96,10 +101,11 @@ const GlucoseHemoglobin = () => {
 
               <div className="mb-3 shadowme position-relative">
                 <div className="iputComon">mmol/L</div>
-                <label htmlFor="" className="form-label text-capitalize">
+                <label htmlFor="FBG" className="form-label text-capitalize">
                   FBG
                 </label>
                 <input
+                  id="FBG"
                   type="number"
                   value={FBG}
                   onChange={(event) => {
@@ -110,10 +116,14 @@ const GlucoseHemoglobin = () => {
                 />
               </div>
               <div className="mb-3 shadowme">
-                <label htmlFor="" className="form-label text-capitalize">
+                <label
+                  htmlFor="HrsFromLastEat"
+                  className="form-label text-capitalize"
+                >
                   Hours Since Last Meal
                 </label>
                 <input
+                  id="HrsFromLastEat"
                   type="number"
                   value={HrsFromLastEat}
                   onChange={(event) => {
@@ -125,10 +135,14 @@ const GlucoseHemoglobin = () => {
               </div>
               <div className="mb-3 shadowme position-relative">
                 <div className="iputComon">mmol/L</div>
-                <label htmlFor="" className="form-label text-capitalize">
+                <label
+                  htmlFor="Hemoglobin"
+                  className="form-label text-capitalize"
+                >
                   Hemoglobin
                 </label>
                 <input
+                  id="Hemoglobin"
                   type="number"
                   value={Hemoglobin}
                   onChange={(event) => {
