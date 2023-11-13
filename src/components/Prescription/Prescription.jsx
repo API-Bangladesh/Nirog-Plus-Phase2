@@ -70,7 +70,7 @@ const Prescription = () => {
                       className={getClassNameByValue("bmi", item.BMI).className}
                     >
                       {item.BMI} ({item.BMIStatus})
-                      <Flag />
+                      <Flag className="flag" />
                     </span>
                   </span>
                 )}
@@ -95,6 +95,7 @@ const Prescription = () => {
                       }
                     >
                       {item.BPSystolic1}/{item.BPDiastolic1}
+                      <Flag className="flag" />
                     </span>
                   </span>
                 )}
@@ -108,6 +109,7 @@ const Prescription = () => {
                       }
                     >
                       {item.CurrentTemparature}&deg;F
+                      <Flag className="flag" />
                     </span>
                   </span>
                 )}
@@ -120,6 +122,7 @@ const Prescription = () => {
                       }
                     >
                       {item.HeartRate}/min
+                      <Flag className="flag" />
                     </span>
                   </span>
                 )}
@@ -143,6 +146,7 @@ const Prescription = () => {
                       }
                     >
                       {item.Hemoglobin} gm/dl
+                      <Flag className="flag" />
                     </span>
                   </span>
                 )}
@@ -154,6 +158,7 @@ const Prescription = () => {
                       className={getClassNameByValue("fbs", item.FBG).className}
                     >
                       {item.FBG} mmol/L
+                      <Flag className="flag" />
                     </span>
                   </span>
                 )}
@@ -165,6 +170,7 @@ const Prescription = () => {
                       className={getClassNameByValue("rbs", item.RBG).className}
                     >
                       {item.RBG} mmol/L
+                      <Flag className="flag" />
                     </span>
                   </span>
                 )}

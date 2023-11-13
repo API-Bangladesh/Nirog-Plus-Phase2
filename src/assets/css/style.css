@@ -564,19 +564,44 @@ div:where(.swal2-icon) {
 }
 
 /* flagging color */
-.white {
-  /* background-color: transparent; */
+/* .white {
+  background-color: transparent;
   margin: 0 !important;
 }
 .yellow {
-  /* background-color: #ffff00; */
+  background-color: #ffff00;
   margin: 0 !important;
 }
 .red {
-  /* background-color: #ff0000; */
+  background-color: #ff0000;
   margin: 0 !important;
+} */
+.white,
+.yellow,
+.red {
+  margin: 0 !important;
+  position: relative;
+  padding-right: 20px;
+  display: inline-block;
 }
-.red svg {
+.flag {
+  line-height: 1;
+  font-size: 18px;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.white {
+  padding-right: 0;
+}
+.white .flag {
+  display: none;
+}
+.yellow .flag {
+  fill: #ffff00;
+}
+.red .flag {
   fill: #ff0000;
 }
 
