@@ -155,18 +155,14 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
             value={allergyToMedication}
             onChange={(e) => setAllergyToMedication(e.target.checked)}
           />
-          <label
-            className="form-check-label"
-            htmlFor="allergy"
-            for="medicineSelect"
-          >
+          <label className="form-check-label" htmlFor="medicineSelect">
             Allergy to medication
           </label>
         </div>
 
         <div className="mb-3 input-shadow rounded-pill">
           <select
-            id="Select"
+            id="FrequencyHourSelect"
             onChange={(e) => setFrequencyHour(e.target.value)}
             className="form-select input-padding rounded-pill select-form-padding"
           >
@@ -193,7 +189,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
           </div>
           <div className="col-lg-6">
             <select
-              id="Select"
+              id="DosUnitSelect"
               onChange={(e) => setDosUnit(e.target.value)}
               className="form-select input-padding rounded-pill select-form-padding"
             >
@@ -219,7 +215,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
           </div>
           <div className="col-lg-6">
             <select
-              id="Select"
+              id="DurationUnitSelect"
               onChange={(e) => setDurationUnit(e.target.value)}
               className="form-select input-padding rounded-pill select-form-padding"
             >
