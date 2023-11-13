@@ -96,16 +96,6 @@ const App = () => {
             path="/glucose-hemoglobin"
             element={<Protected Component={GlucoseInput} />}
           />
-          <Route
-            exact
-            path="/cardiovascular-risk-lab"
-            element={<Protected Component={CardiovascularRisk} />}
-          />
-          <Route
-            exact
-            path="/cardiovascular-risk-nonlab"
-            element={<Protected Component={CardiovascularRiskLab} />}
-          />
           {/* station four */}
           <Route
             exact
@@ -119,6 +109,11 @@ const App = () => {
           />
           <Route
             exact
+            path="/tb-status"
+            element={<Protected Component={TBstatus} />}
+          />
+          <Route
+            exact
             path="/station-fourb"
             element={<Protected Component={PatientRegB} />}
           />
@@ -126,6 +121,16 @@ const App = () => {
             exact
             path="/four-c-userinput"
             element={<Protected Component={FourAddInformation} />}
+          />
+          <Route
+            exact
+            path="/cardiovascular-risk-nonlab"
+            element={<Protected Component={CardiovascularRiskLab} />}
+          />
+          <Route
+            exact
+            path="/cardiovascular-risk-lab"
+            element={<Protected Component={CardiovascularRisk} />}
           />
           <Route
             exact
@@ -141,11 +146,6 @@ const App = () => {
             exact
             path="/settings"
             element={<Protected Component={Settings} />}
-          />
-          <Route
-            exact
-            path="/tb-status"
-            element={<Protected Component={TBstatus} />}
           />
           {/* Prescription */}
           <Route
