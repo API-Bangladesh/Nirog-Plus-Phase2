@@ -28,22 +28,25 @@ import { Button } from "react-bootstrap";
 import { GrFormClose } from "react-icons/gr";
 import Swal from "sweetalert2";
 import { API_URL } from "../../helper/Constants";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import PatientShortInfo from "../Common/PatientShortInfo";
 import { AiOutlineClose } from "react-icons/ai";
 import { loggedInUserData } from "../../helper/localStorageHelper";
 import { Navigate } from "react-router-dom";
+import { ADD_PATIENT } from "./../../redux/state-slice/patients-slice";
 
 const TPuserData = () => {
+  const dispatch = useDispatch();
+
   const userData = loggedInUserData();
   const userName = userData?.name;
 
   const [patientGender, setPatientGender] = useState();
-  const [tbScreeningCough, setTbScreeingCough] = useState("");
-  const [tbScreeningLGERF, setTbScreeingLGERF] = useState("");
-  const [tbScreeningnightSweat, setTbScreeingnightSweat] = useState("");
-  const [tbScreeningweightLoss, setTbScreeingweightLoss] = useState("");
-  const [tbScreenHistory, setTbScreenHistory] = useState("");
+  // const [tbScreeningCough, setTbScreeingCough] = useState("");
+  // const [tbScreeningLGERF, setTbScreeingLGERF] = useState("");
+  // const [tbScreeningnightSweat, setTbScreeingnightSweat] = useState("");
+  // const [tbScreeningweightLoss, setTbScreeingweightLoss] = useState("");
+  // const [tbScreenHistory, setTbScreenHistory] = useState("");
 
   const { patient } = useSelector((state) => state.patients);
   // let patientGender = patient.gender.GenderCode;
@@ -56,7 +59,19 @@ const TPuserData = () => {
     PatientHOPastIllness: [],
     PatientHOFamilyIllness: [],
     SocialHistory: [],
-    TBScreening: [],
+    TBScreening: {
+      PatientId: PatientId,
+      AnemiaSeverityId: null,
+      Status: "",
+      AnemiaSeverity: "", //sending history data to this field!
+      coughGreaterThanMonth: "",
+      LGERF: "",
+      nightSweat: "",
+      weightLoss: "",
+      CreateUser: userName,
+      UpdateUser: userName,
+      OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
+    },
     GeneralExamination: [
       {
         PatientId: PatientId,
@@ -89,25 +104,15 @@ const TPuserData = () => {
   //  console.log(formData?.ChildVaccination);
 
   //pushing tb-screening da.a
-  const handleChangeTbScreening = (e) => {
+  const handleChangeTbScreening = (e, key) => {
     let myFormData = { ...formData };
-
-    myFormData.TBScreening.push({
-      PatientId: PatientId,
-      AnemiaSeverityId: null,
-      Status: e.target.value,
-      AnemiaSeverity: tbScreenHistory, //sending history data to this field!
-      coughGreaterThanMonth: tbScreeningCough,
-      LGERF: tbScreeningLGERF,
-      nightSweat: tbScreeningnightSweat,
-      weightLoss: tbScreeningweightLoss,
-      CreateUser: userName,
-      UpdateUser: userName,
-      OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
-    });
+    myFormData.TBScreening = {
+      ...myFormData.TBScreening,
+      [key]: e.target.value,
+    };
 
     setFormData(myFormData);
-    console.log(formData.TBScreening);
+    console.log(myFormData.TBScreening);
   };
 
   const handleSubmit = async (e) => {
@@ -127,7 +132,9 @@ const TPuserData = () => {
         title: "Success",
         text: response.data.message,
       }).then(function () {
-        if (patientGender === "Female") {
+        if (isTBScreened) {
+          window.location = "tb-status";
+        } else if (patientGender === "Female") {
           window.location = "station-fourb";
           // <Navigate to="/station-fourb" />
           console.log("I am in four-b block");
@@ -154,14 +161,15 @@ const TPuserData = () => {
     setFormData(myFormData);
   };
 
-  const handleRemove = (e) => {
+  const handleRemove = (e, key) => {
     let myFormData = { ...formData };
-
-    myFormData.TBScreening = myFormData.TBScreening.filter((item) => {
-      return item[e.target.name] != "yes";
-    });
+    myFormData.TBScreening = {
+      ...myFormData.TBScreening,
+      [key]: "",
+    };
 
     setFormData(myFormData);
+    console.log(myFormData.TBScreening);
   };
 
   useEffect(() => {
@@ -169,42 +177,33 @@ const TPuserData = () => {
     setPatientGender(patient?.gender?.GenderCode);
   }, [formData]);
 
+  const [isTBScreened, setIsTBScreened] = useState(false);
+
   useEffect(() => {
-    let count = 0;
-    formData.TBScreening.map((item) => {
-      if (item.Status === "yes") {
-        count += 1;
-      }
-    });
+    const hasMoreThanTwoYes = (obj) => {
+      const keysToCheck = [
+        "AnemiaSeverity",
+        "coughGreaterThanMonth",
+        "LGERF",
+        "nightSweat",
+        "weightLoss",
+      ];
 
-    if (count >= 2) {
-      const submitData = async () => {
-        try {
-          const response = await axios.post(
-            `${API_URL}/api/patient-s4-create`,
-            formData
-          );
+      const yesCount = keysToCheck.filter((key) => obj[key] === "yes").length;
+      return yesCount >= 2;
+    };
 
-          Swal.fire({
-            icon: "success",
-            title: "Success",
-            text: response.data.message,
-          }).then(function () {
-            window.location = "tb-status";
-          });
-        } catch (error) {
-          Swal.fire({
-            icon: "error",
-            title: "Error",
-            text: "An error occurred.",
-          });
-        }
-      };
-      submitData();
-      return;
-    } else {
-      return;
-    }
+    // Example usage with your TBScreening object
+    const isMoreThanTwoYes = hasMoreThanTwoYes(formData.TBScreening);
+
+    const updatedPatientData = {
+      ...patient,
+      isTBScreened: isMoreThanTwoYes,
+    };
+    dispatch(ADD_PATIENT(updatedPatientData));
+    setIsTBScreened(isMoreThanTwoYes);
+
+    console.log(isMoreThanTwoYes);
   }, [formData]);
 
   return (
@@ -665,13 +664,15 @@ const TPuserData = () => {
                               id="no1"
                               value="no"
                               onChange={(e) => {
-                                setTbScreeingCough(e.target.value);
-                                handleChangeTbScreening(e);
+                                handleChangeTbScreening(
+                                  e,
+                                  "coughGreaterThanMonth"
+                                );
                               }}
                               onDoubleClick={(e) => {
                                 e.target.checked = false;
                                 // e.target.value = null;
-                                handleRemove(e);
+                                handleRemove(e, "coughGreaterThanMonth");
                               }}
                             />
                             <label
@@ -689,13 +690,15 @@ const TPuserData = () => {
                               id="yes1"
                               value="yes"
                               onChange={(e) => {
-                                setTbScreeingCough(e.target.value);
-                                handleChangeTbScreening(e);
+                                handleChangeTbScreening(
+                                  e,
+                                  "coughGreaterThanMonth"
+                                );
                               }}
                               onDoubleClick={(e) => {
                                 e.target.checked = false;
                                 // e.target.value = null;
-                                handleRemove(e);
+                                handleRemove(e, "coughGreaterThanMonth");
                               }}
                             />
                             <label
@@ -721,13 +724,12 @@ const TPuserData = () => {
                               id="no2"
                               value="no"
                               onChange={(e) => {
-                                setTbScreeingLGERF(e.target.value);
-                                handleChangeTbScreening(e);
+                                handleChangeTbScreening(e, "LGERF");
                               }}
                               onDoubleClick={(e) => {
                                 e.target.checked = false;
                                 // e.target.value = null;
-                                handleRemove(e);
+                                handleRemove(e, "LGERF");
                               }}
                             />
                             <label
@@ -745,13 +747,12 @@ const TPuserData = () => {
                               id="yes2"
                               value="yes"
                               onChange={(e) => {
-                                setTbScreeingLGERF(e.target.value);
-                                handleChangeTbScreening(e);
+                                handleChangeTbScreening(e, "LGERF");
                               }}
                               onDoubleClick={(e) => {
                                 e.target.checked = false;
                                 // e.target.value = null;
-                                handleRemove(e);
+                                handleRemove(e, "LGERF");
                               }}
                             />
                             <label
@@ -777,13 +778,12 @@ const TPuserData = () => {
                               id="no3"
                               value="no"
                               onChange={(e) => {
-                                setTbScreeingnightSweat(e.target.value);
-                                handleChangeTbScreening(e);
+                                handleChangeTbScreening(e, "nightSweat");
                               }}
                               onDoubleClick={(e) => {
                                 e.target.checked = false;
                                 // e.target.value = null;
-                                handleRemove(e);
+                                handleRemove(e, "nightSweat");
                               }}
                             />
                             <label
@@ -801,13 +801,12 @@ const TPuserData = () => {
                               id="yes3"
                               value="yes"
                               onChange={(e) => {
-                                setTbScreeingnightSweat(e.target.value);
-                                handleChangeTbScreening(e);
+                                handleChangeTbScreening(e, "nightSweat");
                               }}
                               onDoubleClick={(e) => {
                                 e.target.checked = false;
                                 // e.target.value = null;
-                                handleRemove(e);
+                                handleRemove(e, "nightSweat");
                               }}
                             />
                             <label
@@ -832,8 +831,12 @@ const TPuserData = () => {
                               id="no4"
                               value="no"
                               onChange={(e) => {
-                                setTbScreeingweightLoss(e.target.value);
-                                handleChangeTbScreening(e);
+                                handleChangeTbScreening(e, "weightLoss");
+                              }}
+                              onDoubleClick={(e) => {
+                                e.target.checked = false;
+                                // e.target.value = null;
+                                handleRemove(e, "weightLoss");
                               }}
                             />
                             <label
@@ -851,8 +854,12 @@ const TPuserData = () => {
                               id="yes4"
                               value="yes"
                               onChange={(e) => {
-                                setTbScreeingweightLoss(e.target.value);
-                                handleChangeTbScreening(e);
+                                handleChangeTbScreening(e, "weightLoss");
+                              }}
+                              onDoubleClick={(e) => {
+                                e.target.checked = false;
+                                // e.target.value = null;
+                                handleRemove(e, "weightLoss");
                               }}
                             />
                             <label
@@ -877,8 +884,12 @@ const TPuserData = () => {
                               id="no5"
                               value="no"
                               onChange={(e) => {
-                                setTbScreenHistory(e.target.value);
-                                handleChangeTbScreening(e);
+                                handleChangeTbScreening(e, "AnemiaSeverity");
+                              }}
+                              onDoubleClick={(e) => {
+                                e.target.checked = false;
+                                // e.target.value = null;
+                                handleRemove(e, "AnemiaSeverity");
                               }}
                             />
                             <label
@@ -896,8 +907,12 @@ const TPuserData = () => {
                               id="yes5"
                               value="yes"
                               onChange={(e) => {
-                                setTbScreenHistory(e.target.value);
-                                handleChangeTbScreening(e);
+                                handleChangeTbScreening(e, "AnemiaSeverity");
+                              }}
+                              onDoubleClick={(e) => {
+                                e.target.checked = false;
+                                // e.target.value = null;
+                                handleRemove(e, "AnemiaSeverity");
                               }}
                             />
                             <label
