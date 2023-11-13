@@ -565,16 +565,19 @@ div:where(.swal2-icon) {
 
 /* flagging color */
 .white {
-  background-color: transparent;
+  /* background-color: transparent; */
   margin: 0 !important;
 }
 .yellow {
-  background-color: #ffff00;
+  /* background-color: #ffff00; */
   margin: 0 !important;
 }
 .red {
-  background-color: #ff0000;
+  /* background-color: #ff0000; */
   margin: 0 !important;
+}
+.red svg {
+  fill: #ff0000;
 }
 
 .show-data kbd {

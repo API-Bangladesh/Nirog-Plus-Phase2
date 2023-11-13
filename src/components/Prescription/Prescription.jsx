@@ -16,6 +16,7 @@ import {
   getClassNameForHB,
   getClassNameForBP,
 } from "../../helper/lib";
+import Flag from "../icons/Flag";
 
 const Prescription = () => {
   const navigate = useNavigate();
@@ -69,6 +70,7 @@ const Prescription = () => {
                       className={getClassNameByValue("bmi", item.BMI).className}
                     >
                       {item.BMI} ({item.BMIStatus})
+                      <Flag />
                     </span>
                   </span>
                 )}
