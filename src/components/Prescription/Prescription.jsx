@@ -74,6 +74,19 @@ const Prescription = () => {
                     </span>
                   </span>
                 )}
+                {item.MUAC && (
+                  <span>
+                    MUAC:{" "}
+                    <span
+                      className={
+                        getClassNameByValue("muac", item.MUAC).className
+                      }
+                    >
+                      {item.MUAC} ({item.MUACStatus})
+                      <Flag className="flag" />
+                    </span>
+                  </span>
+                )}
               </div>
             ))}
           </div>
@@ -122,6 +135,112 @@ const Prescription = () => {
                       }
                     >
                       {item.HeartRate}/min
+                      <Flag className="flag" />
+                    </span>
+                  </span>
+                )}
+                {item.RespiratoryRate && (
+                  <span>
+                    Respiratory Rate:{" "}
+                    <span
+                      className={
+                        getClassNameByValue("resp_rate", item.RespiratoryRate)
+                          .className
+                      }
+                    >
+                      {item.RespiratoryRate}/min
+                      <Flag className="flag" />
+                    </span>
+                  </span>
+                )}
+                {item.SpO2Rate && (
+                  <span>
+                    SpO2 Rate:{" "}
+                    <span
+                      className={
+                        getClassNameByValue("spo2", item.SpO2Rate).className
+                      }
+                    >
+                      {item.SpO2Rate}/min
+                      <Flag className="flag" />
+                    </span>
+                  </span>
+                )}
+              </div>
+            ))}
+          </div>
+
+          <div className="patienStatus mb-4">
+            <h3>General Findings</h3>
+            {prescriptionpreviewall.GeneralFindings?.map((item, index) => (
+              <div key={index}>
+                <span>{item.CreateDate} &gt;&gt;</span>
+                {/* {item.Height && <span>Height: {item.Height} cm</span>} */}
+                {/* {item.Weight && <span>Weight: {item.Weight} kg</span>} */}
+                {item.BPSystolic1 && item.BPDiastolic1 && (
+                  <span>
+                    BP:{" "}
+                    <span
+                      className={
+                        getClassNameForBP(item.BPSystolic1, item.BPDiastolic1)
+                          .className
+                      }
+                    >
+                      {item.BPSystolic1}/{item.BPDiastolic1}
+                      <Flag className="flag" />
+                    </span>
+                  </span>
+                )}
+                {item.CurrentTemparature && (
+                  <span>
+                    Temparature:{" "}
+                    <span
+                      className={
+                        getClassNameByValue("temp", item.CurrentTemparature)
+                          .className
+                      }
+                    >
+                      {item.CurrentTemparature}&deg;F
+                      <Flag className="flag" />
+                    </span>
+                  </span>
+                )}
+                {item.HeartRate && (
+                  <span>
+                    Heart Rate:{" "}
+                    <span
+                      className={
+                        getClassNameByValue("hr", item.HeartRate).className
+                      }
+                    >
+                      {item.HeartRate}/min
+                      <Flag className="flag" />
+                    </span>
+                  </span>
+                )}
+                {item.RespiratoryRate && (
+                  <span>
+                    Respiratory Rate:{" "}
+                    <span
+                      className={
+                        getClassNameByValue("resp_rate", item.RespiratoryRate)
+                          .className
+                      }
+                    >
+                      {item.RespiratoryRate}/min
+                      <Flag className="flag" />
+                    </span>
+                  </span>
+                )}
+                {item.SpO2Rate && (
+                  <span>
+                    SpO2 Rate:{" "}
+                    <span
+                      className={
+                        getClassNameByValue("spo2", item.SpO2Rate).className
+                      }
+                    >
+                      {item.SpO2Rate}/min
                       <Flag className="flag" />
                     </span>
                   </span>
@@ -270,7 +389,7 @@ const Prescription = () => {
             </div>
           </div> */}
 
-          {/* <div className="patienStatus mb-4">
+          <div className="patienStatus mb-4">
             <h3>General Findings</h3>
             {prescriptionpreviewall.GeneralFindings?.map((item, index) => (
               <div key={index}>
@@ -295,7 +414,7 @@ const Prescription = () => {
                 <span>Create Date: {item.CreateDate}</span>
               </div>
             ))}
-          </div> */}
+          </div>
 
           <div className="patienStatus mb-4">
             <h3>Current Medication Taken</h3>
