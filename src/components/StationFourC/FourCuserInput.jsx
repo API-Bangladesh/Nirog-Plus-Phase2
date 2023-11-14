@@ -26,7 +26,9 @@ const FourCuserInput = () => {
 
   const { patient } = useSelector((state) => state.patients);
   const { Age } = patient;
+  const { isTBScreened } = patient;
   // console.log(Age);
+  console.log(isTBScreened, patient);
 
   const [PatientId] = useState(patient?.PatientId);
   const [formData, setFormData] = useState({
@@ -233,6 +235,84 @@ const FourCuserInput = () => {
                             </tr>
                           </thead>
                           <tbody>
+                            {isTBScreened && (
+                              <tr className="border-0">
+                                <td
+                                  colSpan={3}
+                                  className="d-flex justify-content-start align-items-center border-0"
+                                >
+                                  Suggested Treatment for TB
+                                </td>
+                                <td
+                                  colSpan={4}
+                                  className="d-flex justify-content-end align-items-center border-0"
+                                >
+                                  <div className="form-check form-check-inline">
+                                    <input
+                                      className="form-check-input"
+                                      type="radio"
+                                      name="SuggestedCAT1"
+                                      id="SuggestedCAT1"
+                                      value=""
+                                      // onChange={(e) =>
+                                      //   handleChangeRadio(
+                                      //     item.TBHistoryId,
+                                      //     e.target.value
+                                      //   )
+                                      // }
+                                      // onDoubleClick={(e) => {
+                                      //   e.target.checked = false;
+                                      //   handleRemove(item.TBHistoryId);
+                                      // }}
+                                      // onClick={
+                                      //   item.TBHistoryIdCode ===
+                                      //   "Treatment received"
+                                      //     ? handleRadio1Click
+                                      //     : null
+                                      // }
+                                    />
+                                    <label
+                                      className="form-check-label text-capitalize"
+                                      htmlFor="SuggestedCAT1"
+                                    >
+                                      CAT1
+                                    </label>
+                                  </div>
+
+                                  <div className="form-check form-check-inline">
+                                    <input
+                                      className="form-check-input"
+                                      type="radio"
+                                      name="SuggestedCAT1"
+                                      id="SuggestedCAT1"
+                                      value=""
+                                      // onChange={(e) =>
+                                      //   handleChangeRadio(
+                                      //     item.TBHistoryId,
+                                      //     e.target.value
+                                      //   )
+                                      // }
+                                      // onDoubleClick={(e) => {
+                                      //   e.target.checked = false;
+                                      //   handleRemove(item.TBHistoryId);
+                                      // }}
+                                      // onClick={
+                                      //   item.TBHistoryIdCode ===
+                                      //   "Treatment received"
+                                      //     ? handleRadio1Click
+                                      //     : null
+                                      // }
+                                    />
+                                    <label
+                                      className="form-check-label text-capitalize"
+                                      htmlFor="SuggestedCAT1"
+                                    >
+                                      CAT1
+                                    </label>
+                                  </div>
+                                </td>
+                              </tr>
+                            )}
                             {formData.TreatmentSuggestion &&
                               formData.TreatmentSuggestion.map((item, key) => {
                                 return (
