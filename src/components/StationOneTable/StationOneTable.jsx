@@ -179,17 +179,19 @@ const StationOneTable = ({ station, link, title }) => {
 
             ))} */}
 
+            {/* {console.log(searchResults)} */}
+
             {searchResults.length > 0 ? (
               searchResults.map((result) => (
-                <tbody key={result.PatientId}>
+                <tbody key={result?.PatientId}>
                   <tr>
-                    <td>{result.PatientCode}</td>
+                    <td>{result?.PatientCode}</td>
                     <td>
-                      <span>{result.GivenName} </span> 
-                      <span>{result.FamilyName}</span> 
+                      <span>{result?.GivenName} </span> 
+                      <span>{result?.FamilyName}</span> 
                     </td>
                     <td>{result?.gender?.GenderCode}</td>
-                    <td>{result.martital_status.MaritalStatusCode}</td>
+                    <td>{result?.martital_status?.MaritalStatusCode}</td>
                     <td>Null</td>
                     <td>
                       <Link
