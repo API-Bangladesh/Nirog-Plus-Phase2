@@ -25,8 +25,8 @@ const FourCuserInput = () => {
   // console.log(user);
 
   const { patient } = useSelector((state) => state.patients);
-  const  { Age } = patient;
-  // console.log(Age); 
+  const { Age } = patient;
+  // console.log(Age);
 
   const [PatientId] = useState(patient?.PatientId);
   const [formData, setFormData] = useState({
