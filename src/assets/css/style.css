@@ -609,3 +609,19 @@ div:where(.swal2-icon) {
   display: inline-block;
   line-height: 1;
 }
+
+/* custom-table */
+.custom-table {
+}
+.custom-table tbody tr {
+  border-color: #dee2e6 !important;
+}
+.custom-table tbody tr td {
+  width: calc(100% / 7) !important;
+  box-shadow: none !important;
+  border-color: #dee2e6 !important;
+}
+.btn.edit-icon {
+  padding: 2px 3px;
+  margin-right: 5px;
+}

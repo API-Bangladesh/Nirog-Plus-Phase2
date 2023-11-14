@@ -150,6 +150,7 @@ const TBPastHistoryComponent = ({ formData, setFormData }) => {
 
   const [cat1Data, setCat1Data] = useState([]);
   const [cat2Data, setCat2Data] = useState([]);
+  const [treatmentReceivedData, setTreatmentReceivedData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -181,13 +182,12 @@ const TBPastHistoryComponent = ({ formData, setFormData }) => {
   const [isDiv2Open, setIsDiv2Open] = useState(false);
 
   const handleRadio1Click = () => {
-    setIsDiv1Open(!isDiv1Open);
-    setIsDiv2Open(false); // Close the other div
+    setTreatmentReceivedData(cat1Data);
   };
 
   const handleRadio2Click = () => {
-    setIsDiv2Open(!isDiv2Open);
-    setIsDiv1Open(false); // Close the other div
+    setTreatmentReceivedData(cat2Data);
+    console.log(cat2Data, treatmentReceivedData);
   };
 
   const currentYear = new Date().getFullYear();
@@ -298,6 +298,7 @@ const TBPastHistoryComponent = ({ formData, setFormData }) => {
                           onDoubleClick={(e) => {
                             e.target.checked = false;
                             handleRemove(item.TBHistoryId);
+                            setTreatmentReceivedData([]);
                           }}
                           onClick={
                             item.TBHistoryIdCode === "Treatment received"
@@ -329,6 +330,7 @@ const TBPastHistoryComponent = ({ formData, setFormData }) => {
                           onDoubleClick={(e) => {
                             e.target.checked = false;
                             handleRemove(item.TBHistoryId);
+                            setTreatmentReceivedData([]);
                           }}
                           onClick={
                             item.TBHistoryIdCode === "Treatment received"
@@ -402,9 +404,9 @@ const TBPastHistoryComponent = ({ formData, setFormData }) => {
                   </div>
                 </div>
               )}
-              {item.TBHistoryIdCode === "Treatment received" && isDiv2Open && (
+              {item.TBHistoryIdCode === "Treatment received" && (
                 <div className="slide-down">
-                  {cat2Data?.map((item, index) => (
+                  {treatmentReceivedData?.map((item, index) => (
                     <div
                       className="itemCard position-relative bg-light border ps-3 py-2 mb-2"
                       key={index}
