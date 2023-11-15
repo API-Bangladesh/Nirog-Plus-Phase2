@@ -23,6 +23,7 @@ const TbStatus = () => {
 
   const { patient } = useSelector((state) => state.patients);
   const [PatientId] = useState(patient?.PatientId);
+  const patientGender = patient?.gender?.GenderCode;
 
   const [formData, setFormData] = useState({
     TBSymptoms: [],
@@ -48,7 +49,11 @@ const TbStatus = () => {
         title: "Success",
         text: response.data.message,
       }).then(function () {
-        window.location = "four-c-userinput";
+        if (patientGender === "Female") {
+          window.location = "station-fourb";
+        } else {
+          window.location = "four-c-userinput";
+        }
       });
     } catch (error) {
       Swal.fire({
