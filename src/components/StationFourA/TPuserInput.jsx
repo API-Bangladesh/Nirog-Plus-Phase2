@@ -203,7 +203,7 @@ const TPuserData = () => {
     dispatch(ADD_PATIENT(updatedPatientData));
     setIsTBScreened(isMoreThanTwoYes);
 
-    console.log(isMoreThanTwoYes);
+    // console.log(isMoreThanTwoYes);
   }, [formData]);
 
   return (
