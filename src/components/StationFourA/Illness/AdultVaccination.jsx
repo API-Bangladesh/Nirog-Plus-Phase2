@@ -18,6 +18,7 @@ const PatientIllness = ({ formData, setFormData }) => {
   const handleClick = () => {
     setIsShown((current) => !current);
     setFormData({ ...formData, AdultVaccination: [] });
+    setCheckboxs([])
     console.log(formData?.AdultVaccination);
   };
 
