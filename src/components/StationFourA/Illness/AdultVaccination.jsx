@@ -140,7 +140,7 @@ const PatientIllness = ({ formData, setFormData }) => {
     });
 
     setFormData(myFormData);
-    
+
     setCheckboxs(myCheckboxs);
     console.log(formData?.AdultVaccination);
 
@@ -222,7 +222,7 @@ const PatientIllness = ({ formData, setFormData }) => {
                   />
                   <label
                     className="form-check-label text-capitalize"
-                    htmlFor={item.VaccineId + "acg1"}
+                    htmlFor={item.VaccineId + "acg2"}
                   >
                     yes
                   </label>
