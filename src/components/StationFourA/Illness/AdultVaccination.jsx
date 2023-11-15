@@ -14,16 +14,18 @@ const PatientIllness = ({ formData, setFormData }) => {
 
   const userData = loggedInUserData();
   const userName = userData?.name;
-  let myFormData = { ...formData };
-
-  const handleClick = (event) => {
+  
+  const handleClick = () => {
     setIsShown((current) => !current);
+    setFormData({ ...formData, AdultVaccination: [] });
+    console.log(formData?.AdultVaccination);
   };
 
   // AdultVaccination
   const getAdultVaccinationData = async () => {
     try {
       const response = await axios.get(`${API_URL}/api/adult-vaccination`);
+
       if (response.status === 200) {
         setAdultVaccination(response.data.data);
       }
@@ -37,9 +39,17 @@ const PatientIllness = ({ formData, setFormData }) => {
   }, []);
 
   const handleChangeRadio = (illnessId, value) => {
+    let myFormData = { ...formData };
+
     const index = myFormData.AdultVaccination.findIndex(
-      (object) => object.illnessId === illnessId
+      (object) => object.vaccineId === illnessId
     );
+
+    let checkIndex = checkboxs.findIndex(item => item.vaccineId === illnessId)
+
+    let isGivenByNirog = checkIndex === -1 ? "" : checkboxs[checkIndex].isGivenByNirog
+
+    console.log(isGivenByNirog)
 
     if (index === -1) {
       myFormData.AdultVaccination.push({
@@ -47,18 +57,18 @@ const PatientIllness = ({ formData, setFormData }) => {
         vaccineId: illnessId,
         otherVaccine: value,
         Status: "Adult",
-        isGivenByNirog: "",
+        isGivenByNirog: isGivenByNirog,
         CreateUser: userName,
         UpdateUser: userName,
         OrgId: OrgId,
       });
     }
 
-    if (index === 0) {
+    if (index !== -1) {
       myFormData.AdultVaccination = myFormData.AdultVaccination.filter(
         (item) => {
-          if (item.illnessId == illnessId) {
-            item.Status = value;
+          if (item.vaccineId == illnessId) {
+            item.otherVaccine = value;
           }
           return item;
         }
@@ -70,20 +80,75 @@ const PatientIllness = ({ formData, setFormData }) => {
   };
 
   const handleRemove = (illnessId) => {
-    myFormData.AdultVaccination.map((item) => {
-      if (item.vaccineId === illnessId) {
-        myFormData.AdultVaccination.pop(item);
+    let myFormData = { ...formData };
+
+    myFormData.AdultVaccination = myFormData.AdultVaccination.filter(
+      (item) => {
+        return item.vaccineId != illnessId;
       }
-    });
+    );
+
     setFormData(myFormData);
+    console.log(myFormData?.AdultVaccination);
+
+    // myFormData.AdultVaccination.map((item) => {
+    //   if (item.vaccineId === illnessId) {
+    //     myFormData.AdultVaccination.pop(item);
+    //   }
+    // });
+    // console.log("doubleClicked!");
+    // setFormData(myFormData);
+    // console.log(myFormData?.AdultVaccination);
   };
 
-  const handleChangeRadioTwo = (illnessId, value) => {
-    myFormData.AdultVaccination.map((item) => {
+  const [checkboxs, setCheckboxs] = useState([])
+
+  const handleChangeRadioTwo = (illnessId, e) => {
+    let myCheckboxs = [...checkboxs];
+    const checked = e.target.checked;
+
+    const index = myCheckboxs.findIndex(
+      (object) => object.vaccineId === illnessId
+    );
+
+    if (index === -1) {
+      myCheckboxs.push({
+        vaccineId: illnessId,
+        isGivenByNirog: checked ? "yes" : "",
+      });
+    }
+
+    if (index !== -1) {
+      myCheckboxs = myCheckboxs.filter(
+        (item) => {
+          if (item.vaccineId == illnessId) {
+            item.isGivenByNirog = checked ? "yes" : "";
+          }
+          return item;
+        }
+      );
+    }
+
+    let myFormData = { ...formData };
+
+    // Update the main form data with both radio and checkbox changes
+    myFormData.AdultVaccination = myFormData.AdultVaccination.map((item) => {
       if (item.vaccineId === illnessId) {
-        item.isGivenByNirog = value;
+        item.isGivenByNirog = checked ? "yes" : ""; // Update checkbox value
       }
+      return item;
     });
+
+    setFormData(myFormData);
+    
+    setCheckboxs(myCheckboxs);
+    console.log(formData?.AdultVaccination);
+
+    // myFormData.AdultVaccination.map((item) => {
+    //   if (item.vaccineId === illnessId) {
+    //     item.isGivenByNirog = value;
+    //   }
+    // });
   };
 
   return (
@@ -109,6 +174,7 @@ const PatientIllness = ({ formData, setFormData }) => {
               nirog team?
             </p>
           </div>
+
           {AdultVaccination.map((item, i) => (
             <div className="d-flex justify-content-between" key={i}>
               <div className="">
@@ -120,62 +186,62 @@ const PatientIllness = ({ formData, setFormData }) => {
                     className="form-check-input"
                     type="radio"
                     name={item.VaccineId}
-                    id="bcg1"
+                    id={item.VaccineId + "acg1"}
                     value="no"
                     onChange={(e) =>
                       handleChangeRadio(item.VaccineId, e.target.value)
                     }
                     onDoubleClick={(e) => {
                       e.target.checked = false;
-                      e.target.value = null;
+                      // e.target.value = null;
                       handleRemove(item.VaccineId);
                     }}
                   />
                   <label
                     className="form-check-label text-capitalize"
-                    htmlFor="bcg1"
+                    htmlFor={item.VaccineId + "acg1"}
                   >
                     no
                   </label>
                 </div>
-
                 <div className="form-check form-check-inline">
                   <input
                     className="form-check-input"
                     type="radio"
                     name={item.VaccineId}
-                    id="bcg2"
+                    id={item.VaccineId + "acg2"}
                     value="yes"
                     onChange={(e) =>
                       handleChangeRadio(item.VaccineId, e.target.value)
                     }
                     onDoubleClick={(e) => {
                       e.target.checked = false;
-                      e.target.value = null;
+                      // e.target.value = null;
                       handleRemove(item.VaccineId);
                     }}
                   />
                   <label
                     className="form-check-label text-capitalize"
-                    htmlFor="bcg2"
+                    htmlFor={item.VaccineId + "acg1"}
                   >
                     yes
                   </label>
                 </div>
+
                 <div className="form-check form-check-inline">
                   <input
                     className="form-check-input"
                     type="checkbox"
                     name="inputOptions"
-                    id="inlineRadio2"
+                    id={item.VaccineId + "AdultinlineRadio2"}
                     value="yes"
                     onClick={(e) =>
-                      handleChangeRadioTwo(item.VaccineId, e.target.value)
+                      handleChangeRadioTwo(item.VaccineId, e)
                     }
                   />
                   <label
                     className="form-check-label text-capitalize"
-                    htmlFor="inlineRadio2"
+                    htmlFor={item.VaccineId + "AdultinlineRadio2"}
                   ></label>
                 </div>
               </div>
