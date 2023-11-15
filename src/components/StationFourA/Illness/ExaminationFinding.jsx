@@ -73,7 +73,7 @@ const ExaminationFindings = ({ formData, setFormData }) => {
     }
 
     setFormData(myFormData);
-    // console.log(myFormData?.TBEFindings);
+    console.log(myFormData?.TBEFindings);
   };
 
   const handleRemove = (TBEFindingId) => {
@@ -84,6 +84,7 @@ const ExaminationFindings = ({ formData, setFormData }) => {
     });
 
     setFormData(myFormData);
+    console.log(myFormData?.TBEFindings);
   };
 
   return (

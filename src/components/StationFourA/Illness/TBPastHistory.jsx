@@ -5,8 +5,8 @@ import axios from "axios";
 import { API_URL } from "../../../helper/Constants";
 import { useSelector } from "react-redux";
 import { loggedInUserData } from "../../../helper/localStorageHelper";
-import TBpastHistoryModal from "../../StationFourC/Modals/TBpastHistoryModal";
-import { AiOutlineClose } from "react-icons/ai";
+// import TBpastHistoryModal from "../../StationFourC/Modals/TBpastHistoryModal";
+// import { AiOutlineClose } from "react-icons/ai";
 
 const TBPastHistoryComponent = ({ formData, setFormData }) => {
   const [isShown, setIsShown] = useState(false);
@@ -21,6 +21,8 @@ const TBPastHistoryComponent = ({ formData, setFormData }) => {
   const handleClick = () => {
     setIsShown((current) => !current);
     setFormData({ ...formData, TBEvidences: [], TBPastHistories: [] });
+    setTreatmentReceivedData([])
+    setPastHistoryYear("")
   };
 
   const [TBPastHistory, setTBPastHistory] = useState([]);
@@ -72,6 +74,7 @@ const TBPastHistoryComponent = ({ formData, setFormData }) => {
 
     setFormData(myFormData);
     console.log(myFormData?.TBPastHistories);
+    console.log(myFormData?.TBEvidences);
   }, [pastHistoryYear]);
 
   const handleChangeRadio = (TBHistoryId, value) => {
@@ -98,6 +101,7 @@ const TBPastHistoryComponent = ({ formData, setFormData }) => {
     if (index !== -1) {
       myFormData.TBPastHistories = myFormData.TBPastHistories.filter((item) => {
         if (item.TBPastHistoryQuestionId == TBHistoryId) {
+          item.TBHistoryAnswer1 = value;
           item.Status = value;
         }
         return item;
@@ -116,6 +120,7 @@ const TBPastHistoryComponent = ({ formData, setFormData }) => {
     });
 
     setFormData(myFormData);
+    console.log(myFormData?.TBPastHistories);
   };
 
   const handleCheckboxChange = (e, item) => {
@@ -145,7 +150,7 @@ const TBPastHistoryComponent = ({ formData, setFormData }) => {
     }
 
     setFormData(myFormData);
-    // console.log(myFormData?.TBEvidences, e.target.checked);
+    console.log(myFormData?.TBEvidences, e.target.checked);
   };
 
   const [cat1Data, setCat1Data] = useState([]);
@@ -169,7 +174,7 @@ const TBPastHistoryComponent = ({ formData, setFormData }) => {
         if (response.status === 200 && response2.status === 200) {
           setCat1Data(response.data.TBCatData);
           setCat2Data(response2.data.TBCatData);
-          console.log(response2);
+          console.log(response2, response);
         }
       } catch (error) {
         console.error(error);
@@ -177,9 +182,6 @@ const TBPastHistoryComponent = ({ formData, setFormData }) => {
     };
     fetchData();
   }, []);
-
-  const [isDiv1Open, setIsDiv1Open] = useState(false);
-  const [isDiv2Open, setIsDiv2Open] = useState(false);
 
   const handleRadio1Click = () => {
     setTreatmentReceivedData(cat1Data);
@@ -221,6 +223,7 @@ const TBPastHistoryComponent = ({ formData, setFormData }) => {
                 aria-label="Default select example"
                 className="ps-3"
                 onChange={(e) => setPastHistoryYear(e.target.value)}
+                value={pastHistoryYear}
               >
                 <option value="">Select Year</option>
                 {yearList.map((year, index) => (
@@ -298,7 +301,8 @@ const TBPastHistoryComponent = ({ formData, setFormData }) => {
                           onDoubleClick={(e) => {
                             e.target.checked = false;
                             handleRemove(item.TBHistoryId);
-                            setTreatmentReceivedData([]);
+                            item.TBHistoryIdCode === "Treatment received" && setTreatmentReceivedData([]);
+                            
                           }}
                           onClick={
                             item.TBHistoryIdCode === "Treatment received"
@@ -330,7 +334,7 @@ const TBPastHistoryComponent = ({ formData, setFormData }) => {
                           onDoubleClick={(e) => {
                             e.target.checked = false;
                             handleRemove(item.TBHistoryId);
-                            setTreatmentReceivedData([]);
+                            item.TBHistoryIdCode === "Treatment received" && setTreatmentReceivedData([]);
                           }}
                           onClick={
                             item.TBHistoryIdCode === "Treatment received"
@@ -375,35 +379,6 @@ const TBPastHistoryComponent = ({ formData, setFormData }) => {
                 </div>
               </div>
 
-              {item.TBHistoryIdCode === "Treatment received" && isDiv1Open && (
-                <div className="slide-down">
-                  <div className="slide-down">
-                    {cat1Data?.map((item, index) => (
-                      <div
-                        className="itemCard position-relative bg-light border ps-3 py-2 mb-2"
-                        key={index}
-                      >
-                        <p className="mb-0 font-13">
-                          {item.CreateDate}: {item.DrugCode}
-                        </p>
-                        <p className="mb-0 font-13">
-                          {item.Frequency}, for {item.DrugDose}
-                        </p>
-                        <p className="mb-0 font-13">
-                          {item.InstructionInBangla}
-                        </p>
-
-                        {/* <div className="actionBox">
-                        <TBpastHistoryModal />
-                        <button className="btn btn-sm btn-danger py-1 px-2 font-12 ms-1">
-                          <AiOutlineClose />
-                        </button>
-                      </div> */}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
               {item.TBHistoryIdCode === "Treatment received" && (
                 <div className="slide-down">
                   {treatmentReceivedData?.map((item, index) => (
@@ -412,19 +387,12 @@ const TBPastHistoryComponent = ({ formData, setFormData }) => {
                       key={index}
                     >
                       <p className="mb-0 font-13">
-                        {item.CreateDate}: {item.DrugCode}
+                        {item?.CreateDate}: {item?.DrugCode}
                       </p>
                       <p className="mb-0 font-13">
-                        {item.Frequency}, for {item.DrugDose}
+                        {item?.Frequency}, for {item?.DrugDose}
                       </p>
-                      <p className="mb-0 font-13">{item.InstructionInBangla}</p>
-
-                      {/* <div className="actionBox">
-                        <TBpastHistoryModal />
-                        <button className="btn btn-sm btn-danger py-1 px-2 font-12 ms-1">
-                          <AiOutlineClose />
-                        </button>
-                      </div> */}
+                      <p className="mb-0 font-13">{item?.InstructionInBangla}</p>
                     </div>
                   ))}
                 </div>
