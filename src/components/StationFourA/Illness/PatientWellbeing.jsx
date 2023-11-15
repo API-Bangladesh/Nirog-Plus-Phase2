@@ -17,8 +17,10 @@ const PatientIllness = ({ formData, setFormData }) => {
   const userData = loggedInUserData();
   const userName = userData?.name;
 
-  const handleClick = (event) => {
+  const handleClick = () => {
     setIsShown((current) => !current);
+    setFormData({ ...formData, PatientMentalHealth: [] });
+    console.log(formData?.PatientMentalHealth);
   };
 
   useEffect(() => {
@@ -37,7 +39,7 @@ const PatientIllness = ({ formData, setFormData }) => {
     let myFormData = { ...formData };
 
     const index = myFormData.PatientMentalHealth.findIndex(
-      (object) => object.illnessId === illnessId
+      (object) => object.questionId === illnessId
     );
 
     if (index === -1) {
@@ -45,7 +47,7 @@ const PatientIllness = ({ formData, setFormData }) => {
         PatientId: PatientId,
         questionId: illnessId,
         answerId: value,
-        comment: "Test",
+        comment: "",
         Status: "A",
         CreateUser: userName,
         UpdateUser: userName,
@@ -53,11 +55,11 @@ const PatientIllness = ({ formData, setFormData }) => {
       });
     }
 
-    if (index === 0) {
+    if (index !== -1) {
       myFormData.PatientMentalHealth = myFormData.PatientMentalHealth.filter(
         (item) => {
-          if (item.illnessId == illnessId) {
-            item.Status = value;
+          if (item.questionId == illnessId) {
+            item.answerId = value;
           }
           return item;
         }
@@ -73,11 +75,12 @@ const PatientIllness = ({ formData, setFormData }) => {
 
     myFormData.PatientMentalHealth = myFormData.PatientMentalHealth.filter(
       (item) => {
-        return item.illnessId != illnessId;
+        return item.questionId != illnessId;
       }
     );
 
     setFormData(myFormData);
+    console.log(myFormData?.PatientMentalHealth);
   };
 
   return (
@@ -97,7 +100,7 @@ const PatientIllness = ({ formData, setFormData }) => {
       {isShown && (
         <div className="col-lg-12">
           {answers?.map((answer, i) => (
-            <div className="mb-2">
+            <div className="mb-2" key={i}>
               <div className="">
                 {i === 3 ? (
                   <p className="font-16 fw-semibold mb-2 mt-3">
@@ -121,7 +124,7 @@ const PatientIllness = ({ formData, setFormData }) => {
                   const uniqueId = `${ans.AnswerId}${j}${randomNumber}`;
 
                   return (
-                    <div className="form-check form-check-inline">
+                    <div className="form-check form-check-inline" key={j}>
                       <input
                         className="form-check-input"
                         type="radio"
@@ -130,7 +133,7 @@ const PatientIllness = ({ formData, setFormData }) => {
                         id={ans.AnswerId + uniqueId}
                         onDoubleClick={(e) => {
                           e.target.checked = false;
-                          e.target.value = null;
+                          // e.target.value = null;
                           handleRemove(answer.QuestionId);
                         }}
                         // onChange={(e) => {
@@ -148,7 +151,7 @@ const PatientIllness = ({ formData, setFormData }) => {
                       />
                       <label
                         className="form-check-label text-capitalize"
-                        for={ans.AnswerId + uniqueId}
+                        htmlFor={ans.AnswerId + uniqueId}
                       >
                         {ans.AnswerTitle}
                       </label>
