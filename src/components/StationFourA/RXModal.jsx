@@ -5,8 +5,12 @@ import "./TPuserInput.css";
 import axios from "axios";
 import { API_URL } from "../../helper/Constants";
 import { useSelector } from "react-redux";
+import { loggedInUserData } from "../../helper/localStorageHelper";
 
 function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
+  const userData = loggedInUserData();
+  const userName = userData?.name;
+
   const { patient } = useSelector((state) => state.patients);
 
   const [PatientId] = useState(patient?.PatientId);
@@ -76,8 +80,8 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
         frequencyHour: frequencyValue,
         allergyToMedication: allergyToMedication,
         Status: status,
-        CreateUser: "Nazmul",
-        UpdateUser: "Nazmul1",
+        CreateUser: userName,
+        UpdateUser: userName,
         OrgId: OrgId,
       });
 
@@ -155,18 +159,14 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
             value={allergyToMedication}
             onChange={(e) => setAllergyToMedication(e.target.checked)}
           />
-          <label
-            className="form-check-label"
-            htmlFor="allergy"
-            for="medicineSelect"
-          >
+          <label className="form-check-label" htmlFor="medicineSelect">
             Allergy to medication
           </label>
         </div>
 
         <div className="mb-3 input-shadow rounded-pill">
           <select
-            id="Select"
+            id="FrequencyHourSelect"
             onChange={(e) => setFrequencyHour(e.target.value)}
             className="form-select input-padding rounded-pill select-form-padding"
           >
@@ -181,8 +181,9 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
         </div>
 
         {/* new drop div */}
-        <div className="row mb-3 input-shadow rounded-pill">
+        <div className="row mb-3 rounded-pill">
           <div className="col-lg-6">
+            <div className="rounded-pill input-shadow">
             <input
               type="text"
               value={dos}
@@ -190,10 +191,12 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
               className="form-control input-padding rounded-pill py-2 border-0"
               placeholder="Dos : 10, 20..."
             />
+            </div>
           </div>
           <div className="col-lg-6">
+            <div className="rounded-pill input-shadow">
             <select
-              id="Select"
+              id="DosUnitSelect"
               onChange={(e) => setDosUnit(e.target.value)}
               className="form-select input-padding rounded-pill select-form-padding"
             >
@@ -203,12 +206,14 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
               <option>pcs</option>
               <option>spoon</option>
             </select>
+            </div>
           </div>
         </div>
 
         {/* new div here */}
-        <div className="row mb-3 input-shadow rounded-pill">
+        <div className="row mb-3 rounded-pill">
           <div className="col-lg-6">
+            <div className="rounded-pill input-shadow">
             <input
               type="text"
               value={duration}
@@ -216,10 +221,12 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
               className="form-control input-padding rounded-pill py-2 border-0"
               placeholder="Duration : 1, 2..."
             />
+            </div>
           </div>
           <div className="col-lg-6">
+            <div className="rounded-pill input-shadow">
             <select
-              id="Select"
+              id="DurationUnitSelect"
               onChange={(e) => setDurationUnit(e.target.value)}
               className="form-select input-padding rounded-pill select-form-padding"
             >
@@ -229,6 +236,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
               <option>month</option>
               <option>year</option>
             </select>
+            </div>
           </div>
         </div>
 

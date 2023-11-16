@@ -6,6 +6,7 @@ import GlobalButton from "../GlobalBtn/GlobalButton";
 import FourCuserInputModal from "./Modals/ProvitionalModal";
 import InvestigationModal from "./Modals/InvestigationModal";
 import TreatmentModal from "./Modals/TreatmentModal";
+import TreatmentEditModal from "./Modals/TreatmentEditModal";
 import ReferralModal from "./Modals/ReferralModal";
 import AdviceModal from "./Modals/AdviceModal";
 import SingleButton from "../Buttons/SingleButton/SingleButton";
@@ -16,7 +17,7 @@ import { Button } from "react-bootstrap";
 import { API_URL } from "../../helper/Constants";
 import { useSelector } from "react-redux";
 import PatientShortInfo from "../Common/PatientShortInfo";
-import { AiOutlineClose } from "react-icons/ai";
+import { AiOutlineClose, AiOutlineEdit } from "react-icons/ai";
 import { loggedInUserData } from "../../helper/localStorageHelper";
 
 const FourCuserInput = () => {
@@ -25,8 +26,10 @@ const FourCuserInput = () => {
   // console.log(user);
 
   const { patient } = useSelector((state) => state.patients);
-  const  { Age } = patient;
-  // console.log(Age); 
+  const { Age } = patient;
+  const { isTBScreened } = patient;
+  // console.log(Age);
+  // console.log(isTBScreened, patient);
 
   const [PatientId] = useState(patient?.PatientId);
   const [formData, setFormData] = useState({
@@ -47,7 +50,7 @@ const FourCuserInput = () => {
     ],
   });
 
-  console.log(formData.TreatmentSuggestion);
+  // console.log(formData.TreatmentSuggestion);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -87,10 +90,111 @@ const FourCuserInput = () => {
     e.preventDefault();
 
     let myFormData = { ...formData };
-    console.log(value);
+    // console.log(value);
     myFormData.FollowUpDate[0][property] = value;
     setFormData(myFormData);
   };
+
+  const [cat1Data, setCat1Data] = useState([]);
+  const [cat2Data, setCat2Data] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/api/tb_cat`, {
+          params: {
+            CatType: "CAT1",
+          },
+        });
+        const response2 = await axios.get(`${API_URL}/api/tb_cat`, {
+          params: {
+            CatType: "CAT2",
+          },
+        });
+
+        if (response.status === 200 && response2.status === 200) {
+          setCat1Data(response.data.TBCatData);
+          setCat2Data(response2.data.TBCatData);
+          // console.log(response2);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  const handleCatSelect = (e, data, category) => {
+    let myFormData = { ...formData };
+
+    let checked = e.target.checked;
+
+    // Clear existing category data if switching categories
+    if (checked && selectedCategory !== category) {
+      myFormData.TreatmentSuggestion = myFormData.TreatmentSuggestion.filter(
+        (item) => {
+          // Assuming there's a property like 'category' to identify the category
+          return item.category !== selectedCategory;
+        }
+      );
+      setSelectedCategory(category);
+    }
+
+    if (checked) {
+      // Add data from the selected category at the top
+      const categoryData = data.map((item) => ({
+        PatientId: PatientId,
+        drugId: item.DrugId,
+        drugCode: item.DrugCode,
+        instruction: item.InstructionInBangla,
+        banglaInstruction: item.InstructionInBangla,
+        durationId: "D796D547-1815-4EB7-A74D-03AB1342A625",
+        frequencyId: "143927E4-67BC-41FD-B092-063033E34366",
+        frequency: item.Frequency,
+        refInstructionId: item.SpecialInstruction,
+        drugDurationValue: item.DrugDurationValue,
+        otherDrug: item.OtherDrug, //drugPieces is set in comment field!
+        drugDose: item.DrugDose,
+        specialInstruction: "",
+        comment: "",
+        hourly: item.Hour,
+        Status: "",
+        CreateUser: user,
+        OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
+        category: category,
+      }));
+
+      myFormData.TreatmentSuggestion = [
+        ...categoryData,
+        ...myFormData.TreatmentSuggestion,
+      ];
+    }
+
+    setFormData(myFormData);
+
+    console.log(myFormData.TreatmentSuggestion);
+  };
+
+  const handleRemoveCatData = (category) => {
+    let myFormData = { ...formData };
+
+    myFormData.TreatmentSuggestion = myFormData.TreatmentSuggestion.filter(
+      (item) => {
+        // Assuming there's a property like 'category' to identify the category
+        return item.category !== category;
+      }
+    );
+
+    setFormData(myFormData);
+    console.log(myFormData.TreatmentSuggestion);
+  };
+
+  const [treatmentEditModalShow, setTreatmentEditModalShow] =
+    React.useState(false);
+
+  const [editData, setEditData] = useState({});
 
   return (
     <>
@@ -220,7 +324,7 @@ const FourCuserInput = () => {
                     <Accordion.Header>Treatment Suggestions</Accordion.Header>
                     <Accordion.Body>
                       <div className="d-flex flex-column align-items-center">
-                        <table className="table table-bordered">
+                        <table className="table table-bordered custom-table">
                           <thead>
                             <tr>
                               <th>Drug Name</th>
@@ -233,6 +337,73 @@ const FourCuserInput = () => {
                             </tr>
                           </thead>
                           <tbody>
+                            {isTBScreened && (
+                              <tr className="border-0">
+                                <td
+                                  colSpan="4"
+                                  className="d-flex justify-content-start align-items-center border-0 text-start"
+                                >
+                                  Suggested Treatment for TB
+                                </td>
+                                <td
+                                  colSpan="3"
+                                  className="d-flex justify-content-end align-items-center border-0"
+                                >
+                                  <div className="form-check form-check-inline">
+                                    <input
+                                      className="form-check-input"
+                                      type="radio"
+                                      name="SuggestedCAT1"
+                                      id="SuggestedCAT1"
+                                      value=""
+                                      onChange={(e) =>
+                                        handleCatSelect(e, cat1Data, "CAT1")
+                                      }
+                                      onDoubleClick={(e) => {
+                                        e.target.checked = false;
+                                        handleRemoveCatData("CAT1");
+                                      }}
+                                    />
+                                    <label
+                                      className="form-check-label text-capitalize"
+                                      htmlFor="SuggestedCAT1"
+                                    >
+                                      CAT1
+                                    </label>
+                                  </div>
+
+                                  <div className="form-check form-check-inline">
+                                    <input
+                                      className="form-check-input"
+                                      type="radio"
+                                      name="SuggestedCAT1"
+                                      id="SuggestedCAT2"
+                                      value=""
+                                      onChange={(e) =>
+                                        handleCatSelect(e, cat2Data, "CAT2")
+                                      }
+                                      onDoubleClick={(e) => {
+                                        e.target.checked = false;
+                                        handleRemoveCatData("CAT2");
+                                      }}
+                                      // onClick={
+                                      //   item.TBHistoryIdCode ===
+                                      //   "Treatment received"
+                                      //     ? handleRadio1Click
+                                      //     : null
+                                      // }
+                                    />
+                                    <label
+                                      className="form-check-label text-capitalize"
+                                      htmlFor="SuggestedCAT2"
+                                    >
+                                      CAT2
+                                    </label>
+                                  </div>
+                                </td>
+                              </tr>
+                            )}
+
                             {formData.TreatmentSuggestion &&
                               formData.TreatmentSuggestion.map((item, key) => {
                                 return (
@@ -247,6 +418,17 @@ const FourCuserInput = () => {
                                     <td>{item?.drugDurationValue}</td>
                                     <td>{item?.banglaInstruction}</td>
                                     <td>
+                                      <button
+                                        className="btn btn-success btn-sm edit-icon"
+                                        onClick={(e) => {
+                                          e.preventDefault();
+                                          setTreatmentEditModalShow(true);
+                                          setEditData(item);
+                                        }}
+                                      >
+                                        <AiOutlineEdit className="fs-5" />
+                                      </button>
+
                                       <button
                                         className="btn btn-danger btn-sm"
                                         onClick={(e) =>
@@ -268,6 +450,13 @@ const FourCuserInput = () => {
                         <TreatmentModal
                           formData={formData}
                           setFormData={setFormData}
+                        />
+                        <TreatmentEditModal
+                          show={treatmentEditModalShow}
+                          onHide={() => setTreatmentEditModalShow(false)}
+                          formData={formData}
+                          setFormData={setFormData}
+                          editData={editData}
                         />
                       </div>
                     </Accordion.Body>
@@ -347,7 +536,6 @@ const FourCuserInput = () => {
                           <tbody>
                             {formData.Advice &&
                               formData.Advice.map((item, key) => {
-                                console.log(item);
                                 return (
                                   <tr key={key}>
                                     <td>{item.adviceText}</td>
@@ -397,7 +585,6 @@ const FourCuserInput = () => {
                           <tbody>
                             {formData.Referral &&
                               formData.Referral.map((item, key) => {
-                                console.log(item);
                                 return (
                                   <tr key={key}>
                                     <td>{item.description}</td>

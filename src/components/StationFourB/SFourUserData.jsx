@@ -121,6 +121,8 @@ const SFourUserData = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     
+    // console.log(data);
+    // return
     if(contraceptionMethod === ''){
       setError('  This field can not be empty!');
     }

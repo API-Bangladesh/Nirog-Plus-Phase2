@@ -564,7 +564,7 @@ div:where(.swal2-icon) {
 }
 
 /* flagging color */
-.white {
+/* .white {
   background-color: transparent;
   margin: 0 !important;
 }
@@ -575,9 +575,53 @@ div:where(.swal2-icon) {
 .red {
   background-color: #ff0000;
   margin: 0 !important;
+} */
+.white,
+.yellow,
+.red {
+  margin: 0 !important;
+  position: relative;
+  padding-right: 20px;
+  display: inline-block;
+}
+.flag {
+  line-height: 1;
+  font-size: 18px;
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.white {
+  padding-right: 0;
+}
+.white .flag {
+  display: none;
+}
+.yellow .flag {
+  fill: #ffff00;
+}
+.red .flag {
+  fill: #ff0000;
 }
 
 .show-data kbd {
   display: inline-block;
   line-height: 1;
+}
+
+/* custom-table */
+.custom-table {
+}
+.custom-table tbody tr {
+  border-color: #dee2e6 !important;
+}
+.custom-table tbody tr td {
+  width: calc(100% / 7) !important;
+  box-shadow: none !important;
+  border-color: #dee2e6 !important;
+}
+.btn.edit-icon {
+  padding: 2px 3px;
+  margin-right: 5px;
 }

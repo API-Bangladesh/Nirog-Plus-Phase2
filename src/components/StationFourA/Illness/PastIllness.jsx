@@ -165,12 +165,12 @@ const PatientIllness = ({ formData, setFormData }) => {
           ))}
 
           {/* Other */}
-          <div className="mb-1">
+          {/* <div className="mb-1">
             <p className="font-16 mb-1">Others</p>
             <div className="position-relative onBtn">
               <OthersField />
             </div>
-          </div>
+          </div> */}
         </div>
       )}
 

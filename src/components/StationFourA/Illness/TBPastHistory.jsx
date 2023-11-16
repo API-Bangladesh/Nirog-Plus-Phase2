@@ -5,8 +5,8 @@ import axios from "axios";
 import { API_URL } from "../../../helper/Constants";
 import { useSelector } from "react-redux";
 import { loggedInUserData } from "../../../helper/localStorageHelper";
-import TBpastHistoryModal from "../../StationFourC/Modals/TBpastHistoryModal";
-import { AiOutlineClose } from "react-icons/ai";
+// import TBpastHistoryModal from "../../StationFourC/Modals/TBpastHistoryModal";
+// import { AiOutlineClose } from "react-icons/ai";
 
 const TBPastHistoryComponent = ({ formData, setFormData }) => {
   const [isShown, setIsShown] = useState(false);
@@ -21,6 +21,8 @@ const TBPastHistoryComponent = ({ formData, setFormData }) => {
   const handleClick = () => {
     setIsShown((current) => !current);
     setFormData({ ...formData, TBEvidences: [], TBPastHistories: [] });
+    setTreatmentReceivedData([])
+    setPastHistoryYear("")
   };
 
   const [TBPastHistory, setTBPastHistory] = useState([]);
@@ -55,6 +57,26 @@ const TBPastHistoryComponent = ({ formData, setFormData }) => {
     getTBPastEvidencedData();
   }, []);
 
+  const [pastHistoryYear, setPastHistoryYear] = useState("");
+
+  useEffect(() => {
+    let myFormData = { ...formData };
+
+    myFormData.TBPastHistories = myFormData.TBPastHistories.map((item) => ({
+      ...item,
+      TBHistoryOthers2: pastHistoryYear,
+    }));
+
+    myFormData.TBEvidences = myFormData.TBEvidences.map((item) => ({
+      ...item,
+      TBEPastEvidencedOthers: pastHistoryYear,
+    }));
+
+    setFormData(myFormData);
+    console.log(myFormData?.TBPastHistories);
+    console.log(myFormData?.TBEvidences);
+  }, [pastHistoryYear]);
+
   const handleChangeRadio = (TBHistoryId, value) => {
     let myFormData = { ...formData };
 
@@ -72,13 +94,14 @@ const TBPastHistoryComponent = ({ formData, setFormData }) => {
         CreateUser: userName,
         UpdateUser: userName,
         OrgId: OrgId,
-        TBHistoryOthers2: "2023",
+        TBHistoryOthers2: pastHistoryYear,
       });
     }
 
     if (index !== -1) {
       myFormData.TBPastHistories = myFormData.TBPastHistories.filter((item) => {
         if (item.TBPastHistoryQuestionId == TBHistoryId) {
+          item.TBHistoryAnswer1 = value;
           item.Status = value;
         }
         return item;
@@ -97,6 +120,7 @@ const TBPastHistoryComponent = ({ formData, setFormData }) => {
     });
 
     setFormData(myFormData);
+    console.log(myFormData?.TBPastHistories);
   };
 
   const handleCheckboxChange = (e, item) => {
@@ -115,7 +139,7 @@ const TBPastHistoryComponent = ({ formData, setFormData }) => {
         CreateUser: userName,
         UpdateUser: userName,
         OrgId: OrgId,
-        TBEPastEvidencedOthers: "2023",
+        TBEPastEvidencedOthers: pastHistoryYear,
       });
     }
 
@@ -131,6 +155,7 @@ const TBPastHistoryComponent = ({ formData, setFormData }) => {
 
   const [cat1Data, setCat1Data] = useState([]);
   const [cat2Data, setCat2Data] = useState([]);
+  const [treatmentReceivedData, setTreatmentReceivedData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -149,7 +174,7 @@ const TBPastHistoryComponent = ({ formData, setFormData }) => {
         if (response.status === 200 && response2.status === 200) {
           setCat1Data(response.data.TBCatData);
           setCat2Data(response2.data.TBCatData);
-          console.log(response2);
+          console.log(response2, response);
         }
       } catch (error) {
         console.error(error);
@@ -158,18 +183,20 @@ const TBPastHistoryComponent = ({ formData, setFormData }) => {
     fetchData();
   }, []);
 
-  const [isDiv1Open, setIsDiv1Open] = useState(false);
-  const [isDiv2Open, setIsDiv2Open] = useState(false);
-
   const handleRadio1Click = () => {
-    setIsDiv1Open(!isDiv1Open);
-    setIsDiv2Open(false); // Close the other div
+    setTreatmentReceivedData(cat1Data);
   };
 
   const handleRadio2Click = () => {
-    setIsDiv2Open(!isDiv2Open);
-    setIsDiv1Open(false); // Close the other div
+    setTreatmentReceivedData(cat2Data);
+    console.log(cat2Data, treatmentReceivedData);
   };
+
+  const currentYear = new Date().getFullYear();
+  const yearList = Array.from(
+    { length: 100 },
+    (_, index) => currentYear - index
+  );
 
   return (
     <>
@@ -192,12 +219,18 @@ const TBPastHistoryComponent = ({ formData, setFormData }) => {
               <p className="font-16">When did he suffer TB in past</p>
             </div>
             <div className="selectYear mb-3">
-              <Form.Select aria-label="Default select example" className="ps-3">
-                <option>Select Year</option>
-                <option value="1">2020</option>
-                <option value="2">2021</option>
-                <option value="3">2022</option>
-                <option value="3">2023</option>
+              <Form.Select
+                aria-label="Default select example"
+                className="ps-3"
+                onChange={(e) => setPastHistoryYear(e.target.value)}
+                value={pastHistoryYear}
+              >
+                <option value="">Select Year</option>
+                {yearList.map((year, index) => (
+                  <option key={index} value={year}>
+                    {year}
+                  </option>
+                ))}
               </Form.Select>
             </div>
           </div>
@@ -268,10 +301,11 @@ const TBPastHistoryComponent = ({ formData, setFormData }) => {
                           onDoubleClick={(e) => {
                             e.target.checked = false;
                             handleRemove(item.TBHistoryId);
+                            item.TBHistoryIdCode === "Treatment received" && setTreatmentReceivedData([]);
+                            
                           }}
                           onClick={
-                            item.TBHistoryId ===
-                            "FD99941A-2BCA-4BDD-8521-931A4DD6974E"
+                            item.TBHistoryIdCode === "Treatment received"
                               ? handleRadio1Click
                               : null
                           }
@@ -300,10 +334,10 @@ const TBPastHistoryComponent = ({ formData, setFormData }) => {
                           onDoubleClick={(e) => {
                             e.target.checked = false;
                             handleRemove(item.TBHistoryId);
+                            item.TBHistoryIdCode === "Treatment received" && setTreatmentReceivedData([]);
                           }}
                           onClick={
-                            item.TBHistoryId ===
-                            "FD99941A-2BCA-4BDD-8521-931A4DD6974E"
+                            item.TBHistoryIdCode === "Treatment received"
                               ? handleRadio2Click
                               : null
                           }
@@ -344,64 +378,25 @@ const TBPastHistoryComponent = ({ formData, setFormData }) => {
                     )}
                 </div>
               </div>
-              {item.TBHistoryId === "FD99941A-2BCA-4BDD-8521-931A4DD6974E" &&
-                isDiv1Open && (
-                  <div className="slide-down">
-                    <div className="slide-down">
-                      {cat1Data?.map((item, index) => (
-                        <div
-                          className="itemCard position-relative bg-light border ps-3 py-2 mb-2"
-                          key={index}
-                        >
-                          <p className="mb-0 font-13">
-                            {item.CreateDate}: {item.DrugCode}
-                          </p>
-                          <p className="mb-0 font-13">
-                            {item.Frequency}, for {item.DrugDose}
-                          </p>
-                          <p className="mb-0 font-13">
-                            {item.InstructionInBangla}
-                          </p>
 
-                          {/* <div className="actionBox">
-                        <TBpastHistoryModal />
-                        <button className="btn btn-sm btn-danger py-1 px-2 font-12 ms-1">
-                          <AiOutlineClose />
-                        </button>
-                      </div> */}
-                        </div>
-                      ))}
+              {item.TBHistoryIdCode === "Treatment received" && (
+                <div className="slide-down">
+                  {treatmentReceivedData?.map((item, index) => (
+                    <div
+                      className="itemCard position-relative bg-light border ps-3 py-2 mb-2"
+                      key={index}
+                    >
+                      <p className="mb-0 font-13">
+                        {item?.CreateDate}: {item?.DrugCode}
+                      </p>
+                      <p className="mb-0 font-13">
+                        {item?.Frequency}, for {item?.DrugDose}
+                      </p>
+                      <p className="mb-0 font-13">{item?.InstructionInBangla}</p>
                     </div>
-                  </div>
-                )}
-              {item.TBHistoryId === "FD99941A-2BCA-4BDD-8521-931A4DD6974E" &&
-                isDiv2Open && (
-                  <div className="slide-down">
-                    {cat2Data?.map((item, index) => (
-                      <div
-                        className="itemCard position-relative bg-light border ps-3 py-2 mb-2"
-                        key={index}
-                      >
-                        <p className="mb-0 font-13">
-                          {item.CreateDate}: {item.DrugCode}
-                        </p>
-                        <p className="mb-0 font-13">
-                          {item.Frequency}, for {item.DrugDose}
-                        </p>
-                        <p className="mb-0 font-13">
-                          {item.InstructionInBangla}
-                        </p>
-
-                        {/* <div className="actionBox">
-                        <TBpastHistoryModal />
-                        <button className="btn btn-sm btn-danger py-1 px-2 font-12 ms-1">
-                          <AiOutlineClose />
-                        </button>
-                      </div> */}
-                      </div>
-                    ))}
-                  </div>
-                )}
+                  ))}
+                </div>
+              )}
             </div>
           ))}
 

@@ -7,7 +7,13 @@ import { API_URL } from "../../../helper/Constants";
 import { loggedInUserData } from "../../../helper/localStorageHelper";
 import { useSelector } from "react-redux";
 
-function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
+function MyVerticallyCenteredModal({
+  show,
+  onHide,
+  formData,
+  setFormData,
+  editData,
+}) {
   const { patient } = useSelector((state) => state.patients);
   const [PatientId] = useState(patient?.PatientId);
   const doctorName = loggedInUserData().name;
@@ -87,6 +93,34 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
       });
   }, []);
 
+  useEffect(() => {
+    if (show && editData) {
+      console.log(editData);
+
+      setDrugCode(editData.drugCode || "");
+      setDrugId(editData.drugId || "");
+      setInstruction(editData.instruction || "");
+      setDurationId(editData.durationId || "");
+      setDrugSubstance(editData.drugSubstance || "");
+      setDrugSubstanceUnit(editData.drugSubstanceUnit || "");
+      setDrugPcs(editData.drugPcs || "");
+      setDrugPcsUnit(editData.drugPcsUnit || "");
+      setDrugDurationOnlyValue(editData.drugDurationOnlyValue || "");
+      setDrugDurationValueUnit(editData.drugDurationValueUnit || "");
+      // setShowSuggestion(editData.showSuggestion || false);
+      setFrequencyHour(editData.frequency || "");
+      setFrequencyValue(editData.frequencyValue || "");
+      setSpecialInstruction(editData.specialInstruction || "");
+      setBanglaInstruction(editData.banglaInstruction || "");
+      setAddDrug(editData.addDrug || "");
+    } else {
+      // Clear modal fields when not in edit mode
+      setDrugId("");
+      setDrugCode("");
+      // ... (clear other fields)
+    }
+  }, [show, editData]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -101,26 +135,34 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
       return;
     }
     if (drugCode && banglaInstruction) {
-      myFormData.TreatmentSuggestion.push({
-        PatientId: PatientId,
-        drugId: drugId,
-        drugCode,
-        instruction,
-        banglaInstruction,
-        durationId: "D796D547-1815-4EB7-A74D-03AB1342A625",
-        frequencyId: "143927E4-67BC-41FD-B092-063033E34366",
-        frequency: frequencyValue,
-        refInstructionId: specialInstruction,
-        drugDurationValue: drugDurationOnlyValue + " " + drugDurationValueUnit,
-        otherDrug: drugPcs + " " + drugPcsUnit, //drugPieces is set in comment field!
-        drugDose: drugSubstance + drugSubstanceUnit,
-        specialInstruction: "",
-        comment: "",
-        hourly: addDrug,
-        Status: "",
-        CreateUser: doctorName,
-        OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
-      });
+      const index = myFormData.TreatmentSuggestion.findIndex(
+        (entry) => entry.drugId === editData.drugId
+      );
+
+      if (index !== -1) {
+        myFormData.TreatmentSuggestion[index] = {
+          ...myFormData.TreatmentSuggestion[index],
+          PatientId: PatientId,
+          drugId: drugId,
+          drugCode,
+          instruction,
+          banglaInstruction,
+          durationId: "D796D547-1815-4EB7-A74D-03AB1342A625",
+          frequencyId: "143927E4-67BC-41FD-B092-063033E34366",
+          frequency: frequencyValue,
+          refInstructionId: specialInstruction,
+          drugDurationValue:
+            drugDurationOnlyValue + " " + drugDurationValueUnit,
+          otherDrug: drugPcs + " " + drugPcsUnit, //drugPieces is set in comment field!
+          drugDose: drugSubstance + drugSubstanceUnit,
+          specialInstruction: "",
+          comment: "",
+          hourly: addDrug,
+          Status: "",
+          CreateUser: doctorName,
+          OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
+        };
+      }
 
       setFormData(myFormData);
       setDrugId("");
@@ -330,12 +372,12 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
               error2 ? "error-input" : ""
             }`}
           >
-            {console.log(specialInstructionList)}
             <option value="">-- Select --</option>
             {specialInstructionList.map((item) => (
               <option
                 key={item.RefInstructionId}
-                value={item.RefInstructionId}
+                // value={item.RefInstructionId}
+                value={item.InstructionInBangla}
                 data-bangla-instruction={item.InstructionInBangla}
               >
                 {item.InstructionInBangla}
@@ -366,26 +408,26 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
   );
 }
 
-const TPuserInputModal = (props) => {
-  const [modalShow, setModalShow] = React.useState(false);
+// const TPuserInputModal = (props) => {
+//   const [modalShow, setModalShow] = React.useState(false);
 
-  return (
-    <>
-      <Button
-        variant=""
-        onClick={() => setModalShow(true)}
-        className="add-button"
-      >
-        Add
-      </Button>
+//   return (
+//     <>
+//       <Button
+//         variant=""
+//         onClick={() => setModalShow(true)}
+//         className="add-button"
+//       >
+//         Add
+//       </Button>
 
-      <MyVerticallyCenteredModal
-        show={modalShow}
-        onHide={() => setModalShow(false)}
-        {...props}
-      />
-    </>
-  );
-};
+//       <MyVerticallyCenteredModal
+//         show={modalShow}
+//         onHide={() => setModalShow(false)}
+//         {...props}
+//       />
+//     </>
+//   );
+// };
 
-export default TPuserInputModal;
+export default MyVerticallyCenteredModal;

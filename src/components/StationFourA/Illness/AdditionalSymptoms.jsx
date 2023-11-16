@@ -73,7 +73,7 @@ const AdditionalSymptoms = ({ formData, setFormData }) => {
     }
 
     setFormData(myFormData);
-    // console.log(myFormData?.TBSymptoms);
+    console.log(myFormData?.TBSymptoms);
   };
 
   const handleRemove = (TBSymptomId) => {
@@ -84,6 +84,7 @@ const AdditionalSymptoms = ({ formData, setFormData }) => {
     });
 
     setFormData(myFormData);
+    console.log(myFormData?.TBSymptoms);
   };
 
   return (

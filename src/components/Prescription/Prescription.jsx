@@ -16,6 +16,7 @@ import {
   getClassNameForHB,
   getClassNameForBP,
 } from "../../helper/lib";
+import Flag from "../icons/Flag";
 
 const Prescription = () => {
   const navigate = useNavigate();
@@ -51,7 +52,7 @@ const Prescription = () => {
 
   return (
     <>
-      <SectionBanner title="Prescription Preview" />
+      <SectionBanner title="Patient Health Status" />
 
       <section id="prescription">
         <div className="container bg-light py-5 px-5">
@@ -69,7 +70,13 @@ const Prescription = () => {
                       className={getClassNameByValue("bmi", item.BMI).className}
                     >
                       {item.BMI} ({item.BMIStatus})
+                      <Flag className="flag" />
                     </span>
+                  </span>
+                )}
+                {item.MUAC && (
+                  <span>
+                    MUAC: {item.MUAC} ({item.MUACStatus})
                   </span>
                 )}
               </div>
@@ -93,6 +100,7 @@ const Prescription = () => {
                       }
                     >
                       {item.BPSystolic1}/{item.BPDiastolic1}
+                      <Flag className="flag" />
                     </span>
                   </span>
                 )}
@@ -106,6 +114,7 @@ const Prescription = () => {
                       }
                     >
                       {item.CurrentTemparature}&deg;F
+                      <Flag className="flag" />
                     </span>
                   </span>
                 )}
@@ -118,6 +127,34 @@ const Prescription = () => {
                       }
                     >
                       {item.HeartRate}/min
+                      <Flag className="flag" />
+                    </span>
+                  </span>
+                )}
+                {item.RespiratoryRate && (
+                  <span>
+                    Respiratory Rate:{" "}
+                    <span
+                      className={
+                        getClassNameByValue("resp_rate", item.RespiratoryRate)
+                          .className
+                      }
+                    >
+                      {item.RespiratoryRate}/min
+                      <Flag className="flag" />
+                    </span>
+                  </span>
+                )}
+                {item.SpO2Rate && (
+                  <span>
+                    SpO2 Rate:{" "}
+                    <span
+                      className={
+                        getClassNameByValue("spo2", item.SpO2Rate).className
+                      }
+                    >
+                      {item.SpO2Rate}/min
+                      <Flag className="flag" />
                     </span>
                   </span>
                 )}
@@ -141,6 +178,7 @@ const Prescription = () => {
                       }
                     >
                       {item.Hemoglobin} gm/dl
+                      <Flag className="flag" />
                     </span>
                   </span>
                 )}
@@ -152,6 +190,7 @@ const Prescription = () => {
                       className={getClassNameByValue("fbs", item.FBG).className}
                     >
                       {item.FBG} mmol/L
+                      <Flag className="flag" />
                     </span>
                   </span>
                 )}
@@ -163,6 +202,7 @@ const Prescription = () => {
                       className={getClassNameByValue("rbs", item.RBG).className}
                     >
                       {item.RBG} mmol/L
+                      <Flag className="flag" />
                     </span>
                   </span>
                 )}
@@ -191,7 +231,7 @@ const Prescription = () => {
             <span>Hemoglobin: 11.0 g/dl</span>
           </div>  */}
           <div className="patienStatus mb-4">
-            <h3>Physical (Chief) Complaints</h3>
+            <h3>Chief Complaints</h3>
             {prescriptionpreviewall.Complaints?.map((item, index) => (
               <div key={index}>
                 <span>
@@ -200,6 +240,98 @@ const Prescription = () => {
               </div>
             ))}
           </div>
+
+          <div className="patienStatus mb-4">
+            <h3>Physical Findings</h3>
+            {prescriptionpreviewall.PhysicalFindings?.map((item, index) => (
+              <div key={index}>
+                <span>
+                  {item.CreateDate}: {item.PhysicalFinding}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          <div className="patienStatus mb-4">
+            <h3>Patient H/O Present Illness</h3>
+            {prescriptionpreviewall.PatientPresentllness?.map((item, index) => (
+              <div key={index}>
+                <span>{item.CreateDate} &gt;&gt;</span>
+                {item.IllnessCode}: {item.Illness_status}
+              </div>
+            ))}
+          </div>
+
+          <div className="patienStatus mb-4">
+            <h3>Patient H/O Past Illness</h3>
+            {prescriptionpreviewall.PatientPastllness?.map((item, index) => (
+              <div key={index}>
+                <span>{item.CreateDate} &gt;&gt;</span>
+                {item.IllnessCode}: {item.Illness_status}
+              </div>
+            ))}
+          </div>
+
+          <div className="patienStatus mb-4">
+            <h3>Patient H/O Family Illness</h3>
+            {prescriptionpreviewall.PatientFamilyllness?.map((item, index) => (
+              <div key={index}>
+                <span>{item.CreateDate} &gt;&gt;</span>
+                {item.IllnessCode}: {item.family_status}
+              </div>
+            ))}
+          </div>
+
+          <div className="patienStatus mb-4">
+            <h3>Patient Social Behavior</h3>
+            {prescriptionpreviewall.PatientSocialBehavior?.map(
+              (item, index) => (
+                <div key={index}>
+                  <span>{item.CreateDate} &gt;&gt;</span>
+                  {item.SocialBehaviorCode}: {item.family_status}
+                </div>
+              )
+            )}
+          </div>
+
+          <div className="patienStatus mb-4">
+            <h3>Vaccination</h3>
+            {prescriptionpreviewall.PatientVaccine?.map((item, index) => (
+              <div key={index}>
+                <span>{item.CreateDate} &gt;&gt;</span>
+                Vaccine: {item.VaccineCode}, Other Vaccine: {item.OtherVaccine},
+                Type: {item.Vaccine_status_type}
+              </div>
+            ))}
+          </div>
+
+          <div className="patienStatus mb-4">
+            <h3>Child Mortality</h3>
+            {prescriptionpreviewall.ChildMortality?.map((item, index) => (
+              <div key={index}>
+                <span>{item.CreateDate} &gt;&gt;</span>
+                0-1: {item.ChildMortality0To1 ? item.ChildMortality0To1 : "N/A"}
+                , Below 5:{" "}
+                {item.ChildMortalityBelow5 ? item.ChildMortalityBelow5 : "N/A"},
+                Over 5:{" "}
+                {item.ChildMortalityOver5 ? item.ChildMortalityOver5 : "N/A"},
+              </div>
+            ))}
+          </div>
+
+          <div className="patienStatus mb-4">
+            <h3>Menstrual History</h3>
+            {prescriptionpreviewall.MenstrualHistory?.map((item, index) => (
+              <div key={index}>
+                <span>{item.CreateDate} &gt;&gt;</span>
+                Product Usage:{" "}
+                {item.MenstruationProductUsageTimeCode
+                  ? item.ChildMortality0To1
+                  : "N/A"}
+              </div>
+            ))}
+          </div>
+
           {/* <div className="patienStatus mb-4">
             <h3>General Examination</h3>
             <div className="d-flex">
@@ -262,10 +394,11 @@ const Prescription = () => {
             </div>
           </div> */}
 
-          {/* <div className="patienStatus mb-4">
+          <div className="patienStatus mb-4">
             <h3>General Findings</h3>
             {prescriptionpreviewall.GeneralFindings?.map((item, index) => (
               <div key={index}>
+                <span>{item.CreateDate} &gt;&gt;</span>
                 <span>Anemia Severity: {item.AnemiaSeverity}</span>
                 <span>Jaundice Severity: {item.JaundiceSeverity}</span>
                 <span>Edema Severity: {item.EdemaSeverity}</span>
@@ -284,10 +417,9 @@ const Prescription = () => {
                 <span>Lungs With NAD: {item.LungsWithNAD}</span>
                 <span>Other Symptom: {item.OtherSymptom}</span>
                 <span>Cyanosis: {item.Cyanosis}</span>
-                <span>Create Date: {item.CreateDate}</span>
               </div>
             ))}
-          </div> */}
+          </div>
 
           <div className="patienStatus mb-4">
             <h3>Current Medication Taken</h3>
