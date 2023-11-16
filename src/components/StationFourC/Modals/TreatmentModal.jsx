@@ -9,8 +9,8 @@ import { useSelector } from "react-redux";
 
 function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
   const { patient } = useSelector((state) => state.patients);
-
   const [PatientId] = useState(patient?.PatientId);
+  const doctorName = loggedInUserData().name;
 
   const [drugCode, setDrugCode] = useState("");
   const [drugId, setDrugId] = useState("");
@@ -18,10 +18,8 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
   const [durationId, setDurationId] = useState("");
   const [drugSubstance, setDrugSubstance] = useState("");
   const [drugSubstanceUnit, setDrugSubstanceUnit] = useState("");
-
   const [drugPcs, setDrugPcs] = useState("");
   const [drugPcsUnit, setDrugPcsUnit] = useState("");
-
   const [drugDurationOnlyValue, setDrugDurationOnlyValue] = useState("");
   const [drugDurationValueUnit, setDrugDurationValueUnit] = useState("");
 
@@ -32,35 +30,33 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
   const [frequencyValue, setFrequencyValue] = useState("");
   const [specialInstruction, setSpecialInstruction] = useState("");
   const [specialInstructionList, setSpecialInstructionList] = useState([]);
-  const [banglaInstruction, setBanglaInstruction] = useState(""); 
-  const [addDrug, setAddDrug] = useState("")
-  const [error, setError] = useState('');
-  const [error2, setError2] = useState('');
+  const [banglaInstruction, setBanglaInstruction] = useState("");
+  const [addDrug, setAddDrug] = useState("");
 
-  const doctorName = loggedInUserData().name;
+  const [error, setError] = useState("");
+  const [error2, setError2] = useState("");
 
-  let drugDose = drugSubstance+drugSubstanceUnit; //ex:10mg
-  let drugPieces = drugPcs + " " + drugPcsUnit; //1 spoon
-  let drugDurationValue = drugDurationOnlyValue + " " + drugDurationValueUnit; //20 day
+  // let drugDose = drugSubstance + drugSubstanceUnit; //ex:10mg
+  // let drugPieces = drugPcs + " " + drugPcsUnit; //1 spoon
+  // let drugDurationValue = drugDurationOnlyValue + " " + drugDurationValueUnit; //20 day
 
   useEffect(() => {
     let result;
     if (frequencyHour == 4) {
-      result = '1+1+1+1+1+1';
+      result = `${drugPcs}+${drugPcs}+${drugPcs}+${drugPcs}+${drugPcs}+${drugPcs}`;
     } else if (frequencyHour == 6) {
-      result = "1+1+1+1";
+      result = `${drugPcs}+${drugPcs}+${drugPcs}+${drugPcs}`;
     } else if (frequencyHour == 8) {
-      result = "1+1+1";
+      result = `${drugPcs}+${drugPcs}+${drugPcs}`;
     } else if (frequencyHour == 12) {
-      result = "1+0+1";
+      result = `${drugPcs}+0+${drugPcs}`;
     } else if (frequencyHour == 24) {
-      result = "0+0+1";
-    } else  {
-      result = 'N/A';
+      result = `0+0+${drugPcs}`;
+    } else {
+      result = "N/A";
     }
     setFrequencyValue(result);
-  }, [frequencyHour]);
-
+  }, [frequencyHour, drugPcs]);
 
   useEffect(() => {
     if (drugCode) {
@@ -95,13 +91,16 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
     e.preventDefault();
 
     let myFormData = { ...formData };
-    if(drugCode === ''){
-      setError('  This field can not be empty!');
+
+    if (drugCode === "") {
+      setError("  This field can not be empty!");
+      return;
     }
-    if(banglaInstruction === ''){
-      setError2('This field can not be empty!');
+    if (banglaInstruction === "") {
+      setError2("This field can not be empty!");
+      return;
     }
-    if(drugCode && banglaInstruction){
+    if (drugCode && banglaInstruction) {
       myFormData.TreatmentSuggestion.push({
         PatientId: PatientId,
         drugId: drugId,
@@ -112,9 +111,9 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
         frequencyId: "143927E4-67BC-41FD-B092-063033E34366",
         frequency: frequencyValue,
         refInstructionId: specialInstruction,
-        drugDurationValue: drugDurationValue,
-        otherDrug: drugPieces, //drugPieces is set in comment field!
-        drugDose: drugDose,
+        drugDurationValue: drugDurationOnlyValue + " " + drugDurationValueUnit,
+        otherDrug: drugPcs + " " + drugPcsUnit, //drugPieces is set in comment field!
+        drugDose: drugSubstance + drugSubstanceUnit,
         specialInstruction: "",
         comment: "",
         hourly: addDrug,
@@ -122,7 +121,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
         CreateUser: doctorName,
         OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
       });
-  
+
       setFormData(myFormData);
       setDrugId("");
       setInstruction("");
@@ -137,6 +136,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
       setBanglaInstruction("");
       setSpecialInstruction("");
       setAddDrug("");
+      console.log(myFormData?.TreatmentSuggestion);
     }
   };
 
@@ -163,13 +163,17 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
             onChange={(e) => {
               setDrugCode(e.target.value);
               setShowSuggestion(true);
-              setError('');
+              setError("");
             }}
             // className="form-control input-padding rounded-pill py-2 border-0"
-            className={`form-control input-padding rounded-pill py-2 border-0 ${error ? 'error-input' : ''}`}
+            className={`form-control input-padding rounded-pill py-2 border-0 ${
+              error ? "error-input" : ""
+            }`}
             placeholder="Drug"
           />
-          {error && <p style={{ color: 'red' }}>{error}</p>} 
+
+          {error && <p style={{ color: "red" }}>{error}</p>}
+
           <ul className="autocompleteDataList">
             {showSuggestion &&
               drugCodeList?.map((item, key) => {
@@ -191,117 +195,121 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
           </ul>
         </div>
 
-        {
-          drugCode === "Others" &&
+        {drugCode === "Others" && (
           <div className="mb-3 pb-0 m-0 input-shadow rounded-pill">
-          <input
-            type="text"
-            value={addDrug}
-            onChange={(e) => {
-              setAddDrug(e.target.value);
-            }}
-            // className="form-control input-padding rounded-pill py-2 border-0"
-            className={`form-control input-padding rounded-pill py-2 border-0 ${error ? 'error-input' : ''}`}
-            placeholder="Add Drug"
+            <input
+              type="text"
+              value={addDrug}
+              onChange={(e) => {
+                setAddDrug(e.target.value);
+              }}
+              // className="form-control input-padding rounded-pill py-2 border-0"
+              className={`form-control input-padding rounded-pill py-2 border-0 ${
+                error ? "error-input" : ""
+              }`}
+              placeholder="Add Drug"
             />
           </div>
-        }
+        )}
 
         {/*updated div here */}
         <div className="row mb-3 input-shadow rounded-pill">
-            <div className="col-lg-6">
-              <input
-                type="text"
-                value={drugSubstance}
-                onChange={(e) => setDrugSubstance(e.target.value)}
-                className="form-control input-padding rounded-pill py-2 border-0"
-                placeholder="Drug substance: 10, 20"
-              />
-            </div>
+          <div className="col-lg-6">
+            <input
+              type="text"
+              value={drugSubstance}
+              onChange={(e) => setDrugSubstance(e.target.value)}
+              className="form-control input-padding rounded-pill py-2 border-0"
+              placeholder="Drug substance: 10, 20"
+            />
+          </div>
 
-            <div className="col-lg-6">
+          <div className="col-lg-6">
             <select
-              id="Select" 
-              onChange={(e) =>  setDrugSubstanceUnit(e.target.value)}
+              id="Select"
+              onChange={(e) => setDrugSubstanceUnit(e.target.value)}
               className="form-select input-padding rounded-pill select-form-padding"
+              value={drugSubstanceUnit}
             >
-              <option>Unit</option>
-              <option>mg</option>
-              <option>ml</option>
-              <option>g</option>
+              <option value="">Unit</option>
+              <option value="mg">mg</option>
+              <option value="ml">ml</option>
+              <option value="g">g</option>
             </select>
-            </div>
+          </div>
         </div>
-
 
         <div className="mb-3 input-shadow rounded-pill">
           <select
             id="Select"
-            onChange={(e) =>  setFrequencyHour(e.target.value)}
+            onChange={(e) => setFrequencyHour(e.target.value)}
             className="form-select input-padding rounded-pill select-form-padding"
+            value={frequencyHour}
           >
-            <option>Frequency Hours</option>
-            <option>0</option>
-            <option>4</option>
-            <option>6</option>
-            <option>8</option>
-            <option>12</option>
-            <option>24</option>
+            <option value="">Frequency Hours</option>
+            <option value="4">4</option>
+            <option value="6">6</option>
+            <option value="8">8</option>
+            <option value="12">12</option>
+            <option value="24">24</option>
           </select>
         </div>
 
         {/* Added a new div */}
         <div className="row mb-3 input-shadow rounded-pill">
-            <div className="col-lg-6">
-              <select
-                id="Select"
-                onChange={(e) =>  setDrugPcs(e.target.value)}
-                className="form-select input-padding rounded-pill select-form-padding"
-              >
-                <option>Drug quantity</option>
-                <option>1/2</option>
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-              </select>
-            </div>
+          <div className="col-lg-6">
+            <select
+              id="Select"
+              onChange={(e) => setDrugPcs(e.target.value)}
+              className="form-select input-padding rounded-pill select-form-padding"
+              value={drugPcs}
+            >
+              <option value="">Drug quantity</option>
+              <option value="1/2">1/2</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+          </div>
 
-            <div className="col-lg-6">
-              <select
-                id="Select"
-                onChange={(e) =>  setDrugPcsUnit(e.target.value)}
-                className="form-select input-padding rounded-pill select-form-padding"
-              >
-                <option>Unit</option>
-                <option>pcs</option>
-                <option>spoon</option>
-              </select>
-            </div>
+          <div className="col-lg-6">
+            <select
+              id="Select"
+              onChange={(e) => setDrugPcsUnit(e.target.value)}
+              className="form-select input-padding rounded-pill select-form-padding"
+              value={drugPcsUnit}
+            >
+              <option value="">Unit</option>
+              <option value="pcs">pcs</option>
+              <option value="spoon">spoon</option>
+            </select>
+          </div>
         </div>
 
         <div className="row mb-3 input-shadow rounded-pill">
-            <div className="col-lg-6">
-              <input
-                type="text"
-                value={drugDurationOnlyValue}
-                onChange={(e) => setDrugDurationOnlyValue(e.target.value)}
-                className="form-control input-padding rounded-pill py-2 border-0"
-                placeholder="Duration : 1, 2..."
-              />
-            </div>
-            <div className="col-lg-6">
-              <select
-                id="Select"
-                onChange={(e) =>  setDrugDurationValueUnit(e.target.value)}
-                className="form-select input-padding rounded-pill select-form-padding"
-              >
-                <option>Unit</option>
-                <option>Day</option>
-                <option>Week</option>
-                <option>Month</option>
-                <option>Year</option>
-              </select>
-            </div>
+          <div className="col-lg-6">
+            <input
+              type="text"
+              value={drugDurationOnlyValue}
+              onChange={(e) => setDrugDurationOnlyValue(e.target.value)}
+              className="form-control input-padding rounded-pill py-2 border-0"
+              placeholder="Duration : 1, 2..."
+            />
+          </div>
+          <div className="col-lg-6">
+            <select
+              id="Select"
+              onChange={(e) => setDrugDurationValueUnit(e.target.value)}
+              className="form-select input-padding rounded-pill select-form-padding"
+              value={drugDurationValueUnit}
+            >
+              <option value="">Unit</option>
+              <option value="Day">Day</option>
+              <option value="Week">Week</option>
+              <option value="Month">Month</option>
+              <option value="Year">Year</option>
+            </select>
+          </div>
         </div>
 
         <div className="mb-3">
@@ -309,25 +317,33 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
             id="Select"
             value={specialInstruction}
             onChange={(e) => {
-            setSpecialInstruction(e.target.value); 
-            setBanglaInstruction(e.target.options[e.target.selectedIndex].getAttribute("data-bangla-instruction"));
-            setError2('');
-          }}
+              setSpecialInstruction(e.target.value);
+              setBanglaInstruction(
+                e.target.options[e.target.selectedIndex].getAttribute(
+                  "data-bangla-instruction"
+                )
+              );
+              setError2("");
+            }}
             // className="form-control input-padding rounded-pill py-2 border-0"
-            className={`form-control input-padding rounded-pill py-2 border-0 ${error2 ? 'error-input' : ''}`}
+            className={`form-control input-padding rounded-pill py-2 border-0 ${
+              error2 ? "error-input" : ""
+            }`}
           >
-            <option selected value="">
-              -- Select --
-            </option>
+            {console.log(specialInstructionList)}
+            <option value="">-- Select --</option>
             {specialInstructionList.map((item) => (
-              <option key={item.RefInstructionId} value={item.RefInstructionId} data-bangla-instruction={item.InstructionInBangla} >
+              <option
+                key={item.RefInstructionId}
+                value={item.RefInstructionId}
+                data-bangla-instruction={item.InstructionInBangla}
+              >
                 {item.InstructionInBangla}
               </option>
             ))}
           </select>
-          {error2 && <p style={{ color: 'red' }}>{error2}</p>}
+          {error2 && <p style={{ color: "red" }}>{error2}</p>}
         </div>
-
       </Modal.Body>
 
       <Modal.Footer className="d-flex justify-content-center border-0 pt-0">

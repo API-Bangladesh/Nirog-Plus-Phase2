@@ -15,8 +15,8 @@ function MyVerticallyCenteredModal({
   editData,
 }) {
   const { patient } = useSelector((state) => state.patients);
-
   const [PatientId] = useState(patient?.PatientId);
+  const doctorName = loggedInUserData().name;
 
   const [drugCode, setDrugCode] = useState("");
   const [drugId, setDrugId] = useState("");
@@ -24,10 +24,8 @@ function MyVerticallyCenteredModal({
   const [durationId, setDurationId] = useState("");
   const [drugSubstance, setDrugSubstance] = useState("");
   const [drugSubstanceUnit, setDrugSubstanceUnit] = useState("");
-
   const [drugPcs, setDrugPcs] = useState("");
   const [drugPcsUnit, setDrugPcsUnit] = useState("");
-
   const [drugDurationOnlyValue, setDrugDurationOnlyValue] = useState("");
   const [drugDurationValueUnit, setDrugDurationValueUnit] = useState("");
 
@@ -40,32 +38,31 @@ function MyVerticallyCenteredModal({
   const [specialInstructionList, setSpecialInstructionList] = useState([]);
   const [banglaInstruction, setBanglaInstruction] = useState("");
   const [addDrug, setAddDrug] = useState("");
+
   const [error, setError] = useState("");
   const [error2, setError2] = useState("");
 
-  const doctorName = loggedInUserData().name;
-
-  let drugDose = drugSubstance + drugSubstanceUnit; //ex:10mg
-  let drugPieces = drugPcs + " " + drugPcsUnit; //1 spoon
-  let drugDurationValue = drugDurationOnlyValue + " " + drugDurationValueUnit; //20 day
+  // let drugDose = drugSubstance + drugSubstanceUnit; //ex:10mg
+  // let drugPieces = drugPcs + " " + drugPcsUnit; //1 spoon
+  // let drugDurationValue = drugDurationOnlyValue + " " + drugDurationValueUnit; //20 day
 
   useEffect(() => {
     let result;
     if (frequencyHour == 4) {
-      result = "1+1+1+1+1+1";
+      result = `${drugPcs}+${drugPcs}+${drugPcs}+${drugPcs}+${drugPcs}+${drugPcs}`;
     } else if (frequencyHour == 6) {
-      result = "1+1+1+1";
+      result = `${drugPcs}+${drugPcs}+${drugPcs}+${drugPcs}`;
     } else if (frequencyHour == 8) {
-      result = "1+1+1";
+      result = `${drugPcs}+${drugPcs}+${drugPcs}`;
     } else if (frequencyHour == 12) {
-      result = "1+0+1";
+      result = `${drugPcs}+0+${drugPcs}`;
     } else if (frequencyHour == 24) {
-      result = "0+0+1";
+      result = `0+0+${drugPcs}`;
     } else {
       result = "N/A";
     }
     setFrequencyValue(result);
-  }, [frequencyHour]);
+  }, [frequencyHour, drugPcs]);
 
   useEffect(() => {
     if (drugCode) {
@@ -97,31 +94,8 @@ function MyVerticallyCenteredModal({
   }, []);
 
   useEffect(() => {
-    if (editData) {
-      // const [drugCode, ] = useState("");
-      // const [drugId, setDrugId] = useState("");
-      // const [instruction, setInstruction] = useState();
-      // const [durationId, setDurationId] = useState("");
-      // const [drugSubstance, setDrugSubstance] = useState("");
-      // const [drugSubstanceUnit, setDrugSubstanceUnit] = useState("");
-
-      // const [drugPcs, setDrugPcs] = useState("");
-      // const [drugPcsUnit, setDrugPcsUnit] = useState("");
-
-      // const [drugDurationOnlyValue, setDrugDurationOnlyValue] = useState("");
-      // const [drugDurationValueUnit, setDrugDurationValueUnit] = useState("");
-
-      // const [showSuggestion, setShowSuggestion] = useState(false);
-      // const [drugCodeList, setDrugCodeList] = useState([]);
-
-      // const [frequencyHour, setFrequencyHour] = useState("");
-      // const [frequencyValue, setFrequencyValue] = useState("");
-      // const [specialInstruction, setSpecialInstruction] = useState("");
-      // const [specialInstructionList, setSpecialInstructionList] = useState([]);
-      // const [banglaInstruction, setBanglaInstruction] = useState("");
-      // const [addDrug, setAddDrug] = useState("");
-      // const [error, setError] = useState("");
-      // const [error2, setError2] = useState("");
+    if (show && editData) {
+      console.log(editData);
 
       setDrugCode(editData.drugCode || "");
       setDrugId(editData.drugId || "");
@@ -134,7 +108,6 @@ function MyVerticallyCenteredModal({
       setDrugDurationOnlyValue(editData.drugDurationOnlyValue || "");
       setDrugDurationValueUnit(editData.drugDurationValueUnit || "");
       // setShowSuggestion(editData.showSuggestion || false);
-
       setFrequencyHour(editData.frequency || "");
       setFrequencyValue(editData.frequencyValue || "");
       setSpecialInstruction(editData.specialInstruction || "");
@@ -146,17 +119,20 @@ function MyVerticallyCenteredModal({
       setDrugCode("");
       // ... (clear other fields)
     }
-  }, [editData]);
+  }, [show, editData]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     let myFormData = { ...formData };
+
     if (drugCode === "") {
       setError("  This field can not be empty!");
+      return;
     }
     if (banglaInstruction === "") {
       setError2("This field can not be empty!");
+      return;
     }
     if (drugCode && banglaInstruction) {
       const index = myFormData.TreatmentSuggestion.findIndex(
@@ -166,8 +142,8 @@ function MyVerticallyCenteredModal({
       if (index !== -1) {
         myFormData.TreatmentSuggestion[index] = {
           ...myFormData.TreatmentSuggestion[index],
-          PatientId,
-          drugId,
+          PatientId: PatientId,
+          drugId: drugId,
           drugCode,
           instruction,
           banglaInstruction,
@@ -175,9 +151,10 @@ function MyVerticallyCenteredModal({
           frequencyId: "143927E4-67BC-41FD-B092-063033E34366",
           frequency: frequencyValue,
           refInstructionId: specialInstruction,
-          drugDurationValue: drugDurationValue,
-          otherDrug: drugPieces,
-          drugDose: drugDose,
+          drugDurationValue:
+            drugDurationOnlyValue + " " + drugDurationValueUnit,
+          otherDrug: drugPcs + " " + drugPcsUnit, //drugPieces is set in comment field!
+          drugDose: drugSubstance + drugSubstanceUnit,
           specialInstruction: "",
           comment: "",
           hourly: addDrug,
@@ -201,6 +178,7 @@ function MyVerticallyCenteredModal({
       setBanglaInstruction("");
       setSpecialInstruction("");
       setAddDrug("");
+      console.log(myFormData?.TreatmentSuggestion);
     }
   };
 
@@ -235,7 +213,9 @@ function MyVerticallyCenteredModal({
             }`}
             placeholder="Drug"
           />
+
           {error && <p style={{ color: "red" }}>{error}</p>}
+
           <ul className="autocompleteDataList">
             {showSuggestion &&
               drugCodeList?.map((item, key) => {
@@ -291,11 +271,12 @@ function MyVerticallyCenteredModal({
               id="Select"
               onChange={(e) => setDrugSubstanceUnit(e.target.value)}
               className="form-select input-padding rounded-pill select-form-padding"
+              value={drugSubstanceUnit}
             >
-              <option>Unit</option>
-              <option>mg</option>
-              <option>ml</option>
-              <option>g</option>
+              <option value="">Unit</option>
+              <option value="mg">mg</option>
+              <option value="ml">ml</option>
+              <option value="g">g</option>
             </select>
           </div>
         </div>
@@ -303,15 +284,11 @@ function MyVerticallyCenteredModal({
         <div className="mb-3 input-shadow rounded-pill">
           <select
             id="Select"
-            // value={frequencyHour}
-            onChange={(e) => {
-              setFrequencyHour(e.target.value);
-              console.log(e.target.value);
-            }}
+            onChange={(e) => setFrequencyHour(e.target.value)}
             className="form-select input-padding rounded-pill select-form-padding"
+            value={frequencyHour}
           >
             <option value="">Frequency Hours</option>
-            <option value="0">0</option>
             <option value="4">4</option>
             <option value="6">6</option>
             <option value="8">8</option>
@@ -327,12 +304,13 @@ function MyVerticallyCenteredModal({
               id="Select"
               onChange={(e) => setDrugPcs(e.target.value)}
               className="form-select input-padding rounded-pill select-form-padding"
+              value={drugPcs}
             >
-              <option>Drug quantity</option>
-              <option>1/2</option>
-              <option>1</option>
-              <option>2</option>
-              <option>3</option>
+              <option value="">Drug quantity</option>
+              <option value="1/2">1/2</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
             </select>
           </div>
 
@@ -341,10 +319,11 @@ function MyVerticallyCenteredModal({
               id="Select"
               onChange={(e) => setDrugPcsUnit(e.target.value)}
               className="form-select input-padding rounded-pill select-form-padding"
+              value={drugPcsUnit}
             >
-              <option>Unit</option>
-              <option>pcs</option>
-              <option>spoon</option>
+              <option value="">Unit</option>
+              <option value="pcs">pcs</option>
+              <option value="spoon">spoon</option>
             </select>
           </div>
         </div>
@@ -364,12 +343,13 @@ function MyVerticallyCenteredModal({
               id="Select"
               onChange={(e) => setDrugDurationValueUnit(e.target.value)}
               className="form-select input-padding rounded-pill select-form-padding"
+              value={drugDurationValueUnit}
             >
-              <option>Unit</option>
-              <option>Day</option>
-              <option>Week</option>
-              <option>Month</option>
-              <option>Year</option>
+              <option value="">Unit</option>
+              <option value="Day">Day</option>
+              <option value="Week">Week</option>
+              <option value="Month">Month</option>
+              <option value="Year">Year</option>
             </select>
           </div>
         </div>
@@ -392,13 +372,12 @@ function MyVerticallyCenteredModal({
               error2 ? "error-input" : ""
             }`}
           >
-            <option selected value="">
-              -- Select --
-            </option>
+            <option value="">-- Select --</option>
             {specialInstructionList.map((item) => (
               <option
                 key={item.RefInstructionId}
-                value={item.RefInstructionId}
+                // value={item.RefInstructionId}
+                value={item.InstructionInBangla}
                 data-bangla-instruction={item.InstructionInBangla}
               >
                 {item.InstructionInBangla}
