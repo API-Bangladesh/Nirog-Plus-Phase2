@@ -52,6 +52,7 @@ const TPuserData = () => {
   // let patientGender = patient.gender.GenderCode;
   // console.log(patientGender);
   const [PatientId] = useState(patient?.PatientId);
+  console.log(patient)
 
   const [formData, setFormData] = useState({
     Complaints: [],

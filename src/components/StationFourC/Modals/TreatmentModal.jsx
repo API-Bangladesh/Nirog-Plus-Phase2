@@ -42,7 +42,10 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
 
   useEffect(() => {
     let result;
-    if (frequencyHour == 4) {
+    if (frequencyHour === "" || drugPcs === "") {
+      result = "N/A";
+    }
+    else if (frequencyHour == 4) {
       result = `${drugPcs}+${drugPcs}+${drugPcs}+${drugPcs}+${drugPcs}+${drugPcs}`;
     } else if (frequencyHour == 6) {
       result = `${drugPcs}+${drugPcs}+${drugPcs}+${drugPcs}`;
@@ -136,6 +139,11 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
       setBanglaInstruction("");
       setSpecialInstruction("");
       setAddDrug("");
+      setFrequencyHour("");
+      setDrugSubstanceUnit("")
+      setDrugPcs("")
+      setDrugPcsUnit("")
+      setDrugDurationValueUnit("")
       console.log(myFormData?.TreatmentSuggestion);
     }
   };
@@ -330,7 +338,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
               error2 ? "error-input" : ""
             }`}
           >
-            {console.log(specialInstructionList)}
+            {/* {console.log(specialInstructionList)} */}
             <option value="">-- Select --</option>
             {specialInstructionList.map((item) => (
               <option

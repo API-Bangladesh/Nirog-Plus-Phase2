@@ -52,7 +52,10 @@ const Prescription = () => {
 
   return (
     <>
-      <SectionBanner title="Patient Health Status" />
+      <SectionBanner
+        title="Patient Health Status"
+        patientName={`${patient?.GivenName + " " + patient?.FamilyName}`}
+      />
 
       <section id="prescription">
         <div className="container bg-light py-5 px-5">
@@ -254,43 +257,59 @@ const Prescription = () => {
 
           <div className="patienStatus mb-4">
             <h3>Patient H/O Present Illness</h3>
-            {prescriptionpreviewall.PatientPresentllness?.map((item, index) => (
-              <div key={index}>
-                <span>{item.CreateDate} &gt;&gt;</span>
-                {item.IllnessCode}: {item.Illness_status}
-              </div>
-            ))}
+            {prescriptionpreviewall.PatientPresentllness?.map((item, index) => {
+              if (item.Illness_status === "yes") {
+                return (
+                  <div key={index}>
+                    <span>{item.CreateDate} &gt;&gt;</span>
+                    {item.IllnessCode}
+                  </div>
+                );
+              }
+            })}
           </div>
 
           <div className="patienStatus mb-4">
             <h3>Patient H/O Past Illness</h3>
-            {prescriptionpreviewall.PatientPastllness?.map((item, index) => (
-              <div key={index}>
-                <span>{item.CreateDate} &gt;&gt;</span>
-                {item.IllnessCode}: {item.Illness_status}
-              </div>
-            ))}
+            {prescriptionpreviewall.PatientPastllness?.map((item, index) => {
+              if (item.Illness_status === "yes") {
+                return (
+                  <div key={index}>
+                    <span>{item.CreateDate} &gt;&gt;</span>
+                    {item.IllnessCode}
+                  </div>
+                );
+              }
+            })}
           </div>
 
           <div className="patienStatus mb-4">
             <h3>Patient H/O Family Illness</h3>
-            {prescriptionpreviewall.PatientFamilyllness?.map((item, index) => (
-              <div key={index}>
-                <span>{item.CreateDate} &gt;&gt;</span>
-                {item.IllnessCode}: {item.family_status}
-              </div>
-            ))}
+            {prescriptionpreviewall.PatientFamilyllness?.map((item, index) => {
+              if (item.family_status === "yes") {
+                return (
+                  <div key={index}>
+                    <span>{item.CreateDate} &gt;&gt;</span>
+                    {item.IllnessCode}
+                  </div>
+                );
+              }
+            })}
           </div>
 
           <div className="patienStatus mb-4">
             <h3>Patient Social Behavior</h3>
             {prescriptionpreviewall.PatientSocialBehavior?.map(
-              (item, index) => (
-                <div key={index}>
-                  <span>{item.CreateDate} &gt;&gt;</span>
-                  {item.SocialBehaviorCode}: {item.family_status}
-                </div>
-              )
+              (item, index) => {
+                if (item.family_status === "Yes") {
+                  return (
+                    <div key={index}>
+                      <span>{item.CreateDate} &gt;&gt;</span>
+                      {item.SocialBehaviorCode}
+                    </div>
+                  );
+                }
+              }
             )}
           </div>
 
@@ -324,10 +343,13 @@ const Prescription = () => {
             {prescriptionpreviewall.MenstrualHistory?.map((item, index) => (
               <div key={index}>
                 <span>{item.CreateDate} &gt;&gt;</span>
-                Product Usage:{" "}
-                {item.MenstruationProductUsageTimeCode
-                  ? item.ChildMortality0To1
-                  : "N/A"}
+                <span>
+                  Product Usage:{" "}
+                  {item.MenstruationProductCode
+                    ? `${item.MenstruationProductCode} (${item.MenstruationProductUsageTimeCode})`
+                    : "N/A"}
+                </span>
+                {item.Comment && <span>Comment: {item.Comment}</span>}
               </div>
             ))}
           </div>
@@ -397,7 +419,7 @@ const Prescription = () => {
           <div className="patienStatus mb-4">
             <h3>General Findings</h3>
             {prescriptionpreviewall.GeneralFindings?.map((item, index) => (
-              <div key={index}>
+              <div key={index} className="mb-2">
                 <span>{item.CreateDate} &gt;&gt;</span>
                 <span>Anemia Severity: {item.AnemiaSeverity}</span>
                 <span>Jaundice Severity: {item.JaundiceSeverity}</span>
@@ -422,9 +444,27 @@ const Prescription = () => {
           </div>
 
           <div className="patienStatus mb-4">
+            <h3>Obstetrics Information</h3>
+            {prescriptionpreviewall.Obstetrics?.map((item, index) => (
+              <div key={index} className="mb-2">
+                <span>{item.CreateDate} &gt;&gt;</span>
+                <span>Gravida: {item.Gravida}</span>
+                <span>Living Birth: {item.LivingBirth}</span>
+                <span>Living Female: {item.LivingFemale}</span>
+                <span>Living Male: {item.LivingMale}</span>
+                <span>MR: {item.MR}</span>
+                <span>Miscarraige Or Abortion: {item.MiscarraigeOrAbortion}</span>
+                <span>Para: {item.Para}</span>
+                <span>Still Birth: {item.StillBirth}</span>
+              </div>
+            ))}
+          </div>
+
+          <div className="patienStatus mb-4">
             <h3>Current Medication Taken</h3>
             {prescriptionpreviewall.RxTaken?.map((item, index) => (
               <div key={index}>
+                <span>{item.CreateDate} &gt;&gt;</span>
                 <span>
                   Drug:{" "}
                   {item.Rx === "Others" ? <>{item?.Status}</> : <>{item.Rx}</>}

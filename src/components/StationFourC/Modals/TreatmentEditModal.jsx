@@ -46,9 +46,63 @@ function MyVerticallyCenteredModal({
   // let drugPieces = drugPcs + " " + drugPcsUnit; //1 spoon
   // let drugDurationValue = drugDurationOnlyValue + " " + drugDurationValueUnit; //20 day
 
+  function extractNumericValueAndUnit(data) {
+    const regex = /^([\d.]+)\s*([a-zA-Z]+)$/; // Regex to match numeric value and unit
+
+    const match = data.match(regex);
+
+    if (match) {
+      const numericValue = parseFloat(match[1]); // Convert the matched numeric value to a float
+      const unit = match[2];
+
+      return { numericValue, unit };
+    }
+
+    return null; // Return null if no match is found
+  }
+
+  function extractValues(expression) {
+    // Use regular expression to find all numbers or fractions
+    const matches = expression.match(/(\d+\/\d+|\d+)/g) || [];
+
+    // Filter out zeros and convert to integers or floats
+    const nonZeroValues = matches
+      .filter((match) => match !== "0")
+      .map((match) => (match.includes("/") ? eval(match) : parseInt(match)));
+
+    // Return the count of non-zero values and their sum
+    const sumOfNonZeroValues = nonZeroValues.reduce(
+      (sum, value) => sum + value,
+      0
+    );
+
+    return {
+      count: 24 / nonZeroValues.length,
+      value: sumOfNonZeroValues / nonZeroValues.length,
+    };
+  }
+
+  function extractValuesFromString(inputString) {
+    const match = inputString.match(/(\d+)\s*(\w+)/);
+
+    if (match) {
+      const numericValue = parseInt(match[1]);
+      const unit = match[2];
+
+      return {
+        numericValue,
+        unit,
+      };
+    } else {
+      return null; // Return null if no match is found
+    }
+  }
+
   useEffect(() => {
     let result;
-    if (frequencyHour == 4) {
+    if (frequencyHour === "" || drugPcs === "") {
+      result = "N/A";
+    } else if (frequencyHour == 4) {
       result = `${drugPcs}+${drugPcs}+${drugPcs}+${drugPcs}+${drugPcs}+${drugPcs}`;
     } else if (frequencyHour == 6) {
       result = `${drugPcs}+${drugPcs}+${drugPcs}+${drugPcs}`;
@@ -95,24 +149,35 @@ function MyVerticallyCenteredModal({
 
   useEffect(() => {
     if (show && editData) {
-      console.log(editData);
-
       setDrugCode(editData.drugCode || "");
       setDrugId(editData.drugId || "");
       setInstruction(editData.instruction || "");
       setDurationId(editData.durationId || "");
-      setDrugSubstance(editData.drugSubstance || "");
-      setDrugSubstanceUnit(editData.drugSubstanceUnit || "");
-      setDrugPcs(editData.drugPcs || "");
-      setDrugPcsUnit(editData.drugPcsUnit || "");
-      setDrugDurationOnlyValue(editData.drugDurationOnlyValue || "");
-      setDrugDurationValueUnit(editData.drugDurationValueUnit || "");
-      // setShowSuggestion(editData.showSuggestion || false);
-      setFrequencyHour(editData.frequency || "");
+
+      // Extract numeric values and units for drug dose
+      const drugDoseData = extractNumericValueAndUnit(editData.drugDose);
+      setDrugSubstance(drugDoseData?.numericValue || "");
+      setDrugSubstanceUnit(drugDoseData?.unit || "");
+
+      // Extract numeric values and units for frequency
+      const frequencyData = extractValues(editData.frequency);
+      setFrequencyHour(frequencyData?.count || "");
       setFrequencyValue(editData.frequencyValue || "");
-      setSpecialInstruction(editData.specialInstruction || "");
+
+      setDrugPcs(frequencyData?.value || "");
+      setDrugPcsUnit("");
+
+      const drugDuration = extractValuesFromString(editData.drugDurationValue);
+
+      setDrugDurationOnlyValue(drugDuration?.numericValue || "");
+      setDrugDurationValueUnit(drugDuration?.unit || "");
+      // setShowSuggestion(editData.showSuggestion || false);
+
+      setSpecialInstruction(editData.banglaInstruction || "");
       setBanglaInstruction(editData.banglaInstruction || "");
       setAddDrug(editData.addDrug || "");
+
+      console.log(editData);
     } else {
       // Clear modal fields when not in edit mode
       setDrugId("");
@@ -155,7 +220,7 @@ function MyVerticallyCenteredModal({
             drugDurationOnlyValue + " " + drugDurationValueUnit,
           otherDrug: drugPcs + " " + drugPcsUnit, //drugPieces is set in comment field!
           drugDose: drugSubstance + drugSubstanceUnit,
-          specialInstruction: "",
+          specialInstruction: banglaInstruction,
           comment: "",
           hourly: addDrug,
           Status: "",
@@ -165,19 +230,19 @@ function MyVerticallyCenteredModal({
       }
 
       setFormData(myFormData);
-      setDrugId("");
-      setInstruction("");
-      setDrugCodeList([]);
-      setDrugCode("");
-      setDurationId("");
-      setFrequencyValue("");
-      setDrugDurationOnlyValue("");
+      // setDrugId("");
+      // setInstruction("");
+      // setDrugCodeList([]);
+      // setDrugCode("");
+      // setDurationId("");
+      // setFrequencyValue("");
+      // setDrugDurationOnlyValue("");
       onHide();
-      setShowSuggestion("");
-      setDrugSubstance("");
-      setBanglaInstruction("");
-      setSpecialInstruction("");
-      setAddDrug("");
+      // setShowSuggestion("");
+      // setDrugSubstance("");
+      // setBanglaInstruction("");
+      // setSpecialInstruction("");
+      // setAddDrug("");
       console.log(myFormData?.TreatmentSuggestion);
     }
   };
@@ -357,7 +422,7 @@ function MyVerticallyCenteredModal({
         <div className="mb-3">
           <select
             id="Select"
-            value={specialInstruction}
+            value={banglaInstruction}
             onChange={(e) => {
               setSpecialInstruction(e.target.value);
               setBanglaInstruction(

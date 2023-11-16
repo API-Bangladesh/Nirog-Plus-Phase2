@@ -10,11 +10,14 @@ import { Button } from "react-bootstrap";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { API_URL } from "../../helper/Constants";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { loggedInUserData } from "../../helper/localStorageHelper";
+import { ADD_PATIENT } from "./../../redux/state-slice/patients-slice";
 
 const StationTwo = () => {
+  const dispatch = useDispatch();
   const { patient } = useSelector((state) => state.patients);
+  console.log("Patient", patient)
 
   const [PatientId] = useState(patient?.PatientId);
 
@@ -66,6 +69,24 @@ const StationTwo = () => {
         title: "Success",
         text: response.data.message,
       }).then(function () {
+
+        const updatedPatientData = {
+          ...patient,
+          bps: {
+            ...patient.bps,
+            HeartRate,
+            BPSystolic1,
+            BPDiastolic1,
+            BPSystolic2,
+            BPDiastolic2,
+            CurrentTemparature,
+            RespiratoryRate,
+            SpO2Rate,
+            IndicatesNormalOxygenSaturation,
+          },
+        };
+        dispatch(ADD_PATIENT(updatedPatientData));
+
         if (redirectUrl) {
           window.location.href = redirectUrl;
         } else {

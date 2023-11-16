@@ -9,14 +9,17 @@ import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { API_URL } from "../../helper/Constants";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { loggedInUserData } from "../../helper/localStorageHelper";
+import { ADD_PATIENT } from "./../../redux/state-slice/patients-slice";
 
 const GlucoseHemoglobin = () => {
+  const dispatch = useDispatch();
   const userData = loggedInUserData();
   const userName = userData?.name;
 
   const { patient } = useSelector((state) => state.patients);
+  console.log(patient)
 
   const [PatientId] = useState(patient?.PatientId);
   const [RBG, setRBG] = useState("");
@@ -54,6 +57,19 @@ const GlucoseHemoglobin = () => {
         title: "Success",
         text: response.data.message,
       }).then(function () {
+
+        const updatedPatientData = {
+          ...patient,
+          glucose_hbs: {
+            ...patient.glucose_hbs,
+            RBG,
+            FBG,
+            HrsFromLastEat,
+            Hemoglobin
+          },
+        };
+        dispatch(ADD_PATIENT(updatedPatientData));
+
         if (redirectUrl) {
           window.location.href = redirectUrl;
         } else {
