@@ -9,12 +9,15 @@ import { Button } from "react-bootstrap";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { API_URL } from "../../helper/Constants";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { loggedInUserData } from "../../helper/localStorageHelper";
+import { ADD_PATIENT } from "./../../redux/state-slice/patients-slice";
 
 const StationOneHeight = () => {
+  const dispatch = useDispatch();
   const { patient } = useSelector((state) => state.patients);
+  console.log(patient)
 
   const [PatientId] = useState(patient?.PatientId);
   // const [OrgId] = useState(patient?.OrgId);
@@ -37,6 +40,7 @@ const StationOneHeight = () => {
   const myTokenData = JSON.parse(token);
   const tokenData = myTokenData?.user?.station;
   const stations = tokenData.split(",");
+  const [BloodGroupCode, setBloodGroupCode] = useState("")
 
   const handleSubmit = async (e, redirectUrl) => {
     e.preventDefault();
@@ -65,6 +69,25 @@ const StationOneHeight = () => {
           title: "Success",
           text: response.data.message,
         }).then(function () {
+
+          const updatedPatientData = {
+            ...patient,
+            height_weights: {
+              ...patient.height_weights,
+              Height: Height,
+              Weight: Weight,
+              BMI: BMI,
+              BMIStatus: BMIClass,
+              MUAC: MUAC,
+              MUACStatus: MUACClass,
+              blood: {
+                ...patient.height_weights.blood,
+                BloodGroupCode: BloodGroupCode
+              }
+            },
+          };
+          dispatch(ADD_PATIENT(updatedPatientData));
+
           if (redirectUrl) {
             window.location.href = redirectUrl;
           } else {
@@ -282,6 +305,11 @@ const StationOneHeight = () => {
                   value={RefBloodGroupId}
                   onChange={(event) => {
                     setRefBloodGroupId(event.target.value);
+                    setBloodGroupCode(
+                      event.target.options[event.target.selectedIndex].getAttribute(
+                        "data-blood-group"
+                      )
+                    )
                     setError("");
                   }}
                   className={`form-select inputBox ${
@@ -294,6 +322,7 @@ const StationOneHeight = () => {
                     <option
                       key={item.RefBloodGroupId}
                       value={item.RefBloodGroupId}
+                      data-blood-group={item.BloodGroupCode}
                     >
                       {item.BloodGroupCode}
                     </option>
