@@ -54,6 +54,8 @@ const FourCuserInput = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    // console.log(formData.LabInvestigation);
+    // return;
 
     try {
       const response = await axios.post(
@@ -276,6 +278,7 @@ const FourCuserInput = () => {
                           <thead>
                             <tr>
                               <th>InvestigationId</th>
+                              <th>Report</th>
                               {/* <th>OtherInvestigation</th> */}
                               <th>Instruction</th>
                               <th>Action</th>
@@ -287,7 +290,7 @@ const FourCuserInput = () => {
                                 return (
                                   <tr key={key}>
                                     <td>{item.investigaion}</td>
-                                    {/* <td>{item.otherInvestigation}</td> */}
+                                    <td>{item.positiveNegativeStatus === 'Y' ? "Positive" : item.positiveNegativeStatus === 'N' ? "Negative" : ""}</td>
                                     <td>{item.instruction}</td>
                                     <td>
                                       <button

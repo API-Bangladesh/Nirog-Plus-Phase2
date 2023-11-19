@@ -265,9 +265,7 @@ const PrescriptionFinal = () => {
                   <div className="mb-0 mt-1 pe-2" key={index}>
                     <p className="mb-0">Date: {item.CreateDate}</p>
                     <p className="mb-0 mt-1 pe-2">
-                      {index + 1}:{" "}
-                      {item.Investigation }{""}
-                        [{item.OtherInvestigation}]{" "}
+                      {`${index + 1}: ${item.Investigation}${item.PositiveNegativeStatus ? `[${item.PositiveNegativeStatus}]` : ''}${item?.Instruction && `[${item?.Instruction}]`}`}
                       <br></br>
                       {/* {item.OtherInvestigation != ""
                       ? item.OtherInvestigation

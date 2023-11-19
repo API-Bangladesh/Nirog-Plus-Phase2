@@ -5,16 +5,21 @@ import "../FourCuserInput.css";
 import axios from "axios";
 import { API_URL } from "../../../helper/Constants";
 import { useSelector } from "react-redux";
+import { loggedInUserData } from "../../../helper/localStorageHelper";
 
 function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
   const { patient } = useSelector((state) => state.patients);
 
   const [PatientId] = useState(patient?.PatientId);
+
+  const userData = loggedInUserData();
+  const userName = userData?.name;
+
   const [showSuggestion, setShowSuggestion] = useState(false);
   const [investigationCode, setInvestigationCode] = useState("");
   const [investigationId, setInvestigationId] = useState("");
   const [otherInvestigation, setOtherInvestigation] = useState("");
-  const [positiveNegativeStatus, setPositiveNegativeStatus] = useState("");
+  const [positiveNegativeStatus, setPositiveNegativeStatus] = useState(null);
   const [instruction, setInstruction] = useState("");
   const [refLabInvestigationCodeList, setRefLabInvestigationCodeList] = useState([]);
   const [investigaion, setInvestigation] = useState();
@@ -50,10 +55,10 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
         investigationId: investigationId,
         investigaion,
         otherInvestigation: "",
-        instruction: positiveNegativeStatus,
+        instruction: instruction,
         positiveNegativeStatus: positiveNegativeStatus,
         Status: "A",
-        CreateUser: "Mizanur Rahaman",
+        CreateUser: userName,
         OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
       });
   
@@ -62,7 +67,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
       setInvestigationId("");
       setInvestigationCode("");
       // setOtherInvestigation("");
-      setPositiveNegativeStatus("");
+      setPositiveNegativeStatus(null);
       setInstruction("");
       setInvestigation("");
       onHide();
@@ -184,7 +189,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
               onChange={(e) => setPositiveNegativeStatus(e.target.value)}
               value="Y"
               checked={"Y" === positiveNegativeStatus}
-              onDoubleClick={() => setPositiveNegativeStatus("")}
+              onDoubleClick={() => setPositiveNegativeStatus(null)}
             />
             <label
               className="form-check-label text-capitalize"
@@ -202,7 +207,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
               value="N"
               onChange={(e) => setPositiveNegativeStatus(e.target.value)}
               checked={"N" === positiveNegativeStatus}
-              onDoubleClick={() => setPositiveNegativeStatus("")}
+              onDoubleClick={() => setPositiveNegativeStatus(null)}
             />
             <label
               className="form-check-label text-capitalize"
