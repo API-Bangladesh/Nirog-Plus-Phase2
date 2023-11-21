@@ -544,6 +544,25 @@ const PatientReg = () => {
         [section]: updatedSection,
       };
     });
+
+    setFormData((prevFormData) => {
+      const updatedSection = { ...prevFormData.addressInfo };
+      // Check if at least one of the specified fields is filled
+      const atLeastOneFDMNFieldFilled =
+        updatedSection.Camp.trim() !== '' ||
+        updatedSection.BlockNumber.trim() !== '' ||
+        updatedSection.Majhi.trim() !== '' ||
+        updatedSection.TentNumber.trim() !== '' ||
+        updatedSection.FCN.trim() !== '';
+    
+      // Update StationStatus based on the condition
+      updatedSection.StationStatus = atLeastOneFDMNFieldFilled ? '2' : '1';
+
+      return {
+        ...prevFormData,
+        addressInfo: updatedSection,
+      };
+    });
   };
 
   const handleSelectInputChange = async (e) => {
@@ -634,6 +653,7 @@ const PatientReg = () => {
       Majhi: "",
       TentNumber: "",
       FCN: "",
+      StationStatus: "1",
       OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
     },
   });

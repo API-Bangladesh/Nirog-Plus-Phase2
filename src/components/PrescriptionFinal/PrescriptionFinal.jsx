@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import "./PrescriptionFinal.css";
 import ApiLogo from "../../assets/img/apilogo.png";
 import GlobalButton from "./../GlobalBtn/GlobalButton";
-import Signature from "../../assets/img/signature.png";
+// import Signature from "../../assets/img/signature.png";
 import {
   BsFileEarmarkPdfFill,
   BsImages,
@@ -22,6 +22,8 @@ const PrescriptionFinal = () => {
   const { patient } = useSelector((state) => state.patients);
   const patientId = patient?.PatientId;
   const userData = loggedInUserData();
+  const signature = userData?.employee?.EmployeeSignature;
+  console.log(userData)
   // Declare State
   const [patientInfo, setPatientInfo] = useState([]);
   const [prescription, setPrescription] = useState([]);
@@ -401,9 +403,9 @@ const PrescriptionFinal = () => {
 
           <div id="footer" className="">
             <div className="signatureBox text-center">
-              <img src={Signature} alt="img" className="signatureImage" />
+              {signature && <img src={signature} alt="img" className="signatureImage" />}
               <p className="mb-0">{userData?.name}</p>
-              <i className="my-0">{userData?.employee.FirstName}</i>
+              <i className="my-0">{userData?.employee?.Designation}</i>
             </div>
             <footer className="footer d-flex justify-content-between">
             
@@ -423,8 +425,8 @@ const PrescriptionFinal = () => {
               </address>
             </footer>
             <p className="mb-0 text-center pb-4 logoText">
-              Powered By:
-              <img src={ApiLogo} alt="img" className="apiLogo" />
+              Powered By: <a href="https://apisolutionsltd.com/" target="_blank">API Solutions Ltd.</a>
+              {/* <img src={ApiLogo} alt="img" className="apiLogo" /> */}
             </p>
           </div>
         </div>
