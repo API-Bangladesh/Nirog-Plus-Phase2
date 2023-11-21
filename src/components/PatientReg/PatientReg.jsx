@@ -546,22 +546,19 @@ const PatientReg = () => {
     });
 
     setFormData((prevFormData) => {
-      const updatedSection = { ...prevFormData.addressInfo };
+      const updated = { ...prevFormData };
       // Check if at least one of the specified fields is filled
       const atLeastOneFDMNFieldFilled =
-        updatedSection.Camp.trim() !== '' ||
-        updatedSection.BlockNumber.trim() !== '' ||
-        updatedSection.Majhi.trim() !== '' ||
-        updatedSection.TentNumber.trim() !== '' ||
-        updatedSection.FCN.trim() !== '';
+        updated.addressInfo.Camp.trim() !== '' ||
+        updated.addressInfo.BlockNumber.trim() !== '' ||
+        updated.addressInfo.Majhi.trim() !== '' ||
+        updated.addressInfo.TentNumber.trim() !== '' ||
+        updated.addressInfo.FCN.trim() !== '';
     
       // Update StationStatus based on the condition
-      updatedSection.StationStatus = atLeastOneFDMNFieldFilled ? '2' : '1';
+      updated.patientInfo.StationStatus = atLeastOneFDMNFieldFilled ? '2' : '1';
 
-      return {
-        ...prevFormData,
-        addressInfo: updatedSection,
-      };
+      return updated;
     });
   };
 
@@ -628,6 +625,7 @@ const PatientReg = () => {
       // ChildAge0To1: "",
       // ChildAge1To5: "",
       // ChildAgeOver5: "",
+      StationStatus: "1",
     },
     addressInfo: {
       AddressLine1: "",
@@ -653,7 +651,6 @@ const PatientReg = () => {
       Majhi: "",
       TentNumber: "",
       FCN: "",
-      StationStatus: "1",
       OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
     },
   });
