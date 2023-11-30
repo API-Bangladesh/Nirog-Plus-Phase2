@@ -61,7 +61,7 @@ const GlucoseHemoglobin = () => {
         const updatedPatientData = {
           ...patient,
           glucose_hbs: {
-            ...patient.glucose_hbs,
+            ...patient?.glucose_hbs,
             RBG,
             FBG,
             HrsFromLastEat,
