@@ -32,6 +32,10 @@ const PrescriptionFinal = () => {
   const [bp, setBp] = useState([]);
   const [glucoseHb, setGlucoseHb] = useState([]);
   const [provisionalDX, setProvisionalDX] = useState([]);
+  const [TBSymptom, setTBSymptom] = useState([]);
+  const [TBEFinding, setTBEFinding] = useState([]);
+  const [TBEPastEvidence, setTBEPastEvidence] = useState([]);
+  const [TBPast, setTBPast] = useState([]);
   const [labInvestigation, setLabInvestigation] = useState([]);
   const [rxDetail, setRxDetail] = useState([]);
   const [advice, setAdvice] = useState([]);
@@ -91,6 +95,10 @@ const PrescriptionFinal = () => {
       setBp(response.data.BP);
       setGlucoseHb(response.data.GlucoseHb);
       setProvisionalDX(response.data.ProvisionalDx);
+      setTBSymptom(response.data.TBSymptom.reverse());
+      setTBEFinding(response.data.TBEFinding.reverse());
+      setTBEPastEvidence(response.data.TBEPastEvidence.reverse());
+      setTBPast(response.data.TBPast.reverse());
       setLabInvestigation(response.data.Investigation);
       setRxDetail(response.data.Treatment);
       setAdvice(response.data.Advice);
@@ -254,6 +262,39 @@ const PrescriptionFinal = () => {
                         : item.DiagnosisStatus == "Y"
                         ? "[Confirmed]"
                         : "[Unspecified]"}
+                    </p>
+                  </div>
+                ))}
+              </div>
+              <div className="pres_item">
+                <b className="d-block mb-0 py-1 border-bottom">
+                  Patient Summary for TB
+                </b>
+                {TBSymptom.map((item, index) => (
+                  <div className="mb-0 mt-1 pe-2" key={index}>
+                    <p className="mb-0 mt-1 pe-2">
+                      {item.TBSymptomCode ? item.TBSymptomCode + ": Positive" : ""}
+                    </p>
+                  </div>
+                ))}
+                {TBEFinding.map((item, index) => (
+                  <div className="mb-0 mt-1 pe-2" key={index}>
+                    <p className="mb-0 mt-1 pe-2">
+                      {item.TBEFindingCode ? item.TBEFindingCode + ": Positive" : ""}
+                    </p>
+                  </div>
+                ))}
+                {TBEPastEvidence.map((item, index) => (
+                  <div className="mb-0 mt-1 pe-2" key={index}>
+                    <p className="mb-0 mt-1 pe-2">
+                      {item.TBEPastEvidenceCode ? item.TBEPastEvidenceCode + ": Positive" : ""}
+                    </p>
+                  </div>
+                ))}
+                {TBPast.map((item, index) => (
+                  <div className="mb-0 mt-1 pe-2" key={index}>
+                    <p className="mb-0 mt-1 pe-2">
+                      {item.TBHistoryIdCode ? item.TBHistoryIdCode + ": " + item.Status : ""}
                     </p>
                   </div>
                 ))}

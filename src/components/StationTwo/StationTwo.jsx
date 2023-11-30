@@ -73,7 +73,7 @@ const StationTwo = () => {
         const updatedPatientData = {
           ...patient,
           bps: {
-            ...patient.bps,
+            ...patient?.bps,
             HeartRate,
             BPSystolic1,
             BPDiastolic1,

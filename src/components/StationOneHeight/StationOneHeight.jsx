@@ -73,7 +73,7 @@ const StationOneHeight = () => {
           const updatedPatientData = {
             ...patient,
             height_weights: {
-              ...patient.height_weights,
+              ...patient?.height_weights,
               Height: Height,
               Weight: Weight,
               BMI: BMI,
@@ -81,7 +81,7 @@ const StationOneHeight = () => {
               MUAC: MUAC,
               MUACStatus: MUACClass,
               blood: {
-                ...patient.height_weights.blood,
+                ...patient?.height_weights?.blood,
                 BloodGroupCode: BloodGroupCode
               }
             },
