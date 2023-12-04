@@ -32,7 +32,8 @@ function MyVerticallyCenteredModal({
   const [showSuggestion, setShowSuggestion] = useState(false);
   const [drugCodeList, setDrugCodeList] = useState([]);
 
-  const [frequencyHour, setFrequencyHour] = useState("");
+  const [frequencyList, setFrequencyList] = useState([]);
+  // const [frequencyHour, setFrequencyHour] = useState("");
   const [frequencyValue, setFrequencyValue] = useState("");
   const [specialInstruction, setSpecialInstruction] = useState("");
   const [specialInstructionList, setSpecialInstructionList] = useState([]);
@@ -98,25 +99,25 @@ function MyVerticallyCenteredModal({
     }
   }
 
-  useEffect(() => {
-    let result;
-    if (frequencyHour === "" || drugPcs === "") {
-      result = "N/A";
-    } else if (frequencyHour == 4) {
-      result = `${drugPcs}+${drugPcs}+${drugPcs}+${drugPcs}+${drugPcs}+${drugPcs}`;
-    } else if (frequencyHour == 6) {
-      result = `${drugPcs}+${drugPcs}+${drugPcs}+${drugPcs}`;
-    } else if (frequencyHour == 8) {
-      result = `${drugPcs}+${drugPcs}+${drugPcs}`;
-    } else if (frequencyHour == 12) {
-      result = `${drugPcs}+0+${drugPcs}`;
-    } else if (frequencyHour == 24) {
-      result = `0+0+${drugPcs}`;
-    } else {
-      result = "N/A";
-    }
-    setFrequencyValue(result);
-  }, [frequencyHour, drugPcs]);
+  // useEffect(() => {
+  //   let result;
+  //   if (frequencyHour === "" || drugPcs === "") {
+  //     result = "N/A";
+  //   } else if (frequencyHour == 4) {
+  //     result = `${drugPcs}+${drugPcs}+${drugPcs}+${drugPcs}+${drugPcs}+${drugPcs}`;
+  //   } else if (frequencyHour == 6) {
+  //     result = `${drugPcs}+${drugPcs}+${drugPcs}+${drugPcs}`;
+  //   } else if (frequencyHour == 8) {
+  //     result = `${drugPcs}+${drugPcs}+${drugPcs}`;
+  //   } else if (frequencyHour == 12) {
+  //     result = `${drugPcs}+0+${drugPcs}`;
+  //   } else if (frequencyHour == 24) {
+  //     result = `0+0+${drugPcs}`;
+  //   } else {
+  //     result = "N/A";
+  //   }
+  //   setFrequencyValue(result);
+  // }, [frequencyHour, drugPcs]);
 
   useEffect(() => {
     if (drugCode) {
@@ -138,6 +139,17 @@ function MyVerticallyCenteredModal({
 
   useEffect(() => {
     axios
+      .get(`${API_URL}/api/frequency-hours`, {})
+      .then((response) => {
+        setFrequencyList(response.data.data)
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  useEffect(() => {
+    axios
       .get(`${API_URL}/api/special-instruction`, {})
       .then((response) => {
         setSpecialInstructionList(response.data.data);
@@ -149,6 +161,7 @@ function MyVerticallyCenteredModal({
 
   useEffect(() => {
     if (show && editData) {
+      // console.log(editData)
       setDrugCode(editData.drugCode || "");
       setDrugId(editData.drugId || "");
       setInstruction(editData.instruction || "");
@@ -161,11 +174,13 @@ function MyVerticallyCenteredModal({
 
       // Extract numeric values and units for frequency
       const frequencyData = extractValues(editData.frequency);
-      setFrequencyHour(frequencyData?.count || "");
-      setFrequencyValue(editData.frequencyValue || "");
-
-      setDrugPcs(frequencyData?.value || "");
-      setDrugPcsUnit("");
+      // setFrequencyHour(frequencyData?.count || "");
+      setFrequencyValue(editData.frequency || "");
+      const drugPcsData = extractNumericValueAndUnit(editData.otherDrug);
+      // setDrugPcs(frequencyData?.value || "");
+      // setDrugPcsUnit("");
+      setDrugPcs(drugPcsData?.numericValue || "");
+      setDrugPcsUnit(drugPcsData?.unit || "");
 
       const drugDuration = extractValuesFromString(editData.drugDurationValue);
 
@@ -177,7 +192,8 @@ function MyVerticallyCenteredModal({
       setBanglaInstruction(editData.banglaInstruction || "");
       setAddDrug(editData.addDrug || "");
 
-      console.log(editData);
+      // console.log(editData);
+      // console.log(drugPcsData);
     } else {
       // Clear modal fields when not in edit mode
       setDrugId("");
@@ -349,16 +365,21 @@ function MyVerticallyCenteredModal({
         <div className="mb-3 input-shadow rounded-pill">
           <select
             id="Select"
-            onChange={(e) => setFrequencyHour(e.target.value)}
+            // onChange={(e) => setFrequencyHour(e.target.value)}
+            onChange={(e) => setFrequencyValue(e.target.value)}
             className="form-select input-padding rounded-pill select-form-padding"
-            value={frequencyHour}
+            value={frequencyValue}
           >
             <option value="">Frequency Hours</option>
-            <option value="4">4</option>
+
+            {frequencyList?.length > 0 && frequencyList.map((item, index) => <option value={item.FrequencyInEnglish} key={index}>{item.FrequencyInEnglish}</option>)}
+
+
+            {/* <option value="4">4</option>
             <option value="6">6</option>
             <option value="8">8</option>
             <option value="12">12</option>
-            <option value="24">24</option>
+            <option value="24">24</option> */}
           </select>
         </div>
 
