@@ -156,10 +156,10 @@ const FourCuserInput = () => {
         frequencyId: "143927E4-67BC-41FD-B092-063033E34366",
         frequency: item.Frequency,
         refInstructionId: item.SpecialInstruction,
-        drugDurationValue: item.DrugDurationValue,
-        otherDrug: item.OtherDrug, //drugPieces is set in comment field!
-        drugDose: item.DrugDose,
-        specialInstruction: "",
+        drugDurationValue: item.DrugDose,
+        otherDrug: '', //drugPieces is set in comment field!
+        drugDose: item.OtherDrug,
+        specialInstruction: item.InstructionInBangla,
         comment: "",
         hourly: item.Hour,
         Status: "",

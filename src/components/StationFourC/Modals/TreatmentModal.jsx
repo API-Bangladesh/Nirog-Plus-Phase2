@@ -26,7 +26,8 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
   const [showSuggestion, setShowSuggestion] = useState(false);
   const [drugCodeList, setDrugCodeList] = useState([]);
 
-  const [frequencyHour, setFrequencyHour] = useState("");
+  const [frequencyList, setFrequencyList] = useState([]);
+  // const [frequencyHour, setFrequencyHour] = useState("");
   const [frequencyValue, setFrequencyValue] = useState("");
   const [specialInstruction, setSpecialInstruction] = useState("");
   const [specialInstructionList, setSpecialInstructionList] = useState([]);
@@ -40,26 +41,26 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
   // let drugPieces = drugPcs + " " + drugPcsUnit; //1 spoon
   // let drugDurationValue = drugDurationOnlyValue + " " + drugDurationValueUnit; //20 day
 
-  useEffect(() => {
-    let result;
-    if (frequencyHour === "" || drugPcs === "") {
-      result = "N/A";
-    }
-    else if (frequencyHour == 4) {
-      result = `${drugPcs}+${drugPcs}+${drugPcs}+${drugPcs}+${drugPcs}+${drugPcs}`;
-    } else if (frequencyHour == 6) {
-      result = `${drugPcs}+${drugPcs}+${drugPcs}+${drugPcs}`;
-    } else if (frequencyHour == 8) {
-      result = `${drugPcs}+${drugPcs}+${drugPcs}`;
-    } else if (frequencyHour == 12) {
-      result = `${drugPcs}+0+${drugPcs}`;
-    } else if (frequencyHour == 24) {
-      result = `0+0+${drugPcs}`;
-    } else {
-      result = "N/A";
-    }
-    setFrequencyValue(result);
-  }, [frequencyHour, drugPcs]);
+  // useEffect(() => {
+  //   let result;
+  //   if (frequencyHour === "" || drugPcs === "") {
+  //     result = "N/A";
+  //   }
+  //   else if (frequencyHour == 4) {
+  //     result = `${drugPcs}+${drugPcs}+${drugPcs}+${drugPcs}+${drugPcs}+${drugPcs}`;
+  //   } else if (frequencyHour == 6) {
+  //     result = `${drugPcs}+${drugPcs}+${drugPcs}+${drugPcs}`;
+  //   } else if (frequencyHour == 8) {
+  //     result = `${drugPcs}+${drugPcs}+${drugPcs}`;
+  //   } else if (frequencyHour == 12) {
+  //     result = `${drugPcs}+0+${drugPcs}`;
+  //   } else if (frequencyHour == 24) {
+  //     result = `0+0+${drugPcs}`;
+  //   } else {
+  //     result = "N/A";
+  //   }
+  //   setFrequencyValue(result);
+  // }, [frequencyHour, drugPcs]);
 
   useEffect(() => {
     if (drugCode) {
@@ -84,6 +85,17 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
       .get(`${API_URL}/api/special-instruction`, {})
       .then((response) => {
         setSpecialInstructionList(response.data.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  useEffect(() => {
+    axios
+      .get(`${API_URL}/api/frequency-hours`, {})
+      .then((response) => {
+        setFrequencyList(response.data.data)
       })
       .catch((error) => {
         console.error(error);
@@ -125,6 +137,9 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
         OrgId: "73CA453C-5F08-4BE7-A8B8-A2FDDA006A2B",
       });
 
+      // console.log(myFormData.TreatmentSuggestion)
+      // return
+
       setFormData(myFormData);
       setDrugId("");
       setInstruction("");
@@ -139,7 +154,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
       setBanglaInstruction("");
       setSpecialInstruction("");
       setAddDrug("");
-      setFrequencyHour("");
+      // setFrequencyHour("");
       setDrugSubstanceUnit("")
       setDrugPcs("")
       setDrugPcsUnit("")
@@ -250,16 +265,18 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
         <div className="mb-3 input-shadow rounded-pill">
           <select
             id="Select"
-            onChange={(e) => setFrequencyHour(e.target.value)}
+            // onChange={(e) => setFrequencyHour(e.target.value)}
+            onChange={(e) => setFrequencyValue(e.target.value)}
             className="form-select input-padding rounded-pill select-form-padding"
-            value={frequencyHour}
+            value={frequencyValue}
           >
             <option value="">Frequency Hours</option>
-            <option value="4">4</option>
+            {frequencyList?.length > 0 && frequencyList.map((item, index) => <option value={item.FrequencyInEnglish} key={index}>{item.FrequencyInEnglish}</option>)}
+            {/* <option value="4">4</option>
             <option value="6">6</option>
             <option value="8">8</option>
             <option value="12">12</option>
-            <option value="24">24</option>
+            <option value="24">24</option> */}
           </select>
         </div>
 
