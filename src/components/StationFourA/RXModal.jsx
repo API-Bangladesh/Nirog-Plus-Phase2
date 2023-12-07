@@ -20,7 +20,8 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
   // const [dose, setDose] = useState("");
   // const [doseValue, setDoseValue] = useState("");
   const [status, setStatus] = useState("");
-  const [frequencyHour, setFrequencyHour] = useState("");
+  const [frequencyList, setFrequencyList] = useState([]);
+  // const [frequencyHour, setFrequencyHour] = useState("");
   const [frequencyValue, setFrequencyValue] = useState("");
   const [allergyToMedication, setAllergyToMedication] = useState("");
 
@@ -46,23 +47,35 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
       });
   }, []);
 
+  // useEffect(() => {
+  //   let result;
+  //   if (frequencyHour == 4) {
+  //     result = "bal";
+  //   } else if (frequencyHour == 6) {
+  //     result = "1+1+1+1";
+  //   } else if (frequencyHour == 8) {
+  //     result = "1+1+1";
+  //   } else if (frequencyHour == 12) {
+  //     result = "1+0+1";
+  //   } else if (frequencyHour == 24) {
+  //     result = "0+0+1";
+  //   } else {
+  //     result = "N/A";
+  //   }
+  //   setFrequencyValue(result);
+  // }, [frequencyHour]);
+
   useEffect(() => {
-    let result;
-    if (frequencyHour == 4) {
-      result = "1+1+1+1+1+1";
-    } else if (frequencyHour == 6) {
-      result = "1+1+1+1";
-    } else if (frequencyHour == 8) {
-      result = "1+1+1";
-    } else if (frequencyHour == 12) {
-      result = "1+0+1";
-    } else if (frequencyHour == 24) {
-      result = "0+0+1";
-    } else {
-      result = "N/A";
-    }
-    setFrequencyValue(result);
-  }, [frequencyHour]);
+    axios
+      .get(`${API_URL}/api/frequency-hours`, {})
+      .then((response) => {
+        setFrequencyList(response.data.data)
+        // console.log(response.data.data)
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -167,16 +180,19 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
         <div className="mb-3 input-shadow rounded-pill">
           <select
             id="FrequencyHourSelect"
-            onChange={(e) => setFrequencyHour(e.target.value)}
+            onChange={(e) => setFrequencyValue(e.target.value)}
             className="form-select input-padding rounded-pill select-form-padding"
+            value={frequencyValue}
           >
             <option value="">Frequency Hours</option>
-            <option value="0">0</option>
+            {frequencyList?.length > 0 && frequencyList.map((item, index) => <option value={item.FrequencyInEnglish} key={index}>{item.FrequencyInEnglish}</option>)}
+
+            {/* <option value="0">0</option>
             <option value="4">4</option>
             <option value="6">6</option>
             <option value="8">8</option>
             <option value="12">12</option>
-            <option value="24">24</option>
+            <option value="24">24</option> */}
           </select>
         </div>
 
