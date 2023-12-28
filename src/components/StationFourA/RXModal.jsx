@@ -251,6 +251,7 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
               <option>week</option>
               <option>month</option>
               <option>year</option>
+              <option>continue</option>
             </select>
             </div>
           </div>
