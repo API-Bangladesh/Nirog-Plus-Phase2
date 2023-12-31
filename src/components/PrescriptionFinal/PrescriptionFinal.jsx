@@ -3,6 +3,8 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import "./PrescriptionFinal.css";
 import ApiLogo from "../../assets/img/apilogo.png";
+import Worldbankgroup from "../../assets/img/worldbankgroup.png";
+import Unfpa from "../../assets/img/unfpa.png";
 import GlobalButton from "./../GlobalBtn/GlobalButton";
 // import Signature from "../../assets/img/signature.png";
 import {
@@ -449,8 +451,11 @@ const PrescriptionFinal = () => {
               <i className="my-0">{userData?.employee?.Designation}</i>
             </div>
             <footer className="footer d-flex justify-content-between">
+
+            <img src={Worldbankgroup} alt="img" className="footer_logo" />
+            <img src={Unfpa} alt="img" className="footer_logo py-3" />
             
-              <address className="mb-0">
+              {/* <address className="mb-0">
                 <p className="mb-0">Health and Education for All (HAEFA), USA <br />
                 311 Bedford St Lexington, MA 02420, USA
                 </p>
@@ -463,12 +468,12 @@ const PrescriptionFinal = () => {
                 </p>
                 <p className="mb-0">Email: haefa@haefa.org</p>
                 <p className="mb-0">Website: www.haefabd.org</p>
-              </address>
+              </address> */}
             </footer>
-            <p className="mb-0 text-center pb-4 logoText">
+            {/* <p className="mb-0 text-center pb-4 logoText">
               Powered By: <a href="https://apisolutionsltd.com/" target="_blank">API Solutions Ltd.</a>
-              {/* <img src={ApiLogo} alt="img" className="apiLogo" /> */}
-            </p>
+              <img src={ApiLogo} alt="img" className="apiLogo" />
+            </p> */}
           </div>
         </div>
       </section>
