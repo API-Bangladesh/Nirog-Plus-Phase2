@@ -5,6 +5,7 @@ import "./PrescriptionFinal.css";
 import ApiLogo from "../../assets/img/apilogo.png";
 import Worldbankgroup from "../../assets/img/worldbankgroup.png";
 import Unfpa from "../../assets/img/unfpa.png";
+import GovtLogo from "../../assets/img/govt_logo.png";
 import GlobalButton from "./../GlobalBtn/GlobalButton";
 // import Signature from "../../assets/img/signature.png";
 import {
@@ -132,6 +133,9 @@ const PrescriptionFinal = () => {
     <>
       <section id="prescriptionFinal">
         <div id="printable" className="container px-4">
+        <div className="text-center">
+            <img src={GovtLogo} alt="img" className="govt_logo mt-4"/>
+        </div>
           <header className="header">
             <h4 className="mb-0 pt-2">
               <b>Location :</b>{" "}
