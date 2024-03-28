@@ -96,89 +96,9 @@
    }
 }
 
-@media print {
-   body {
-      margin: 0;
-      padding: 0;
-      background: #fff;
-   }
-   #printable {
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      max-width: 100%;
-      min-height: 1120px;
-      position: relative;
-      width: 792px;
-   }
-   .aside {
-      min-height: 782px;
-   }
-   .topHead {
-      min-height: 41px;
-   }
-   /* .printFooter {
-			position: absolute;
-			bottom: 0;
-			left: 0;
-		} */
-   #globalButton,
-   .no-print,
-   .prinBtns,
-   #tooltip-disabled {
-      display: none !important;
-   }
-   /* .signatureBox {
-			position: absolute;
-			right: 0;
-			bottom: 0;
-		} */
-
-   @page {
-      /* margin-top: 1cm;
-			margin-bottom: 1cm;
-			margin-top: 1cm;
-			margin-bottom: 1cm;
-			margin-left: 1cm;
-			margin-right: 1cm; */
-      size: A4 portrait;
-      /* counter-increment: page;
-			content: "Page " counter(page);
-			background-color: #f0f0f0;
-			border-bottom: 1px solid #ccc; */
-   }
-}
-
-@media print and (max-width: 800px) {
-   #printable {
-      min-height: 1042px;
-   }
-   .aside {
-      min-height: 728px;
-   }
-   #printable p {
-      font-size: 6.5px !important;
-   }
-   #printable h3 {
-      font-size: 14px !important;
-   }
-   #printable h4 {
-      font-size: 10px !important;
-   }
-   #printable .topHead {
-      font-size: 11px !important;
-   }
-   #printable .rightSide p {
-      font-size: 9px !important;
-   }
-   .nextinfo {
-      margin-top: 80px;
-   }
-}
-
 .govt_logo {
-   width: 80px;
-   height: 80px;
+   width: 60px;
+   height: 60px;
    object-fit: contain;
 }
 .footer_logo {
@@ -187,4 +107,93 @@
    object-fit: contain;
 }
 
+@media (min-width: 1200px) {
+  .prescription-header h3 {
+    font-size: 15px !important;
+  }
+  #printable h4 {
+    font-size: 14px !important;
+  }
+}
 
+@media print {
+  body {
+     margin: 0;
+     padding: 0;
+     background: #fff;
+  }
+  #printable {
+     margin: 0;
+     padding: 0;
+     width: 100%;
+     max-width: 100%;
+     min-height: 1120px;
+     position: relative;
+     width: 792px;
+  }
+  .aside {
+     min-height: 782px;
+  }
+  .topHead {
+     min-height: 41px;
+  }
+  /* .printFooter {
+     position: absolute;
+     bottom: 0;
+     left: 0;
+   } */
+  #globalButton,
+  .no-print,
+  .prinBtns,
+  #tooltip-disabled {
+     display: none !important;
+  }
+  /* .signatureBox {
+     position: absolute;
+     right: 0;
+     bottom: 0;
+   } */
+
+  @page {
+     /* margin-top: 1cm;
+     margin-bottom: 1cm;
+     margin-top: 1cm;
+     margin-bottom: 1cm;
+     margin-left: 1cm;
+     margin-right: 1cm; */
+     size: A4 portrait;
+     /* counter-increment: page;
+     content: "Page " counter(page);
+     background-color: #f0f0f0;
+     border-bottom: 1px solid #ccc; */
+  }
+}
+
+@media print and (max-width: 800px) {
+  #printable {
+     /* min-height: 1102px; */
+     min-height: 11.69in;
+  }
+  .aside {
+     min-height: 8.7in;
+  }
+  #printable p {
+     font-size: 6.5px !important;
+  }
+  #printable h3 {
+     font-size: 15px !important;
+  }
+  #printable h4 {
+     /* font-size: 10px !important; */
+     font-size: 14px !important;
+  }
+  #printable .topHead {
+     font-size: 11px !important;
+  }
+  #printable .rightSide p {
+     font-size: 9px !important;
+  }
+  .nextinfo {
+     margin-top: 80px;
+  }
+}

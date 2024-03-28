@@ -20,13 +20,13 @@ patient registration part start
   width: 870px;
   background-color: #999;
 }
-.form-radious {
+/* .form-radious {
   border: 0 !important;
   box-shadow: none !important;
   border-radius: 5px;
   border-top-left-radius: 5px !important;
   border-bottom-left-radius: 5px !important;
-}
+} */
 .patient-registration .react-date-picker__wrapper {
   border: none !important;
 }
@@ -141,6 +141,6 @@ patient registration part start
   margin-top: -2px;
 }
 
-.invalid-field {
+/* .invalid-field {
   border: 2px solid red !important;
-}
+} */

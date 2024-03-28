@@ -92,6 +92,9 @@ function MyVerticallyCenteredModal({ show, onHide, formData, setFormData }) {
                 if(getAdviceText == "AD5"){
                   console.log(getAdviceText);
                   setShowField(true);
+                } else {
+                  setStatus("")
+                  setShowField(false);
                 }
               }}
               // className="form-select input-padding rounded-pill select-form-padding"

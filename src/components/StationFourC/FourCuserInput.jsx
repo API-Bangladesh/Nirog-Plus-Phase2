@@ -530,9 +530,9 @@ const FourCuserInput = () => {
                         <table className="table table-bordered">
                           <thead>
                             <tr>
-                              <th>adviceId</th>
-                              <th>advice</th>
-                              <th>Status</th>
+                              <th>Advice ID</th>
+                              <th>Advice</th>
+                              <th>Added Advice</th>
                               <th>Action</th>
                             </tr>
                           </thead>

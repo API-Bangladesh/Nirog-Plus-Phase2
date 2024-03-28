@@ -436,6 +436,7 @@ function MyVerticallyCenteredModal({
               <option value="Week">Week</option>
               <option value="Month">Month</option>
               <option value="Year">Year</option>
+              <option value="Continue">Continue</option>
             </select>
           </div>
         </div>

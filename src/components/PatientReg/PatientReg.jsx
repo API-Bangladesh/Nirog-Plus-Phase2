@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
+import { Oval } from 'react-loader-spinner'
 import { BiError } from "react-icons/bi";
 import "./PatientReg.css";
 import SectionTitle from "../SectionTitleDemo/SectionTitle";
@@ -533,11 +534,39 @@ const PatientReg = () => {
 
     setErrors({ ...errors, [field]: null });
 
+    let val = ""
+    const inputType = e.target.getAttribute('data-input-type');
+
+    if (inputType === 'number') {
+      // Check if the input value contains only numeric characters
+      val = value.replace(/\D/g, ''); // Remove non-numeric characters
+      // Update the state with the numeric value
+    } else {
+      val = value
+    }
+
+    if (name === 'patientInfo.RegistrationId') {
+      // if (!value.startsWith(userBarcode)) {
+      //   return;
+      // }
+      setSuffixRegistrationId(val)
+      setFormData((prevFormData) => (
+        {
+          ...prevFormData,
+          patientInfo: {
+            ...formData.patientInfo,
+            RegistrationId: userBarcode + val
+          }
+        }
+      ));
+      return
+    }
+
     setFormData((prevFormData) => {
       const updatedSection = { ...prevFormData[section] }; // Create a copy of the section
-      updatedSection[field] = value;
+      updatedSection[field] = val;
       if (isPermanentSameAsPresent && section === "addressInfo") {
-        updatedSection[parmanentField] = value;
+        updatedSection[parmanentField] = val;
       }
       return {
         ...prevFormData,
@@ -593,9 +622,12 @@ const PatientReg = () => {
     }));
   };
 
+  const [suffixRegistrationId, setSuffixRegistrationId] = useState("")
+
   const [formData, setFormData] = useState({
+    userEmail: userData?.email || "",
     patientInfo: {
-      RegistrationId: userBarcode,
+      RegistrationId: userBarcode + suffixRegistrationId,
       fName: "",
       lName: "",
       patientAge: "",
@@ -656,6 +688,8 @@ const PatientReg = () => {
   });
 
   const [errors, setErrors] = useState({});
+  const [success, setSuccess] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // const doValidation = () => {
   //   return new Promise(function (resolve, reject) {
@@ -690,94 +724,164 @@ const PatientReg = () => {
     }
   };
 
-  const doValidation = () => {
-    return new Promise(function (resolve, reject) {
-      const { RegistrationId, GenderId, MariatalStatus } = formData.patientInfo;
-      const {
-        District,
-        DistrictParmanent,
-        Thana,
-        ThanaParmanent,
-        Union,
-        UnionParmanent,
-      } = formData.addressInfo;
+  const isValidRegistrationId = (registrationId) => {
+    // Define a regular expression pattern to match the format: 9 characters followed by 8 numbers
+    const pattern = /^[A-Za-z]{9}\d{8}$/;
+    return pattern.test(registrationId);
+  };
 
-      let myErrors = {};
+  const doValidationRegistrationId = async () => {
+    const { RegistrationId } = formData.patientInfo;
+    let myErrors = {};
+    let mySuccess = {};
 
       if (checkIsEmpty(RegistrationId)) {
-        myErrors.RegistrationId = "Registration ID is required.";
-      }
-      if (checkIsEmpty(GenderId)) {
-        myErrors.GenderId = "Gender is required.";
-      }
-      if (checkIsEmpty(MariatalStatus)) {
-        myErrors.MariatalStatus = "Marital Status is required.";
-      }
-      if (checkIsEmpty(District)) {
-        myErrors.District = "District is required.";
-      }
-      if (checkIsEmpty(DistrictParmanent)) {
-        myErrors.DistrictParmanent = "District is required.";
-      }
-      if (checkIsEmpty(Thana)) {
-        myErrors.Thana = "Thana is required.";
-      }
-      if (checkIsEmpty(ThanaParmanent)) {
-        myErrors.ThanaParmanent = "Thana is required.";
-      }
-      if (checkIsEmpty(Union)) {
-        myErrors.Union = "Union is required.";
-      }
-      if (checkIsEmpty(UnionParmanent)) {
-        myErrors.UnionParmanent = "Union is required.";
+        myErrors.RegistrationId = "Registration number is required.";
+      } else if (/\s/.test(RegistrationId)) {
+        myErrors.RegistrationId = "Registration number cannot contain space characters.";
+      } else if (!isValidRegistrationId(RegistrationId)) {
+        myErrors.RegistrationId = "Registration number must consist of 9 characters followed by 8 numbers.";
+      } else {
+        try {
+          const codeCheckResponse = await axios.post(
+            `${API_URL}/api/registration-code-check`,
+            { registrationCode: RegistrationId }
+          );
+        
+          const res = await codeCheckResponse.data;
+
+          if (res.code === 200) {
+            mySuccess.RegistrationId = "Registration number is available";
+          } else {
+            myErrors.RegistrationId = 'Bad request error occurred';
+            console.log(res.message);
+          }
+        } catch (error) {
+          if (error.response) {
+            const responseData = await error.response.data;
+            if (responseData && responseData.message) {
+              myErrors.RegistrationId = responseData.message;
+            } else {
+              myErrors.RegistrationId = 'Bad request error occurred';
+            }
+          } else if (error.request) {
+            myErrors.RegistrationId = 'Bad request error occurred';
+          } else {
+            myErrors.RegistrationId = 'Bad request error occurred';
+          }
+        }
       }
 
       if (_.isEmpty(myErrors)) {
         setErrors({});
-        resolve("Ok");
       } else {
         setErrors(myErrors);
-        // showErrorNotification("Error", "Please Fill In the Required Fields!");
-        reject("Error");
       }
-    });
+
+      if (_.isEmpty(mySuccess)) {
+        setSuccess({});
+      } else {
+        setSuccess(mySuccess);
+      }
+
+      return Object.keys(myErrors).length
+  };
+
+  const doValidation = async () => {
+    const { GenderId, MariatalStatus } = formData.patientInfo;
+    const {
+      District,
+      DistrictParmanent,
+      Thana,
+      ThanaParmanent,
+      Union,
+      UnionParmanent,
+    } = formData.addressInfo;
+
+    let myErrors = {};
+
+    if (checkIsEmpty(GenderId)) {
+      myErrors.GenderId = "Gender is required.";
+    }
+    if (checkIsEmpty(MariatalStatus)) {
+      myErrors.MariatalStatus = "Marital Status is required.";
+    }
+    if (checkIsEmpty(District)) {
+      myErrors.District = "District is required.";
+    }
+    if (checkIsEmpty(DistrictParmanent)) {
+      myErrors.DistrictParmanent = "District is required.";
+    }
+    if (checkIsEmpty(Thana)) {
+      myErrors.Thana = "Thana is required.";
+    }
+    if (checkIsEmpty(ThanaParmanent)) {
+      myErrors.ThanaParmanent = "Thana is required.";
+    }
+    if (checkIsEmpty(Union)) {
+      myErrors.Union = "Union is required.";
+    }
+    if (checkIsEmpty(UnionParmanent)) {
+      myErrors.UnionParmanent = "Union is required.";
+    }
+
+    if (_.isEmpty(myErrors)) {
+      setErrors({});
+    } else {
+      setErrors(myErrors);
+    }
+
+    return Object.keys(myErrors).length
+  };
+
+  const handleBlur = async (e) => {
+    e.preventDefault();
+    setIsInputFocused(false);
+    doValidationRegistrationId()
+    const RegistrationIdError = await doValidationRegistrationId();
+    return
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(formData);
+    setIsSubmitting(true)
+    // console.log(formData);
     // return
+
+    const RegistrationIdError = await doValidationRegistrationId();
+
+    if (RegistrationIdError) {
+      setIsSubmitting(false)
+      return
+    }
     try {
-      // doValidation();
-      // return
-      const codeCheckResponse = await axios.post(
-        `${API_URL}/api/registration-code-check`,
-        { registrationCode: formData.patientInfo.RegistrationId }
-      );
-      if (codeCheckResponse.data.code === 200) {
-        try {
-          doValidation();
-          // return;
-          const registrationResponse = await axios.post(
-            `${API_URL}/api/patient-reg-create`,
-            formData
+      const ifError = await doValidation();
+      if (ifError) {
+        setIsSubmitting(false)
+        return
+      } else {
+        const registrationResponse = await axios.post(
+          `${API_URL}/api/patient-reg-create`,
+          formData
+        );
+        // console.log(registrationResponse);
+        if (registrationResponse.data) {
+          setIsSubmitting(false)
+          showSuccessNotification(
+            "Success",
+            registrationResponse.data.message
           );
-          // console.log(registrationResponse);
-          if (registrationResponse.data) {
-            showSuccessNotification(
-              "Success",
-              registrationResponse.data.message
-            );
-            window.location = `/take-photo?PatientId=${registrationResponse.data.patientDetails.PatientId}`;
-          } else {
-            showErrorNotification("Error", registrationResponse.data.message);
-          }
-        } catch (error) {
-          showErrorNotification("Error", "Please Fill In the Required Fields!");
+          
+          window.location = `/take-photo?PatientId=${registrationResponse.data.patientDetails.PatientId}`;
+        } else {
+          setIsSubmitting(false)
+          showErrorNotification("Error", registrationResponse.data.message);
         }
+        setIsSubmitting(false)
       }
     } catch (error) {
-      showErrorNotification("Error", error.response.data.message);
+      setIsSubmitting(false)
+      showErrorNotification("Error", error.response.data.message || "Please Fill In the Required Fields!");
     }
   };
 
@@ -862,6 +966,12 @@ const PatientReg = () => {
     calculateAge();
   }, [formData.patientInfo.DOB]);
 
+  const [isInputFocused, setIsInputFocused] = useState(false);
+
+  const handleInputFocus = () => {
+    setIsInputFocused(true);
+  };
+
   return (
     <>
       <section className="patient-registration">
@@ -877,17 +987,30 @@ const PatientReg = () => {
                     Registration Number{" "}
                     <span className="text-danger font-20 ">*</span>
                   </label>
-                  <input
-                    type="text"
-                    name="patientInfo.RegistrationId"
-                    value={formData.patientInfo.RegistrationId}
-                    onChange={handleInputChange}
-                    className={`form-control form-radious inputBox ${
-                      errors.RegistrationId ? "invalid-field" : ""
-                    }`}
-                    placeholder="Ex: 9087663320"
-                  />
-                  {/* {errors.RegistrationId && <span className="error">{errors.RegistrationId}</span>} */}
+
+                  <label
+                    htmlFor="RegistrationId"
+                    className={`form-control form-radious inputBox d-flex justify-content-start align-items-center p-0 ${
+                        errors.RegistrationId ? "invalid-field" : ""
+                      } ${isInputFocused ? "input-focused" : ""}`}
+                  >
+                    <span className="input-disabled">{userBarcode}</span>
+                    <input
+                      id="RegistrationId"
+                      type="text"
+                      name="patientInfo.RegistrationId"
+                      // value={formData.patientInfo.RegistrationId}
+                      value={suffixRegistrationId}
+                      onChange={handleInputChange}
+                      onFocus={handleInputFocus}
+                      onBlur={handleBlur}
+                      className={`input-no-border p-0 w-100`}
+                      // placeholder="Ex: 9087663320"
+                    />
+                  </label>
+
+                  {errors.RegistrationId && <span className="error">{errors.RegistrationId}</span>}
+                  {success.RegistrationId && <span className="success">{success.RegistrationId}</span>}
                 </div>
 
                 <div className="mb-3 shadowme">
@@ -936,7 +1059,9 @@ const PatientReg = () => {
                     Patient Age
                   </label>
                   <input
-                    type="number"
+                    // type="number"
+                    type="text"
+                    data-input-type="number"
                     name="patientInfo.patientAge"
                     value={formData.patientInfo.patientAge}
                     onChange={handleInputChange}
@@ -950,7 +1075,9 @@ const PatientReg = () => {
                     Contact Number
                   </label>
                   <input
-                    type="number"
+                    // type="number"
+                    type="text"
+                    data-input-type="number"
                     name="patientInfo.contactNumber"
                     value={formData.patientInfo.contactNumber}
                     onChange={handleInputChange}
@@ -1061,7 +1188,9 @@ const PatientReg = () => {
                   <div className="col-lg-8">
                     <div className="mb-3">
                       <input
-                        type="number"
+                        // type="number"
+                        type="text"
+                        data-input-type="number"
                         name="patientInfo.ID"
                         value={formData.patientInfo.ID}
                         onChange={handleInputChange}
@@ -1177,7 +1306,9 @@ const PatientReg = () => {
                     Family Members
                   </label>
                   <input
-                    type="number"
+                    // type="number"
+                    type="text"
+                    data-input-type="number"
                     name="patientInfo.FamilyMembers"
                     value={formData.patientInfo.FamilyMembers}
                     onChange={handleInputChange}
@@ -1220,7 +1351,9 @@ const PatientReg = () => {
                           Age 0 to 1
                         </label>
                         <input
-                          type="number"
+                          // type="number"
+                          type="text"
+                          data-input-type="number"
                           name="patientInfo.ChildAge0To1"
                           value={formData.patientInfo.ChildAge0To1}
                           onChange={handleInputChange}
@@ -1238,7 +1371,9 @@ const PatientReg = () => {
                           Age 1 to 5
                         </label>
                         <input
-                          type="number"
+                          // type="number"
+                          type="text"
+                          data-input-type="number"
                           name="patientInfo.ChildAge1To5"
                           value={formData.patientInfo.ChildAge1To5}
                           onChange={handleInputChange}
@@ -1256,7 +1391,9 @@ const PatientReg = () => {
                           Age &#62; 5
                         </label>
                         <input
-                          type="number"
+                          // type="number"
+                          type="text"
+                          data-input-type="number"
                           name="patientInfo.ChildAgeOver5"
                           value={formData.patientInfo.ChildAgeOver5}
                           onChange={handleInputChange}
@@ -1408,7 +1545,9 @@ const PatientReg = () => {
                     Post Code
                   </label>
                   <input
-                    type="number"
+                    // type="number"
+                    type="text"
+                    data-input-type="number"
                     name="addressInfo.PostCode"
                     value={formData.addressInfo.PostCode}
                     onChange={handleInputChange}
@@ -1593,7 +1732,9 @@ const PatientReg = () => {
                     Post Code
                   </label>
                   <input
-                    type="number"
+                    // type="number"
+                    type="text"
+                    data-input-type="number"
                     name="addressInfo.PostCodeParmanent"
                     value={formData.addressInfo.PostCodeParmanent}
                     onChange={handleInputChange}
@@ -1666,7 +1807,9 @@ const PatientReg = () => {
                     Tent Number
                   </label>
                   <input
-                    type="number"
+                    // type="number"
+                    type="text"
+                    data-input-type="number"
                     name="addressInfo.TentNumber"
                     value={formData.addressInfo.TentNumber}
                     onChange={handleInputChange}
@@ -1680,7 +1823,9 @@ const PatientReg = () => {
                     FCN Number
                   </label>
                   <input
-                    type="number"
+                    // type="number"
+                    type="text"
+                    data-input-type="number"
                     name="addressInfo.FCN"
                     value={formData.addressInfo.FCN}
                     onChange={handleInputChange}
@@ -1695,14 +1840,31 @@ const PatientReg = () => {
               <SingleButton btnOne="save & next" link="/go-pic" />
             </div>
              */}
-            <div className="text-center mt-3 position-relative">
+            <div className="text-center mt-3 position-relative d-flex justify-content-center align-items-center">
               <Button
                 className="border-0 button-color text-white py-2 px-3 text-capitalize rounded	undefined"
                 block="block"
                 type="submit"
+                disabled={isSubmitting}
               >
                 save & next
               </Button>
+              {isSubmitting ? (
+                <div className="ms-2">
+                  <Oval
+                    visible={true}
+                    height="20"
+                    width="20"
+                    color="#666666"
+                    secondaryColor="#333333"
+                    strokeWidth="4"
+                    strokeWidthSecondary="4"
+                    ariaLabel="oval-loading"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                  />
+                </div>
+              ) : ""}
             </div>
           </form>
         </div>

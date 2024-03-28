@@ -45,11 +45,18 @@ input[type="submit"] {
 .login-btn-bg:hover{
   background-color: var(--main-hover-color);
 }
-.error {
+.error, .success {
   padding-top: 5px;
   padding-left: 15px;
   color: red;
   font-size: 12px;
+}
+.success {
+ color: green;
+}
+
+input.input-no-border:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px white inset !important;
 }
 
 .input-container {

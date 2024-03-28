@@ -134,10 +134,18 @@ const PrescriptionFinal = () => {
       <section id="prescriptionFinal">
         <div id="printable" className="container px-4">
         <div className="text-center">
-            <img src={GovtLogo} alt="img" className="govt_logo mt-4"/>
+            <img src={GovtLogo} alt="img" className="govt_logo mt-3" />
         </div>
-          <header className="header">
-            <h4 className="mb-0 pt-2">
+          <header className="header prescription-header">
+            {prescriptions.map((item, index) => (
+              <div key={index}>
+                <h3 className="text-center m-0 pt-3 pb-2 px-4">
+                  Prescription - {item.PrescriptionId}
+                </h3>
+              </div>
+            ))}
+
+            <h4 className="text-center mb-0 pb-3">
               <b>Location :</b>{" "}
               {[
                 userData?.barcode_format?.healthcenter?.HealthCenterName,
@@ -149,13 +157,6 @@ const PrescriptionFinal = () => {
               .filter((item) => item) // Remove undefined or falsy items
               .join(', ')}
             </h4>
-            {prescriptions.map((item, index) => (
-              <div key={index}>
-                <h3 className="text-center m-0 py-4 px-4">
-                  Prescription - {item.PrescriptionId}
-                </h3>
-              </div>
-            ))}
           </header>
           {/* {prescriptions.map((item, index) => (
             <div key={index}>
@@ -371,6 +372,9 @@ const PrescriptionFinal = () => {
                       : item.DrugDurationValue.includes("week") ||
                         item.DrugDurationValue.includes("Week")
                       ? item.DrugDurationValue.replace(/week/i, " সপ্তাহ")
+                      : item.DrugDurationValue.includes("continue") ||
+                        item.DrugDurationValue.includes("Continue")
+                      ? item.DrugDurationValue.replace(/Continue/i, " চলমান")
                       : ""}
                   </p> 
                   {/* <p>{}</p> */}
